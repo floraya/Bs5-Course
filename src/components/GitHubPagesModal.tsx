@@ -35,19 +35,12 @@ export const GitHubPagesModal: React.FC<GitHubPagesModalProps> = ({
     setTimeout(() => setCopiedType(null), 2500);
   };
 
-  const gitCommands = `# 1. 初始化 Git 倉庫並加入所有檔案
-git init
+  const gitCommands = `# 1. 加入所有更新檔案 (包含 .github/workflows/deploy.yml)
 git add .
-git commit -m "feat: 部署 Bootstrap 5 高中生互動教學平台"
+git commit -m "fix: 配置 GitHub Actions 自動編譯並發布至 Bs5-Course"
 
-# 2. 設置預設分支為 main
-git branch -M main
-
-# 3. 綁定你的 GitHub Repository (請將下列 URL 換成你的倉庫網址)
-git remote add origin https://github.com/你的GitHub帳號/你的專案名稱.git
-
-# 4. 推送到 GitHub
-git push -u origin main`;
+# 2. 推送到 GitHub main 分支
+git push origin main`;
 
   const npmCommands = `# 一鍵編譯並自動推送至 GitHub Pages 分支 (gh-pages)
 npm run deploy`;
@@ -206,9 +199,14 @@ npm run deploy`;
                 系統會自動觸發已內建的{' '}
                 <span className="font-mono text-purple-300">.github/workflows/deploy.yml</span>，約 1
                 分鐘後，你的網站即可在{' '}
-                <code className="bg-slate-800 text-emerald-300 px-1.5 py-0.5 rounded font-mono">
-                  https://&lt;你的帳號&gt;.github.io/&lt;專案名&gt;/
-                </code>{' '}
+                <a
+                  href="https://floraya.github.io/Bs5-Course/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-slate-800 text-emerald-300 px-2 py-0.5 rounded font-mono underline inline-flex items-center gap-1 hover:text-emerald-200"
+                >
+                  https://floraya.github.io/Bs5-Course/ <ExternalLink className="w-3 h-3" />
+                </a>{' '}
                 永久免費上線！
               </li>
             </ol>
@@ -258,6 +256,18 @@ npm run deploy`;
             </div>
           </div>
         )}
+
+        {/* Troubleshooting Card for Why It Showed Blank */}
+        <div className="bg-amber-950/30 border border-amber-500/40 rounded-xl p-3 flex items-start gap-2.5">
+          <Info className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+          <div className="text-[11px] text-amber-200 leading-relaxed">
+            <strong className="text-amber-100 font-bold">為什麼先前 https://floraya.github.io/Bs5-Course/ 沒有顯示網頁？</strong>
+            <br />
+            1. <strong>原因：</strong>GitHub 預設建立的 <code className="font-mono text-amber-300">static.yml</code> 僅上傳了尚未打包的原始碼（瀏覽器無法直接執行未編譯的 TypeScript），且被 Jekyll 攔截。<br />
+            2. <strong>已修正：</strong>已為您移除衝突的 static.yml 與 jekyll-gh-pages.yml，並補上 <code className="font-mono text-amber-300">.nojekyll</code> 與斜線自動校正。<br />
+            3. <strong>啟用方式：</strong>至 GitHub 專案 <strong>Settings ➔ Pages ➔ Source 選擇「GitHub Actions」</strong>，系統即會自動執行已配置好的 <code className="font-mono text-purple-300">deploy.yml</code> 構建 dist 並正常顯示！
+          </div>
+        </div>
 
         {/* Bottom Note on Quotas */}
         <div className="bg-purple-950/30 border border-purple-500/30 rounded-xl p-3 flex items-start gap-2.5">
