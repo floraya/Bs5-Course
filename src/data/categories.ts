@@ -6,7 +6,7 @@ import { CategoryInfo } from '../types/curriculum';
 export const CATEGORIES: CategoryInfo[] = [
   {
     id: 'content',
-    name: '內容排版 (Content)',
+    name: '內容排版',
     enName: 'Content',
     icon: 'FileText',
     color: '#0d6efd',
@@ -16,7 +16,7 @@ export const CATEGORIES: CategoryInfo[] = [
   },
   {
     id: 'utilities',
-    name: '通用工具 (Utilities)',
+    name: '通用工具',
     enName: 'Utilities',
     icon: 'Sliders',
     color: '#d63384',
@@ -26,7 +26,7 @@ export const CATEGORIES: CategoryInfo[] = [
   },
   {
     id: 'layout',
-    name: '佈局系統 (Layout)',
+    name: '佈局系統',
     enName: 'Layout',
     icon: 'LayoutGrid',
     color: '#712cf9',
@@ -36,7 +36,7 @@ export const CATEGORIES: CategoryInfo[] = [
   },
   {
     id: 'forms',
-    name: '表單輸入 (Forms)',
+    name: '表單輸入',
     enName: 'Forms',
     icon: 'CheckSquare',
     color: '#00d26a',
@@ -46,7 +46,7 @@ export const CATEGORIES: CategoryInfo[] = [
   },
   {
     id: 'components',
-    name: '常用元件 (Components)',
+    name: '常用元件',
     enName: 'Components',
     icon: 'Component',
     color: '#fd7e14',
@@ -56,7 +56,7 @@ export const CATEGORIES: CategoryInfo[] = [
   },
   {
     id: 'helpers',
-    name: '輔助類別 (Helpers)',
+    name: '輔助類別',
     enName: 'Helpers',
     icon: 'Wrench',
     color: '#20c997',

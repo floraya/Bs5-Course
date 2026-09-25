@@ -10,7 +10,6 @@ import { TeacherView } from './components/TeacherView';
 import { StudentView } from './components/StudentView';
 import { SplitView } from './components/SplitView';
 import { PlaygroundModal } from './components/PlaygroundModal';
-import { GitHubPagesModal } from './components/GitHubPagesModal';
 import {
   Menu,
   ChevronLeft,
@@ -61,9 +60,6 @@ export default function App() {
 
   // Free playground modal state
   const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false);
-
-  // GitHub Pages deployment guide modal state
-  const [isGitHubPagesOpen, setIsGitHubPagesOpen] = useState(false);
 
   // Active toast banner for level up or badges
   const [toastNotification, setToastNotification] = useState<{
@@ -156,14 +152,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col font-sans selection:bg-[#712cf9]/40 selection:text-white">
+    <div className="h-screen h-[100dvh] bg-[#070b14] text-slate-100 flex flex-col font-sans selection:bg-[#712cf9]/40 selection:text-white overflow-hidden">
       {/* 1. Global Gamification Header */}
       <GamificationBar
         progress={progress}
         allLessons={ALL_LESSONS}
         onToggleSound={handleToggleSound}
         onOpenPlayground={() => setIsPlaygroundOpen(true)}
-        onOpenGitHubPages={() => setIsGitHubPagesOpen(true)}
         onUpdateName={handleUpdateStudentName}
       />
 
@@ -262,7 +257,7 @@ export default function App() {
       )}
 
       {/* 4. Main Body: Sidebar + Dynamic Workspace View */}
-      <div className="flex-1 flex max-w-[1800px] w-full mx-auto overflow-hidden">
+      <div className="flex-1 flex max-w-[1800px] w-full mx-auto overflow-hidden min-h-0">
         {/* Course Catalog Sidebar */}
         <Sidebar
           currentLessonId={currentLesson.id}
@@ -276,7 +271,7 @@ export default function App() {
         />
 
         {/* Dynamic Center Stage */}
-        <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-y-auto custom-scrollbar transition-all">
+        <main className="flex-1 min-h-0 p-3 sm:p-5 lg:p-6 overflow-y-auto custom-scrollbar transition-all">
           {/* Notice & Quick Expand button when sidebar is collapsed */}
           {!isSidebarOpen && (
             <div className="hidden lg:flex items-center justify-between mb-4 px-4 py-2.5 bg-gradient-to-r from-purple-950/40 via-slate-900/60 to-slate-950/40 border border-purple-500/30 rounded-xl backdrop-blur shadow-sm animate-fadeIn">
@@ -334,12 +329,6 @@ export default function App() {
       <PlaygroundModal
         isOpen={isPlaygroundOpen}
         onClose={() => setIsPlaygroundOpen(false)}
-      />
-
-      {/* 6. GitHub Pages Deployment Guide Modal */}
-      <GitHubPagesModal
-        isOpen={isGitHubPagesOpen}
-        onClose={() => setIsGitHubPagesOpen(false)}
       />
     </div>
   );

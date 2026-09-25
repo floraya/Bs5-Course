@@ -50,6 +50,9 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
 
   // Expanded full screen modal for right preview
   const [showFullPreview, setShowFullPreview] = useState(false);
+  const [modalCodeTab, setModalCodeTab] = useState<'preview' | 'html' | 'css' | 'split'>('preview');
+  const [modalSubCodeTab, setModalSubCodeTab] = useState<'html' | 'css'>('html');
+  const [copiedModalCode, setCopiedModalCode] = useState(false);
 
   // Interactive Lab state
   const labConfig = getLessonLabConfig(lesson);
@@ -81,6 +84,24 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
     soundManager.playClick();
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
+  };
+
+  const handleCopyModalCode = (target: 'html' | 'css') => {
+    const textToCopy =
+      target === 'html'
+        ? lesson.teacherHtml
+        : `/* Bootstrap 5 核心樣式規則速查表 */\n/* 課程：${lesson.officialName} · ${lesson.title} */\n\n` +
+          lesson.keyClasses
+            .map(
+              (k) =>
+                `/* ${k.desc} */\n.${k.name} {\n  box-sizing: border-box;\n  /* 自動響應與邊界計算規則 */\n}`
+            )
+            .join('\n\n');
+
+    navigator.clipboard.writeText(textToCopy);
+    soundManager.playClick();
+    setCopiedModalCode(true);
+    setTimeout(() => setCopiedModalCode(false), 2000);
   };
 
   return (
@@ -627,28 +648,257 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
       {/* 3. FULL SCREEN PREVIEW MODAL ("展開看整體頁面")                */}
       {/* ============================================================ */}
       {showFullPreview && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex flex-col p-4 sm:p-6 animate-fadeIn">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-              <span className="text-sm font-bold text-white">
-                全螢幕高解析度檢視 · {lesson.title}
-              </span>
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col p-3 sm:p-5 animate-fadeIn">
+          {/* Top Bar with Title, HTML/CSS/Preview Switcher, and Close button */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+            <div className="flex items-center gap-2.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-extrabold text-white">
+                    全螢幕整體頁面 · {lesson.title}
+                  </span>
+                  <span className="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full border border-purple-500/30 font-bold">
+                    {lesson.officialName}
+                  </span>
+                </div>
+                <div className="text-[11px] text-slate-400">
+                  可任意在「🖥️ 網頁預覽」、「&lt;/&gt; HTML 骨架」與「🎨 CSS 樣式」之間流暢切換檢視
+                </div>
+              </div>
             </div>
-            <button
-              onClick={() => setShowFullPreview(false)}
-              className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
+
+            {/* Central Switcher: [ 🖥️ 即時預覽 ] [ </> HTML 骨架 ] [ 🎨 CSS 樣式 ] [ ⚡ 雙欄對照 ] */}
+            <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 shadow-inner">
+              <button
+                onClick={() => {
+                  soundManager.playClick();
+                  setModalCodeTab('preview');
+                }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  modalCodeTab === 'preview'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Play className="w-3.5 h-3.5 fill-current" />
+                <span>即時預覽</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  soundManager.playClick();
+                  setModalCodeTab('html');
+                }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  modalCodeTab === 'html'
+                    ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Code2 className="w-3.5 h-3.5" />
+                <span>HTML 骨架</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  soundManager.playClick();
+                  setModalCodeTab('css');
+                }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  modalCodeTab === 'css'
+                    ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>CSS 樣式</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  soundManager.playClick();
+                  setModalCodeTab('split');
+                }}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  modalCodeTab === 'split'
+                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>雙欄對照</span>
+              </button>
+            </div>
+
+            {/* Right: Copy & Close */}
+            <div className="flex items-center gap-2">
+              {(modalCodeTab === 'html' || modalCodeTab === 'css') && (
+                <button
+                  onClick={() => handleCopyModalCode(modalCodeTab)}
+                  className="flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition-all"
+                >
+                  {copiedModalCode ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-emerald-400 font-bold">已複製！</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>複製當前代碼</span>
+                    </>
+                  )}
+                </button>
+              )}
+
+              <button
+                onClick={() => setShowFullPreview(false)}
+                className="p-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors"
+                title="關閉展開視窗"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
-          <div className="flex-1 mt-4 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950">
-            <SandboxPreview
-              html={lesson.teacherHtml}
-              title={`全螢幕示範 · ${lesson.title}`}
-              badgeLabel="👩‍🏫 完整視野"
-              badgeColor="#0095ff"
-            />
+
+          {/* Modal Content Body */}
+          <div className="flex-1 mt-3 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 flex flex-col">
+            {modalCodeTab === 'preview' && (
+              <div className="flex-1 h-full">
+                <SandboxPreview
+                  html={lesson.teacherHtml}
+                  title={`全螢幕示範 · ${lesson.title}`}
+                  badgeLabel="👩‍🏫 完整視野"
+                  badgeColor="#0095ff"
+                />
+              </div>
+            )}
+
+            {modalCodeTab === 'html' && (
+              <div className="flex-1 h-full overflow-hidden p-3 bg-[#090d16]">
+                <VSCodeBlock
+                  code={lesson.teacherHtml}
+                  language="html"
+                  filename="index.html"
+                  maxHeight="calc(100vh - 150px)"
+                  showLineNumbers={true}
+                />
+              </div>
+            )}
+
+            {modalCodeTab === 'css' && (
+              <div className="flex-1 h-full overflow-hidden p-3 bg-[#090d16]">
+                <VSCodeBlock
+                  code={
+                    `/* ============================================================ */\n` +
+                    `/* Bootstrap 5 核心樣式規則速查表                                */\n` +
+                    `/* 課程：${lesson.officialName} · ${lesson.title}                */\n` +
+                    `/* ============================================================ */\n\n` +
+                    lesson.keyClasses
+                      .map(
+                        (k) =>
+                          `/* ${k.desc} */\n.${k.name} {\n  box-sizing: border-box;\n  /* 自動響應與邊界計算規則 */\n}`
+                      )
+                      .join('\n\n')
+                  }
+                  language="css"
+                  filename="custom-bootstrap.css"
+                  maxHeight="calc(100vh - 150px)"
+                  showLineNumbers={true}
+                />
+              </div>
+            )}
+
+            {modalCodeTab === 'split' && (
+              <div className="flex-1 h-full grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-slate-800 overflow-hidden">
+                {/* Left: Code with HTML/CSS Toggle */}
+                <div className="flex flex-col h-full bg-[#090d16] p-3 space-y-2 overflow-hidden">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => {
+                          soundManager.playClick();
+                          setModalSubCodeTab('html');
+                        }}
+                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                          modalSubCodeTab === 'html'
+                            ? 'bg-sky-500 text-white shadow'
+                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        }`}
+                      >
+                        HTML 骨架
+                      </button>
+                      <button
+                        onClick={() => {
+                          soundManager.playClick();
+                          setModalSubCodeTab('css');
+                        }}
+                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                          modalSubCodeTab === 'css'
+                            ? 'bg-purple-600 text-white shadow'
+                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                        }`}
+                      >
+                        CSS 樣式
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => handleCopyModalCode(modalSubCodeTab)}
+                      className="text-xs text-slate-400 hover:text-white flex items-center gap-1"
+                    >
+                      {copiedModalCode ? (
+                        <span className="text-emerald-400 font-bold">已複製！</span>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" />
+                          <span>複製</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  <div className="flex-1 overflow-hidden">
+                    {modalSubCodeTab === 'html' ? (
+                      <VSCodeBlock
+                        code={lesson.teacherHtml}
+                        language="html"
+                        filename="index.html"
+                        maxHeight="calc(100vh - 200px)"
+                        showLineNumbers={true}
+                      />
+                    ) : (
+                      <VSCodeBlock
+                        code={
+                          `/* Bootstrap 5 核心樣式規則 */\n\n` +
+                          lesson.keyClasses
+                            .map(
+                              (k) =>
+                                `/* ${k.desc} */\n.${k.name} {\n  box-sizing: border-box;\n}`
+                            )
+                            .join('\n\n')
+                        }
+                        language="css"
+                        filename="bootstrap.css"
+                        maxHeight="calc(100vh - 200px)"
+                        showLineNumbers={true}
+                      />
+                    )}
+                  </div>
+                </div>
+
+                {/* Right: Live Preview */}
+                <div className="h-full">
+                  <SandboxPreview
+                    html={lesson.teacherHtml}
+                    title={`對照示範 · ${lesson.title}`}
+                    badgeLabel="👩‍🏫 即時渲染"
+                    badgeColor="#0095ff"
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

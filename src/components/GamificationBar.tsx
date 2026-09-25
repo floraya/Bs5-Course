@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StudentProgress, Lesson } from '../types/curriculum';
 import { getLevelInfo, BADGES } from '../utils/gamification';
-import { Trophy, Volume2, VolumeX, Sparkles, Code2, CheckCircle2, X, Globe } from 'lucide-react';
+import { Trophy, Volume2, VolumeX, Sparkles, Code2, CheckCircle2, X } from 'lucide-react';
 import { soundManager } from '../utils/sound';
 
 interface GamificationBarProps {
@@ -53,7 +53,7 @@ export const GamificationBar: React.FC<GamificationBarProps> = ({
               <div>
                 <div className="flex items-center gap-1.5">
                   <span className="font-extrabold text-sm text-white tracking-tight">
-                    Bootstrap 5 高中生互動學院
+                    BS5互動教學特訓
                   </span>
                   <span className="text-[10px] bg-purple-500/20 text-purple-300 font-bold px-1.5 py-0.5 rounded border border-purple-500/30">
                     v5.3
@@ -134,19 +134,6 @@ export const GamificationBar: React.FC<GamificationBarProps> = ({
 
           {/* Right Action Buttons */}
           <div className="flex items-center gap-2">
-            {/* GitHub Pages Deploy Guide Button */}
-            <button
-              onClick={() => {
-                soundManager.playClick();
-                if (onOpenGitHubPages) onOpenGitHubPages();
-              }}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-gradient-to-r from-purple-900/60 to-indigo-900/60 hover:from-purple-800/80 hover:to-indigo-800/80 text-purple-200 hover:text-white border border-purple-500/40 hover:border-purple-400 rounded-xl text-xs font-semibold transition-all shadow-sm shadow-purple-950/40"
-              title="如何將本專案發布為免費 GitHub Pages 網站"
-            >
-              <Globe className="w-3.5 h-3.5 text-purple-400" />
-              <span className="hidden sm:inline">發布到 GitHub Pages</span>
-            </button>
-
             {/* Free Playground Button */}
             <button
               onClick={() => {
