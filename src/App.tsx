@@ -10,6 +10,7 @@ import { TeacherView } from './components/TeacherView';
 import { StudentView } from './components/StudentView';
 import { SplitView } from './components/SplitView';
 import { PlaygroundModal } from './components/PlaygroundModal';
+import { GitHubPagesModal } from './components/GitHubPagesModal';
 import {
   Menu,
   ChevronLeft,
@@ -60,6 +61,9 @@ export default function App() {
 
   // Free playground modal state
   const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false);
+
+  // GitHub Pages deployment guide modal state
+  const [isGitHubPagesOpen, setIsGitHubPagesOpen] = useState(false);
 
   // Active toast banner for level up or badges
   const [toastNotification, setToastNotification] = useState<{
@@ -159,6 +163,7 @@ export default function App() {
         allLessons={ALL_LESSONS}
         onToggleSound={handleToggleSound}
         onOpenPlayground={() => setIsPlaygroundOpen(true)}
+        onOpenGitHubPages={() => setIsGitHubPagesOpen(true)}
         onUpdateName={handleUpdateStudentName}
       />
 
@@ -329,6 +334,12 @@ export default function App() {
       <PlaygroundModal
         isOpen={isPlaygroundOpen}
         onClose={() => setIsPlaygroundOpen(false)}
+      />
+
+      {/* 6. GitHub Pages Deployment Guide Modal */}
+      <GitHubPagesModal
+        isOpen={isGitHubPagesOpen}
+        onClose={() => setIsGitHubPagesOpen(false)}
       />
     </div>
   );

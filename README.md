@@ -63,6 +63,43 @@ npm run lint
 
 ---
 
+## 🌐 免費發布至 GitHub Pages 網站 (100% Free Deployment)
+
+本專案採用**純前端靜態架構 (Vite SPA)**，所有 77 堂課程、雙模式教學、程式碼編輯器、Bootstrap 5 即時沙盒預覽與驗收檢核邏輯皆在學生的瀏覽器端原生運行。**零伺服器維護費用、零 API 配額消耗，發布後即可永久免費供全校師生使用！**
+
+### 【方法一：推薦】使用 GitHub Actions 自動部署（最省力）
+
+專案已內建 `.github/workflows/deploy.yml` 與 `base: './'` 相對路徑設定：
+
+1. **在 GitHub 上建立一個新的公開 (Public) 儲存庫**（例如：`bs5-campus`）。
+2. **在終端機將專案推送到 GitHub**：
+   ```bash
+   git init
+   git add .
+   git commit -m "feat: 部署 Bootstrap 5 高中生互動教學平台"
+   git branch -M main
+   git remote add origin https://github.com/<你的GitHub帳號>/<你的倉庫名稱>.git
+   git push -u origin main
+   ```
+3. **開啟 GitHub Pages 功能**：
+   - 進入你的 GitHub 專案頁面 ➔ 點擊 **Settings**。
+   - 在左側選單點擊 **Pages**。
+   - 在 **Build and deployment** 下的 **Source** 下拉選單中，選擇 **GitHub Actions**。
+4. **完成發布**：
+   - GitHub Actions 會自動完成 build 與部署，約 1 分鐘後即可在：
+   - `https://<你的GitHub帳號>.github.io/<你的倉庫名稱>/`
+   - 永久免費、無限制在線使用！
+
+### 【方法二】本機終端機一鍵發布 (npm run deploy)
+
+專案已配置好 `gh-pages` 工具：
+```bash
+npm run deploy
+```
+此指令會自動執行 `npm run build`，並將打包完成的 `dist` 目錄推送到你儲存庫的 `gh-pages` 分支。接著在 GitHub 專案 Settings ➔ Pages 中選擇 `gh-pages` 分支即可！
+
+---
+
 ## 📚 完整課程體系 (77 堂循序漸進互動課程)
 
 本課程嚴格遵循 [getbootstrap.com](https://getbootstrap.com/) 官方文件結構，由淺入深分為 6 大核心領域、共 77 堂實戰課程：
