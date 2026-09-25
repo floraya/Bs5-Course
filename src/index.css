@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bootstrap: #712cf9;
+  --color-bootstrap-hover: #5920c7;
+  --color-bootstrap-light: #8e4eff;
+  --color-bootstrap-dark: #4b19a6;
+  --font-sans: "Plus Jakarta Sans", "Noto Sans TC", system-ui, -apple-system, sans-serif;
+  --font-mono: "Fira Code", monospace;
+}
+
+:root {
+  --primary-bootstrap: #712cf9;
+}
+
+body {
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #712cf9;
+}
+
+/* Code editor styling */
+pre, code {
+  font-family: var(--font-mono);
+}
+
+/* ============================================================ */
+/* VS Code Dark+ Theme Tokens (Matches Visual Studio Code)      */
+/* ============================================================ */
+.vscode-editor,
+.vscode-code {
+  font-family: "Fira Code", Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-variant-ligatures: normal;
+  tab-size: 2;
+  -moz-tab-size: 2;
+}
+
+/* Comments: VS Code Forest Green */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #6a9955 !important;
+  font-style: italic;
+}
+
+/* Punctuation: VS Code Neutral Gray */
+.token.punctuation {
+  color: #808080 !important;
+}
+
+/* HTML / Component Tags: VS Code Blue */
+.token.tag,
+.token.tag .token.tag {
+  color: #569cd6 !important;
+}
+
+/* HTML Tag Brackets: < and > */
+.token.tag .token.punctuation {
+  color: #808080 !important;
+}
+
+/* Attribute Names: VS Code Light Sky Cyan (e.g. class, id, type, role) */
+.token.attr-name,
+.token.property-access {
+  color: #9cdcfe !important;
+}
+
+/* Attribute Values & Strings: VS Code Warm Terracotta (e.g. "container", "btn") */
+.token.attr-value,
+.token.string,
+.token.char {
+  color: #ce9178 !important;
+}
+
+.token.attr-value .token.punctuation {
+  color: #ce9178 !important;
+}
+
+/* CSS Selectors: VS Code Gold/Sand (e.g. .btn-primary, div#hero) */
+.token.selector {
+  color: #d7ba7d !important;
+}
+
+/* CSS Properties: VS Code Light Blue (e.g. display, margin, padding) */
+.token.property {
+  color: #9cdcfe !important;
+}
+
+/* Numbers & Units: VS Code Sage Light Green (e.g. 100%, 12, 1.5rem) */
+.token.number,
+.token.unit {
+  color: #b5cea8 !important;
+}
+
+/* Keywords: VS Code Magenta/Purple (e.g. import, @media, var, flex) */
+.token.keyword,
+.token.atrule {
+  color: #c586c0 !important;
+}
+
+/* Functions: VS Code Soft Yellow (e.g. calc, rgb, var) */
+.token.function {
+  color: #dcdcaa !important;
+}
+
+/* Booleans: VS Code Blue */
+.token.boolean {
+  color: #569cd6 !important;
+}
+
+/* Operators & Entities */
+.token.operator,
+.token.entity,
+.token.url {
+  color: #d4d4d4 !important;
+}
+
+/* Editor Selection Highlight */
+::selection {
+  background-color: rgba(38, 79, 120, 0.6) !important;
+}

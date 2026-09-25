@@ -1,0 +1,6 @@
+{
+  "name": "Bootstrap 5 高中生互動教學平台",
+  "description": "專為高中生打造的 Bootstrap 5 線上互動學習網：結合「老師教學」與「學生學習」雙模式、全系列 77 個漸進式課程、即時沙盒預覽與遊戲化闖關！",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
