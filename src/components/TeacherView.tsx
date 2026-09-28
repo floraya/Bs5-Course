@@ -4,7 +4,7 @@ import { SandboxPreview } from './SandboxPreview';
 import { VSCodeBlock } from './VSCodeBlock';
 import { CATEGORIES } from '../data/categories';
 import { ALL_LESSONS } from '../data/allLessons';
-import { getLessonMnemonic, getLessonLabConfig, getLessonPitfallVsMaster } from '../utils/teachingData';
+import { getLessonMnemonic, getLessonLabConfig } from '../utils/teachingData';
 import { soundManager } from '../utils/sound';
 import {
   ArrowRight,
@@ -30,7 +30,7 @@ interface TeacherViewProps {
   nextLessonId?: string | null;
 }
 
-type TabType = 'visual' | 'metaphor' | 'pitfall' | 'keypoints' | 'syntax' | 'lab';
+type TabType = 'visual' | 'metaphor' | 'js-reminder' | 'keypoints' | 'syntax' | 'lab';
 type CodeTab = 'css' | 'html';
 
 export const TeacherView: React.FC<TeacherViewProps> = ({
@@ -41,8 +41,21 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
   prevLessonId,
   nextLessonId,
 }) => {
-  // Active feature tab (defaults to 排版實驗室 to match screenshot)
-  const [activeTab, setActiveTab] = useState<TabType>('lab');
+  // Active feature tab (defaults to js-reminder for tooltips/popovers, lab for others)
+  const [activeTab, setActiveTab] = useState<TabType>(() => {
+    return lesson.id === 'comp-tooltips' || lesson.id === 'comp-popovers'
+      ? 'js-reminder'
+      : 'lab';
+  });
+
+  // Automatically switch tab when lesson changes
+  React.useEffect(() => {
+    if (lesson.id === 'comp-tooltips' || lesson.id === 'comp-popovers') {
+      setActiveTab('js-reminder');
+    } else {
+      setActiveTab('lab');
+    }
+  }, [lesson.id]);
 
   // Active code inspector tab on bottom right
   const [codeTab, setCodeTab] = useState<CodeTab>('html');
@@ -72,7 +85,6 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
   const totalUnits = ALL_LESSONS.length;
   const category = CATEGORIES.find((c) => c.id === lesson.categoryId) || CATEGORIES[0];
   const mnemonic = getLessonMnemonic(lesson);
-  const pitfallData = getLessonPitfallVsMaster(lesson);
 
   const handleCopyCode = () => {
     const textToCopy =
@@ -228,19 +240,27 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                 <span>🎭 生動比喻</span>
               </button>
 
-              <button
-                onClick={() => {
-                  soundManager.playClick();
-                  setActiveTab('pitfall');
-                }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1 ${
-                  activeTab === 'pitfall'
-                    ? 'bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-500/20'
-                    : 'bg-slate-900/90 text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-800/80'
-                }`}
-              >
-                <span>⚔️ 翻車 vs 大師</span>
-              </button>
+              {/* Special JS Opt-in Reminder Tab on the 本課重點趣味解析 tabs row */}
+              {(lesson.id === 'comp-tooltips' || lesson.id === 'comp-popovers') && (
+                <button
+                  onClick={() => {
+                    soundManager.playClick();
+                    setActiveTab('js-reminder');
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1 border shadow-sm ${
+                    activeTab === 'js-reminder'
+                      ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-500/30 border-amber-300 font-extrabold'
+                      : 'bg-amber-950/60 text-amber-300 hover:text-white hover:bg-amber-900/80 border-amber-600/40'
+                  }`}
+                  title={
+                    lesson.id === 'comp-tooltips'
+                      ? '【重點提醒】Tooltips 屬於 Opt-in 元件，必須撰寫 JavaScript 初始化才會生效！'
+                      : '【重點提醒】Popovers 屬於 Opt-in 元件，必須撰寫 JavaScript 初始化才會生效！'
+                  }
+                >
+                  <span>⚡ JavaScript</span>
+                </button>
+              )}
 
               <button
                 onClick={() => {
@@ -442,40 +462,50 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
               </div>
             )}
 
-            {/* Tab: ⚔️ 翻車 vs 大師 */}
-            {activeTab === 'pitfall' && (
-              <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-4">
-                <div className="space-y-3">
-                  {/* Pitfall Card */}
-                  <div className="p-3.5 bg-rose-950/20 border border-rose-800/40 rounded-xl space-y-2">
-                    <div className="text-xs font-bold text-rose-300">
-                      {pitfallData.pitfallTitle}
-                    </div>
-                    <VSCodeBlock
-                      code={pitfallData.pitfallCode}
-                      language="html"
-                      filename="wrong-syntax.html"
-                      maxHeight="140px"
-                    />
-                    <p className="text-xs text-slate-400">
-                      {pitfallData.pitfallDesc}
+            {/* Tab: ⚡ 【重點提醒】JS Opt-in 初始化 */}
+            {activeTab === 'js-reminder' && (
+              <div className="bg-slate-950/90 border border-amber-500/50 rounded-xl p-4 sm:p-5 space-y-4 shadow-xl">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center justify-center text-xl shrink-0">
+                    ⚡
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-amber-300">
+                      {lesson.id === 'comp-tooltips'
+                        ? '【重點提醒】Tooltips 屬於 Opt-in 元件，必須撰寫 JavaScript 初始化才會生效！'
+                        : '【重點提醒】Popovers 屬於 Opt-in 元件，必須撰寫 JavaScript 初始化才會生效！'}
+                    </h4>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Bootstrap 5 效能核心機制 · 避開自建網站完全無效的經典痛點
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-3">
+                  <div className="text-xs sm:text-sm text-slate-200 leading-relaxed space-y-2">
+                    <p>
+                      在自建獨立網頁中，單純在 HTML 撰寫 <code className="text-amber-300 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-700 font-mono">data-bs-toggle="{lesson.id === 'comp-tooltips' ? 'tooltip' : 'popover'}"</code> 是<strong>完全沒有任何反應</strong>的！
+                    </p>
+                    <p className="text-slate-300">
+                      💡 <strong>為什麼官方這樣設計？</strong><br />
+                      因為 Tooltips 與 Popovers 監聽動態計算與位置座標會消耗大量 DOM 計算資源，為避免全站載入速度變慢，Bootstrap 5 採用 <strong>Opt-in（主動加入）</strong> 設計模式。在網頁開發與課堂教學中最簡潔直觀的方式就是搭配 <strong>jQuery</strong> 的 <code className="text-sky-300 font-mono">.each()</code> 來逐一初始化：
                     </p>
                   </div>
 
-                  {/* Master Card */}
-                  <div className="p-3.5 bg-emerald-950/20 border border-emerald-800/40 rounded-xl space-y-2">
-                    <div className="text-xs font-bold text-emerald-300">
-                      {pitfallData.masterTitle}
-                    </div>
-                    <VSCodeBlock
-                      code={pitfallData.masterCode}
-                      language="html"
-                      filename="master-solution.html"
-                      maxHeight="140px"
-                    />
-                    <p className="text-xs text-slate-300">
-                      {pitfallData.masterDesc}
-                    </p>
+                  <VSCodeBlock
+                    code={
+                      lesson.id === 'comp-tooltips'
+                        ? `<!-- 1. HTML 宣告觸發屬性 -->\n<button type="button" class="btn btn-secondary"\n        data-bs-toggle="tooltip"\n        data-bs-placement="top"\n        data-bs-title="提示文字內容">\n  滑鼠移過來看看\n</button>\n\n<!-- 2. 引入 Bootstrap 5 JS 與 jQuery CDN -->\n<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>\n<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>\n\n<!-- 3. jQuery 初始化寫法（推薦高中教學） -->\n<script>\n  // 初始化 Tooltip\n  $('[data-bs-toggle="tooltip"]').each(function () {\n    new bootstrap.Tooltip(this);\n  });\n</script>`
+                        : `<!-- 1. HTML 宣告觸發屬性 -->\n<button type="button" class="btn btn-danger"\n        data-bs-toggle="popover"\n        data-bs-title="彈窗標題"\n        data-bs-content="彈窗詳細內容說明...">\n  點我查看 (Popover)\n</button>\n\n<!-- 2. 引入 Bootstrap 5 JS 與 jQuery CDN -->\n<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>\n<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>\n\n<!-- 3. jQuery 初始化寫法（推薦高中教學） -->\n<script>\n  // 初始化 Popover\n  $('[data-bs-toggle="popover"]').each(function () {\n    new bootstrap.Popover(this);\n  });\n</script>`
+                    }
+                    language="html"
+                    filename={lesson.id === 'comp-tooltips' ? 'jquery-tooltip-init.html' : 'jquery-popover-init.html'}
+                    maxHeight="300px"
+                  />
+
+                  <div className="p-3 bg-emerald-950/40 border border-emerald-800/40 rounded-lg text-xs text-emerald-300 flex items-center gap-2">
+                    <span className="font-bold">✓ 學院貼心提示：</span>
+                    <span>本平台的線上沙盒已為同學預先配置了 jQuery 與自動初始化，因此在示範預覽與學生編輯器中可直接操作檢視動態效果！</span>
                   </div>
                 </div>
               </div>

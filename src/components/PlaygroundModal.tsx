@@ -15,7 +15,7 @@ const TEMPLATES = [
     title: '🎸 熱音社成果發表會',
     code: `<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
   <div class="container">
-    <a class="navbar-brand fw-bold text-warning" href="#">🎸 2026 大明高中熱音成發</a>
+    <a class="navbar-brand fw-bold text-warning" href="javascript:;">🎸 2026 大明高中熱音成發</a>
     <span class="badge text-bg-danger">5/20 盛大登場</span>
   </div>
 </nav>

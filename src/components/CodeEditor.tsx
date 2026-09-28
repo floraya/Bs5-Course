@@ -89,10 +89,10 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           </div>
 
           {/* Active File Tab */}
-          <div className="flex items-center gap-2 px-3 py-1 bg-[#1e1e1e] rounded-t text-slate-200 border-t-2 border-sky-500 font-mono text-xs font-semibold shadow-sm">
+          <div className="flex items-center gap-2 px-3 py-1 bg-[#1e1e1e] rounded-t text-slate-200 border-t-2 border-purple-500 font-mono text-xs font-semibold shadow-sm">
             <span className="text-orange-400 font-bold">&lt;&gt;</span>
             <span className="text-slate-100">index.html</span>
-            <span className="text-[10px] text-sky-400 bg-sky-950/70 border border-sky-500/30 px-1 rounded ml-1 font-sans">
+            <span className="text-[10px] text-purple-300 bg-purple-950/70 border border-purple-500/30 px-1 rounded ml-1 font-sans">
               VS Code Dark+
             </span>
           </div>
@@ -160,7 +160,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           <span className="text-slate-600">&gt;</span>
           <span className="text-slate-400">src</span>
           <span className="text-slate-600">&gt;</span>
-          <span className="text-sky-400">index.html</span>
+          <span className="text-purple-300">index.html</span>
           <span className="text-slate-600">&gt;</span>
           <span className="text-purple-400">&lt;div.container&gt;</span>
         </div>
@@ -264,7 +264,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       </div>
 
       {/* VS Code Bottom Status Bar */}
-      <div className="flex items-center justify-between px-3 py-1 bg-[#007acc] text-white text-[11px] font-mono select-none">
+      <div className="flex items-center justify-between px-3 py-1 bg-[#712cf9] text-white text-[11px] font-mono select-none shadow-inner">
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1 font-bold">
             <Terminal className="w-3 h-3" /> 大明高中終端機
@@ -274,7 +274,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         <div className="flex items-center gap-3">
           <span>HTML</span>
           <span>Bootstrap 5.3</span>
-          <span className="bg-sky-700/80 px-1.5 py-0.5 rounded text-[10px]">即時預覽同步</span>
+          <span className="bg-purple-900/80 px-1.5 py-0.5 rounded text-[10px] border border-purple-400/30">即時預覽同步</span>
         </div>
       </div>
     </div>

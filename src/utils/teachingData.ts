@@ -43,6 +43,12 @@ export function getLessonMnemonic(lesson: Lesson): string {
   if (id === 'layout-css-grid') {
     return '開啟 grid 加 gap 間距，g-col-4 原生跨欄帥氣定，現代排版雙軸自由行！';
   }
+  if (id === 'comp-tooltips') {
+    return '【必考觀念】Tooltip 提示只寫 HTML 不會動！切記頁尾必加 jQuery 初始化：$("[data-bs-toggle=\'tooltip\']").each(function () { new bootstrap.Tooltip(this); });！';
+  }
+  if (id === 'comp-popovers') {
+    return '【必考觀念】Popover 氣泡只寫 HTML 不會動！切記頁尾必加 jQuery 初始化：$("[data-bs-toggle=\'popover\']").each(function () { new bootstrap.Popover(this); });！';
+  }
   if (id.startsWith('content-')) {
     return 'display-1 霸氣大標題，lead 引言讓讀者一目了然，table-striped 條紋表格條理分明！';
   }
@@ -200,7 +206,23 @@ export function getLessonPitfallVsMaster(lesson: Lesson): {
   masterCode: string;
   masterDesc: string;
 } {
+  const id = lesson.id;
   const cat = lesson.categoryId;
+
+  if (id === 'comp-tooltips' || id === 'comp-popovers') {
+    const isTooltip = id === 'comp-tooltips';
+    const compName = isTooltip ? 'Tooltip' : 'Popover';
+    const toggleAttr = isTooltip ? 'tooltip' : 'popover';
+    const constructorName = isTooltip ? 'Tooltip' : 'Popover';
+    return {
+      pitfallTitle: `❌ 新手翻車：以為只寫 data-bs-toggle="${toggleAttr}" 就會動，漏寫 JS`,
+      pitfallCode: `<!-- ⚠️ 只有 HTML，在外部真實網頁中完全不會彈出！ -->\n<button type="button" class="btn btn-primary"\n        data-bs-toggle="${toggleAttr}"\n        data-bs-title="這是提示內容">\n  滑鼠移過來 / 點我\n</button>`,
+      pitfallDesc: `【核心致命傷】Bootstrap 5 官方基於載入效能考量，${compName} 採 Opt-in 機制。沒有在 <script> 寫 JavaScript 初始化，瀏覽器根本不會去監聽它！`,
+      masterTitle: `✅ 大師寫法：HTML 宣告屬性 + 頁尾 JS 初始化（兩者缺一不可）`,
+      masterCode: `<!-- 1. HTML 元件結構 -->\n<button type="button" class="btn btn-primary"\n        data-bs-toggle="${toggleAttr}"\n        data-bs-title="這是提示內容">\n  滑鼠移過來 / 點我\n</button>\n\n<!-- 2. </body> 前必須手動初始化！ -->\n<script>\n  const ${toggleAttr}TriggerList = document.querySelectorAll('[data-bs-toggle="${toggleAttr}"]');\n  const ${toggleAttr}List = [...${toggleAttr}TriggerList].map(el => new bootstrap.${constructorName}(el));\n</script>`,
+      masterDesc: `先透過 document.querySelectorAll 找到所有帶有 data-bs-toggle 的元素，再以 new bootstrap.${constructorName}(el) 完成啟用！`,
+    };
+  }
   if (cat === 'layout') {
     return {
       pitfallTitle: '❌ 新手翻車：直接在 row 裡面丟雜物沒包 col',

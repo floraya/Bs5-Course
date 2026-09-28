@@ -47,9 +47,9 @@ export const VSCodeBlock: React.FC<VSCodeBlockProps> = ({
           </div>
 
           {/* Active File Tab */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#1e1e1e] rounded-t text-slate-200 border-t border-sky-500 font-mono text-[11px] font-semibold">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-[#1e1e1e] rounded-t text-slate-200 border-t border-purple-500 font-mono text-[11px] font-semibold">
             {language === 'css' ? (
-              <span className="text-sky-400 font-bold">#</span>
+              <span className="text-purple-400 font-bold">#</span>
             ) : (
               <span className="text-orange-400 font-bold">&lt;&gt;</span>
             )}

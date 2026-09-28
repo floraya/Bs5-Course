@@ -24,7 +24,7 @@ import { soundManager } from '../utils/sound';
 const renderCategoryIcon = (id: string) => {
   switch (id) {
     case 'content':
-      return <FileText className="w-4 h-4 text-sky-400" />;
+      return <FileText className="w-4 h-4 text-purple-400" />;
     case 'utilities':
       return <Sliders className="w-4 h-4 text-pink-400" />;
     case 'layout':

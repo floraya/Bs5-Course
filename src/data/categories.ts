@@ -9,7 +9,7 @@ export const CATEGORIES: CategoryInfo[] = [
     name: '內容排版',
     enName: 'Content',
     icon: 'FileText',
-    color: '#0d6efd',
+    color: '#8b5cf6',
     stage: '第 1 階段・入門基礎',
     difficulty: '初階',
     description: '從最基礎的文字、圖片與表格開始！學會 Reboot 樣式重設、Typography 標題美學、自適應防破版圖片與斑馬紋課表。',

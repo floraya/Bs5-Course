@@ -137,9 +137,9 @@ export const LESSONS_HELPERS: Lesson[] = [
     ],
     teacherHtml: `<div class="container py-3">
   <p>請造訪我們的校慶專題報導：</p>
-  <p><a href="#" class="link-primary">🔗 閱讀校慶園遊會特別專欄 (link-primary)</a></p>
-  <p><a href="#" class="link-success">🔗 下載園遊會優惠券 (link-success)</a></p>
-  <p><a href="#" class="link-danger">⚠️ 遺失物招領登記處 (link-danger)</a></p>
+  <p><a href="javascript:;" class="link-primary">🔗 閱讀校慶園遊會特別專欄 (link-primary)</a></p>
+  <p><a href="javascript:;" class="link-success">🔗 下載園遊會優惠券 (link-success)</a></p>
+  <p><a href="javascript:;" class="link-danger">⚠️ 遺失物招領登記處 (link-danger)</a></p>
 </div>`,
     studentTask: {
       title: '挑戰：將社團邀請連結升級為彩色連結與加粗強調',
@@ -149,10 +149,10 @@ export const LESSONS_HELPERS: Lesson[] = [
         '步驟 2：字體設定為加粗粗細 (fw-bold)，並移除預設的下底線文字裝飾 (text-decoration-none)。',
       ],
       starterHtml: `<div class="container py-3">
-  <p>相關資訊：<a href="#">點此加入熱音社官方 Discord 交流群</a></p>
+  <p>相關資訊：<a href="javascript:;">點此加入熱音社官方 Discord 交流群</a></p>
 </div>`,
       solutionHtml: `<div class="container py-3">
-  <p>相關資訊：<a href="#" class="link-primary fw-bold text-decoration-none">點此加入熱音社官方 Discord 交流群</a></p>
+  <p>相關資訊：<a href="javascript:;" class="link-primary fw-bold text-decoration-none">點此加入熱音社官方 Discord 交流群</a></p>
 </div>`,
       hints: ['為 <a> 標籤加上 class="link-primary fw-bold text-decoration-none"！'],
       rules: [
@@ -187,7 +187,7 @@ export const LESSONS_HELPERS: Lesson[] = [
     ],
     teacherHtml: `<div class="container py-3 text-center">
   <p class="text-muted small">點選按鈕或按 Tab 鍵觀察焦點外圈：</p>
-  <a href="#" class="d-inline-block p-2 text-decoration-none rounded focus-ring focus-ring-primary border">
+  <a href="javascript:;" class="d-inline-block p-2 text-decoration-none rounded focus-ring focus-ring-primary border">
     🎯 具備無障礙 focus-ring 的快捷入口
   </a>
 </div>`,
@@ -246,7 +246,7 @@ export const LESSONS_HELPERS: Lesson[] = [
   <div class="card p-3 shadow-sm" style="max-width: 380px;">
     <h5>學術競賽榮譽榜</h5>
     <p class="text-muted small mb-2">了解更多高一二學生代表出賽獲獎名單...</p>
-    <a class="icon-link icon-link-hover text-decoration-none fw-bold" href="#">
+    <a class="icon-link icon-link-hover text-decoration-none fw-bold" href="javascript:;">
       查看完整得獎名冊 →
     </a>
   </div>
@@ -259,10 +259,10 @@ export const LESSONS_HELPERS: Lesson[] = [
         '步驟 2：移除預設超連結下底線裝飾 (text-decoration-none)，並套用粗體字重 (fw-bold) 提升辨識度。',
       ],
       starterHtml: `<div class="container py-3">
-  <a href="#">探索更多學生社團 →</a>
+  <a href="javascript:;">探索更多學生社團 →</a>
 </div>`,
       solutionHtml: `<div class="container py-3">
-  <a class="icon-link icon-link-hover text-decoration-none fw-bold text-primary" href="#">
+  <a class="icon-link icon-link-hover text-decoration-none fw-bold text-primary" href="javascript:;">
     探索更多學生社團 →
   </a>
 </div>`,
@@ -471,7 +471,7 @@ export const LESSONS_HELPERS: Lesson[] = [
   <div class="card shadow-sm p-3">
     <h5 class="fw-bold">🎸 吉他社成發特刊</h5>
     <p class="text-muted small">點擊卡片任何地方（即便點在文字或空白處），都能跳轉！</p>
-    <a href="#" class="stretched-link text-primary fw-bold text-decoration-none">
+    <a href="javascript:;" class="stretched-link text-primary fw-bold text-decoration-none">
       立即線上購票 →
     </a>
   </div>
@@ -488,14 +488,14 @@ export const LESSONS_HELPERS: Lesson[] = [
   <div class="card p-3">
     <h5>社長個人檔案</h5>
     <p>深入了解社長的吉他心路歷程。</p>
-    <a href="#">點此查看</a>
+    <a href="javascript:;">點此查看</a>
   </div>
 </div>`,
       solutionHtml: `<div class="container py-3" style="max-width: 300px;">
   <div class="card p-3 shadow-sm">
     <h5>社長個人檔案</h5>
     <p class="text-muted small">深入了解社長的吉他心路歷程。</p>
-    <a href="#" class="stretched-link fw-bold text-decoration-none text-primary">點此查看 →</a>
+    <a href="javascript:;" class="stretched-link fw-bold text-decoration-none text-primary">點此查看 →</a>
   </div>
 </div>`,
       hints: ['為 <a> 標籤加上 class="stretched-link fw-bold text-decoration-none"！'],

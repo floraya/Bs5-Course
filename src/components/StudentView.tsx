@@ -357,6 +357,21 @@ export const StudentView: React.FC<StudentViewProps> = ({
                 ))}
               </ul>
             </div>
+
+            {/* JS Requirement Callout for Tooltips & Popovers */}
+            {(lesson.id === 'comp-tooltips' || lesson.id === 'comp-popovers') && (
+              <div className="bg-amber-950/40 border border-amber-500/40 rounded-xl p-3 flex items-start gap-2.5 text-xs text-amber-200 mt-2">
+                <span className="text-base shrink-0">💡</span>
+                <div className="space-y-1">
+                  <span className="font-bold text-amber-300 block">
+                    【實務開發必知】{lesson.id === 'comp-tooltips' ? 'Tooltips' : 'Popovers'} 屬於 Opt-in 機制，必須寫 jQuery / JS 初始化！
+                  </span>
+                  <p className="text-slate-300 text-[11px] leading-relaxed">
+                    本學習沙盒已自動為您注入 jQuery 與初始化腳本，但在自建獨立網頁時，只寫 HTML 是不會觸發的，切記在 <code className="bg-slate-900 px-1 py-0.5 rounded text-amber-300 font-mono">&lt;/body&gt;</code> 前加入 jQuery 初始化寫法：<code className="bg-slate-900 px-1 py-0.5 rounded text-amber-300 font-mono">$('[data-bs-toggle="{lesson.id === 'comp-tooltips' ? 'tooltip' : 'popover'}"]').each(function () &#123; new bootstrap.{lesson.id === 'comp-tooltips' ? 'Tooltip' : 'Popover'}(this); &#125;);</code> 才會生效喔！
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -39,7 +39,7 @@ export const SplitView: React.FC<SplitViewProps> = ({
         {/* Left: Teacher Demo Reference */}
         <div className="space-y-4">
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-            <h4 className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">
+            <h4 className="text-xs font-bold text-purple-400 uppercase tracking-wider mb-2">
               👩‍🏫 老師教學範例與註解
             </h4>
             <p className="text-xs text-slate-300 mb-3">{lesson.teacherDialogue}</p>
@@ -56,7 +56,7 @@ export const SplitView: React.FC<SplitViewProps> = ({
             html={lesson.teacherHtml}
             title="老師標準示範"
             badgeLabel="👩‍🏫 老師成果"
-            badgeColor="#0095ff"
+            badgeColor="#8e4eff"
           />
         </div>
 

@@ -279,9 +279,9 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     teacherHtml: `<div class="container py-3">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-light p-2 rounded">
-      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">🏫 大明高中首頁</a></li>
-      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">學務處</a></li>
-      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">課外活動組</a></li>
+      <li class="breadcrumb-item"><a href="javascript:;" class="text-decoration-none">🏫 大明高中首頁</a></li>
+      <li class="breadcrumb-item"><a href="javascript:;" class="text-decoration-none">學務處</a></li>
+      <li class="breadcrumb-item"><a href="javascript:;" class="text-decoration-none">課外活動組</a></li>
       <li class="breadcrumb-item active" aria-current="page">社團評鑑名單</li>
     </ol>
   </nav>
@@ -299,8 +299,8 @@ export const LESSONS_COMPONENTS: Lesson[] = [
   <!-- 請將下方重構為高規格無障礙麵包屑導航 -->
   <nav>
     <ol>
-      <li><a href="#">大明高中首頁</a></li>
-      <li><a href="#">學生社團專區</a></li>
+      <li><a href="javascript:;">大明高中首頁</a></li>
+      <li><a href="javascript:;">學生社團專區</a></li>
       <li>程式研習社</li>
     </ol>
   </nav>
@@ -308,8 +308,8 @@ export const LESSONS_COMPONENTS: Lesson[] = [
       solutionHtml: `<div class="container py-3">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
-      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">大明高中首頁</a></li>
-      <li class="breadcrumb-item"><a href="#" class="text-decoration-none">學生社團專區</a></li>
+      <li class="breadcrumb-item"><a href="javascript:;" class="text-decoration-none">大明高中首頁</a></li>
+      <li class="breadcrumb-item"><a href="javascript:;" class="text-decoration-none">學生社團專區</a></li>
       <li class="breadcrumb-item active" aria-current="page">程式研習社</li>
     </ol>
   </nav>
@@ -501,7 +501,7 @@ export const LESSONS_COMPONENTS: Lesson[] = [
       <p class="card-text text-muted small">
         從零基礎彈奏流行和弦，到創作屬於自己的第一首自創曲！
       </p>
-      <a href="#" class="btn btn-primary w-100">查看課程大綱</a>
+      <a href="javascript:;" class="btn btn-primary w-100">查看課程大綱</a>
     </div>
   </div>
 </div>`,
@@ -791,10 +791,10 @@ export const LESSONS_COMPONENTS: Lesson[] = [
       👤 學生個人中心
     </button>
     <ul class="dropdown-menu shadow">
-      <li><a class="dropdown-item" href="#">📋 查看選課紀錄</a></li>
-      <li><a class="dropdown-item" href="#">🏆 社團經歷認證</a></li>
+      <li><a class="dropdown-item" href="javascript:;">📋 查看選課紀錄</a></li>
+      <li><a class="dropdown-item" href="javascript:;">🏆 社團經歷認證</a></li>
       <li><hr class="dropdown-divider"></li>
-      <li><a class="dropdown-item text-danger" href="#">🚪 登出校園 Portal</a></li>
+      <li><a class="dropdown-item text-danger" href="javascript:;">🚪 登出校園 Portal</a></li>
     </ul>
   </div>
 </div>`,
@@ -816,9 +816,9 @@ export const LESSONS_COMPONENTS: Lesson[] = [
       📥 匯出社團成果報表
     </button>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">匯出為 PDF 檔案</a></li>
-      <li><a class="dropdown-item" href="#">匯出為 Word 文件</a></li>
-      <li><a class="dropdown-item" href="#">匯出為 Excel 試算表</a></li>
+      <li><a class="dropdown-item" href="javascript:;">匯出為 PDF 檔案</a></li>
+      <li><a class="dropdown-item" href="javascript:;">匯出為 Word 文件</a></li>
+      <li><a class="dropdown-item" href="javascript:;">匯出為 Excel 試算表</a></li>
     </ul>
   </div>
 </div>`,
@@ -1015,15 +1015,15 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     ],
     teacherHtml: `<div class="container-fluid p-0">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 rounded shadow">
-    <a class="navbar-brand fw-bold text-info" href="#">🏫 大明高中</a>
+    <a class="navbar-brand fw-bold text-info" href="javascript:;">🏫 大明高中</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#schoolNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="schoolNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link active" href="#">首頁公告</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">社團博覽會</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">校園行事曆</a></li>
+        <li class="nav-item"><a class="nav-link active" href="javascript:;">首頁公告</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:;">社團博覽會</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:;">校園行事曆</a></li>
       </ul>
       <button class="btn btn-outline-info btn-sm">學生登入</button>
     </div>
@@ -1041,22 +1041,22 @@ export const LESSONS_COMPONENTS: Lesson[] = [
       starterHtml: `<div class="container py-2">
   <!-- 請將下方結構包裝為 Navbar -->
   <nav>
-    <a href="#">💻 資研社</a>
+    <a href="javascript:;">💻 資研社</a>
     <div>
       <ul>
-        <li><a href="#">活動營隊</a></li>
-        <li><a href="#">競賽培訓</a></li>
+        <li><a href="javascript:;">活動營隊</a></li>
+        <li><a href="javascript:;">競賽培訓</a></li>
       </ul>
     </div>
   </nav>
 </div>`,
       solutionHtml: `<div class="container-fluid p-0">
   <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 rounded">
-    <a class="navbar-brand fw-bold text-primary" href="#">💻 資研社</a>
+    <a class="navbar-brand fw-bold text-primary" href="javascript:;">💻 資研社</a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item"><a class="nav-link active" href="#">活動營隊</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">競賽培訓</a></li>
+        <li class="nav-item"><a class="nav-link active" href="javascript:;">活動營隊</a></li>
+        <li class="nav-item"><a class="nav-link" href="javascript:;">競賽培訓</a></li>
       </ul>
     </div>
   </nav>
@@ -1178,9 +1178,9 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     </div>
     <div class="offcanvas-body text-start">
       <ul class="list-unstyled">
-        <li class="py-2 border-bottom"><a href="#" class="text-decoration-none text-dark">🍽️ 本週營養午餐菜單</a></li>
-        <li class="py-2 border-bottom"><a href="#" class="text-decoration-none text-dark">🚌 專車通勤發車時刻表</a></li>
-        <li class="py-2 border-bottom"><a href="#" class="text-decoration-none text-dark">📚 圖書館館藏查詢</a></li>
+        <li class="py-2 border-bottom"><a href="javascript:;" class="text-decoration-none text-dark">🍽️ 本週營養午餐菜單</a></li>
+        <li class="py-2 border-bottom"><a href="javascript:;" class="text-decoration-none text-dark">🚌 專車通勤發車時刻表</a></li>
+        <li class="py-2 border-bottom"><a href="javascript:;" class="text-decoration-none text-dark">📚 圖書館館藏查詢</a></li>
       </ul>
     </div>
   </div>
@@ -1243,11 +1243,11 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     teacherHtml: `<div class="container py-3 d-flex justify-content-center">
   <nav aria-label="Page navigation">
     <ul class="pagination shadow-sm">
-      <li class="page-item disabled"><a class="page-link" href="#">上一頁</a></li>
-      <li class="page-item active"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">下一頁</a></li>
+      <li class="page-item disabled"><a class="page-link" href="javascript:;">上一頁</a></li>
+      <li class="page-item active"><a class="page-link" href="javascript:;">1</a></li>
+      <li class="page-item"><a class="page-link" href="javascript:;">2</a></li>
+      <li class="page-item"><a class="page-link" href="javascript:;">3</a></li>
+      <li class="page-item"><a class="page-link" href="javascript:;">下一頁</a></li>
     </ul>
   </nav>
 </div>`,
@@ -1264,12 +1264,12 @@ export const LESSONS_COMPONENTS: Lesson[] = [
 </div>`,
       solutionHtml: `<div class="container py-3 d-flex justify-content-center">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="javascript:;">1</a></li>
+    <li class="page-item active"><a class="page-link" href="javascript:;">2</a></li>
+    <li class="page-item"><a class="page-link" href="javascript:;">3</a></li>
   </ul>
 </div>`,
-      hints: ['建立 <ul class="pagination">，裡面放 <li class="page-item active"><a class="page-link" href="#">2</a></li>！'],
+      hints: ['建立 <ul class="pagination">，裡面放 <li class="page-item active"><a class="page-link" href="javascript:;">2</a></li>！'],
       rules: [
         {
           description: '必須包含 pagination 類別',
@@ -1358,13 +1358,26 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     title: 'Popovers 彈出資訊泡泡',
     officialName: 'Popovers',
     level: '高階',
-    summary: '類似 iOS 的彈出小氣泡！點選按鈕時跳出帶有標題與詳細說明的資訊框。',
-    teacherDialogue: '遇到像「學測級分換算公式」這種專有名詞時，如果寫在本文會太長。用 Popovers 彈窗泡泡，學生點一下「詳細說明」，旁邊就會冒出一個小氣泡解說，再點一下就關閉！',
+    summary: '類似 iOS 的彈出小氣泡！點選按鈕時跳出帶有標題與詳細說明的資訊框。（⚠️ 實務必備觀念：Popovers 必須撰寫 jQuery/JS 初始化才會生效！）',
+    teacherDialogue: `遇到像「學測級分換算公式」這種專有名詞時，如果寫在本文會太長。用 Popovers 彈窗泡泡，學生點一下「詳細說明」，旁邊就會冒出一個小氣泡解說，再點一下就關閉！
+
+⚡【超重要提醒：為什麼 Popovers 必須寫 JS/jQuery？】
+很多高中同學在自建網站時，常遇到「我明明按照說明寫了 data-bs-toggle="popover"，為什麼點擊完全沒反應？」
+這是因為 Bootstrap 5 官方基於網頁效能（避免載入時搜尋全網頁大量元素），Popovers 採用「Opt-in（主動加入）」機制！
+在真實自建網頁中，你必須在 </body> 結束標籤前加上這段 jQuery 初始化程式碼：
+
+// 初始化 Popover
+$('[data-bs-toggle="popover"]').each(function () {
+  new bootstrap.Popover(this);
+});
+
+（註：本學院的即時預覽沙盒已為大家貼心配置了自動初始化，但在自己做獨立網頁或專題時，絕對不能忘記寫這段初始化程式碼喔！）`,
     keyClasses: [
-      { name: 'data-bs-toggle="popover"', desc: '啟用 Popover 觸發' },
-      { name: 'data-bs-title="標題"', desc: '泡泡頂部標題' },
-      { name: 'data-bs-content="內容"', desc: '泡泡詳細內文' },
-      { name: 'data-bs-placement="top/right"', desc: '彈出方向控制' },
+      { name: 'data-bs-toggle="popover"', desc: 'HTML 屬性：宣告啟用 Popover 觸發' },
+      { name: 'data-bs-title="標題"', desc: 'HTML 屬性：泡泡頂部標題' },
+      { name: 'data-bs-content="內容"', desc: 'HTML 屬性：泡泡詳細內文' },
+      { name: 'data-bs-placement="top/right"', desc: 'HTML 屬性：彈出方向控制' },
+      { name: 'jQuery 初始化代碼', desc: '$(\'[data-bs-toggle="popover"]\').each(function () { new bootstrap.Popover(this); });' },
     ],
     teacherHtml: `<div class="container py-3 text-center">
   <button type="button" class="btn btn-danger" 
@@ -1376,11 +1389,12 @@ export const LESSONS_COMPONENTS: Lesson[] = [
 </div>`,
     studentTask: {
       title: '挑戰：為課綱核心素養名詞加入 Popover 提示',
-      scenario: '請在按鈕加入 `data-bs-toggle="popover"` 與 `data-bs-title`、`data-bs-content`！',
+      scenario: '請在按鈕加入 `data-bs-toggle="popover"` 與 `data-bs-title`、`data-bs-content`！（💡 注意：在外部獨立網頁中，Popover 必須搭配 jQuery/JS 初始化才會啟動喔！）',
       instructions: [
         '步驟 1：在說明按鈕設定氣泡彈出屬性 (data-bs-toggle="popover")。',
         '步驟 2：透過資料屬性指定氣泡頂部標題 (data-bs-title="高中自主學習")。',
         '步驟 3：透過資料屬性指定氣泡內文詳解 (data-bs-content="每週 2 節自主時間，同學可自行探索程式設計、外語或專題研究！")。',
+        '步驟 4（核心觀念）：牢記 Popovers 在真實獨立網頁中必須透過 $(\'[data-bs-toggle="popover"]\').each(function () { new bootstrap.Popover(this); }) 初始化才能正常彈出。',
       ],
       starterHtml: `<div class="container py-3 text-center">
   <!-- 請在 button 加上 popover 相關屬性 -->
@@ -1396,7 +1410,10 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     自主學習計畫說明
   </button>
 </div>`,
-      hints: ['為按鈕加上 data-bs-toggle="popover" data-bs-title="..." data-bs-content="..."！'],
+      hints: [
+        '為按鈕加上 data-bs-toggle="popover" data-bs-title="..." data-bs-content="..."！',
+        '【實務必備】在自建獨立網頁中，頁尾務必加入 jQuery 初始化：$("[data-bs-toggle=\'popover\']").each(function () { new bootstrap.Popover(this); });',
+      ],
       rules: [
         {
           description: '必須包含 data-bs-toggle="popover"',
@@ -1484,7 +1501,7 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     ],
     teacherHtml: `<div class="container py-3" style="max-width: 500px;">
   <nav id="scrollNavbar" class="navbar navbar-light bg-light px-3 mb-2 rounded">
-    <a class="navbar-brand small fw-bold" href="#">章節目錄</a>
+    <a class="navbar-brand small fw-bold" href="javascript:;">章節目錄</a>
     <ul class="nav nav-pills">
       <li class="nav-item"><a class="nav-link" href="#sec1">第一章</a></li>
       <li class="nav-item"><a class="nav-link" href="#sec2">第二章</a></li>
@@ -1656,12 +1673,25 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     title: 'Tooltips 滑鼠懸停提示',
     officialName: 'Tooltips',
     level: '中階',
-    summary: '滑鼠懸停在圖示或文字上方時，浮現出黑色小標籤提示詳細含義。',
-    teacherDialogue: '網頁上有時候會放很多小圖示（例如一個愛心、一個垃圾桶），有些新同學可能不知道垃圾桶按鈕代表什麼意思。加上 data-bs-toggle="tooltip" 與 data-bs-title="刪除本項目"，滑鼠移過去就會跳出可愛的黑色小標籤！',
+    summary: '滑鼠懸停在圖示或文字上方時，浮現出黑色小標籤提示詳細含義。（⚠️ 實務必備觀念：Tooltips 必須撰寫 jQuery/JS 初始化才會生效！）',
+    teacherDialogue: `網頁上有時候會放很多小圖示（例如一個愛心、一個垃圾桶），有些新同學可能不知道垃圾桶按鈕代表什麼意思。加上 data-bs-toggle="tooltip" 與 data-bs-title="刪除本項目"，滑鼠移過去就會跳出可愛的黑色小標籤！
+
+⚡【超重要提醒：為什麼 Tooltips 必須寫 JS/jQuery？】
+初學 Bootstrap 5 時最容易踩的雷就是：「在 HTML 加上了 data-bs-toggle="tooltip"，為什麼游標移上去卻完全沒反應？」
+這是因為 Tooltips 跟 Popovers 一樣，Bootstrap 5 基於瀏覽器效能考量，預設是「Opt-in（主動加入）」機制，不會在網頁載入時自動消耗效能去掃描全站！
+因此在自建的獨立網頁專案中，務必在 </body> 前加入以下 jQuery 初始化腳本：
+
+// 初始化 Tooltip
+$('[data-bs-toggle="tooltip"]').each(function () {
+  new bootstrap.Tooltip(this);
+});
+
+（註：本學院的即時預覽沙盒已為大家貼心配置了自動初始化，但在自己做獨立網頁或專題時，絕對不能忘記寫這段初始化程式碼喔！）`,
     keyClasses: [
-      { name: 'data-bs-toggle="tooltip"', desc: '宣告使用 Tooltip' },
-      { name: 'data-bs-title="提示文字"', desc: '懸停顯示的提示文字' },
-      { name: 'data-bs-placement="top/bottom"', desc: '提示浮現方向' },
+      { name: 'data-bs-toggle="tooltip"', desc: 'HTML 屬性：宣告使用 Tooltip 工具提示' },
+      { name: 'data-bs-title="提示文字"', desc: 'HTML 屬性：懸停顯示的提示文字' },
+      { name: 'data-bs-placement="top/bottom"', desc: 'HTML 屬性：提示浮現方向 (top/bottom/left/right)' },
+      { name: 'jQuery 初始化代碼', desc: '$(\'[data-bs-toggle="tooltip"]\').each(function () { new bootstrap.Tooltip(this); });' },
     ],
     teacherHtml: `<div class="container py-3 text-center">
   <button type="button" class="btn btn-secondary" 
@@ -1672,10 +1702,11 @@ export const LESSONS_COMPONENTS: Lesson[] = [
 </div>`,
     studentTask: {
       title: '挑戰：為社團官網的讚賞愛心按鈕加上 Tooltip',
-      scenario: '請在按鈕加上 `data-bs-toggle="tooltip"` 與 `data-bs-title="為熱音社點贊！"`！',
+      scenario: '請在按鈕加上 `data-bs-toggle="tooltip"` 與 `data-bs-title="為熱音社點贊！"`！（💡 注意：在外部獨立網頁中，Tooltip 必須搭配 jQuery/JS 初始化才會啟動喔！）',
       instructions: [
         '步驟 1：在愛心讚賞按鈕宣告工具提示觸發屬性 (data-bs-toggle="tooltip")。',
         '步驟 2：透過資料屬性設定滑鼠懸停時顯示的提示文字 (data-bs-title="為熱音社點贊！")。',
+        '步驟 3（核心觀念）：牢記 Tooltips 在真實獨立網頁中必須透過 $(\'[data-bs-toggle="tooltip"]\').each(function () { new bootstrap.Tooltip(this); }) 初始化才能正常浮現。',
       ],
       starterHtml: `<div class="container py-3 text-center">
   <button class="btn btn-outline-danger">
@@ -1689,7 +1720,10 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     ❤️ 愛心
   </button>
 </div>`,
-      hints: ['為按鈕加上 data-bs-toggle="tooltip" data-bs-title="為熱音社點贊！"！'],
+      hints: [
+        '為按鈕加上 data-bs-toggle="tooltip" data-bs-title="為熱音社點贊！"！',
+        '【實務必備】在自建獨立網頁中，頁尾務必加入 jQuery 初始化：$("[data-bs-toggle=\'tooltip\']").each(function () { new bootstrap.Tooltip(this); });',
+      ],
       rules: [
         {
           description: '必須包含 data-bs-toggle="tooltip"',

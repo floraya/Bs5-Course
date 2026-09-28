@@ -79,15 +79,18 @@ export const SandboxPreview: React.FC<SandboxPreviewProps> = ({
 </head>
 <body>
   ${html}
-  <!-- Bootstrap 5.3.3 JS Bundle -->
+  <!-- Bootstrap 5.3.3 JS Bundle & jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Auto initialize tooltips and popovers
+    // jQuery Auto initialize tooltips and popovers
     try {
-      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-      [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el));
-      const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-      [...popoverTriggerList].map(el => new bootstrap.Popover(el));
+      $('[data-bs-toggle="tooltip"]').each(function () {
+        new bootstrap.Tooltip(this);
+      });
+      $('[data-bs-toggle="popover"]').each(function () {
+        new bootstrap.Popover(this);
+      });
     } catch(e) {}
   </script>
 </body>

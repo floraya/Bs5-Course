@@ -23,7 +23,7 @@ export const ModeToggle: React.FC<ModeToggleProps> = ({ mode, onChange }) => {
           onClick={() => handleSelect('teacher')}
           className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-200 ${
             mode === 'teacher'
-              ? 'bg-[#0095ff] text-white shadow-md shadow-blue-500/20'
+              ? 'bg-[#8e4eff] text-white shadow-md shadow-purple-600/30'
               : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
           }`}
         >

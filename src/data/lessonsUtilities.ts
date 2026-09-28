@@ -272,13 +272,13 @@ export const LESSONS_UTILITIES: Lesson[] = [
   <!-- 請在下方加上 d-flex 類別 -->
   <div class="bg-light p-3">
     <span>🏆 期中考滿分名單</span>
-    <a href="#">查看更多</a>
+    <a href="javascript:;">查看更多</a>
   </div>
 </div>`,
       solutionHtml: `<div class="container py-3">
   <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded">
     <span class="fw-bold">🏆 期中考滿分名單</span>
-    <a href="#" class="btn btn-outline-primary btn-sm">查看更多</a>
+    <a href="javascript:;" class="btn btn-outline-primary btn-sm">查看更多</a>
   </div>
 </div>`,
       hints: ['為 div 加上 class="d-flex justify-content-between align-items-center bg-light p-3"！'],
@@ -409,7 +409,7 @@ export const LESSONS_UTILITIES: Lesson[] = [
       { name: 'link-underline-opacity-100-hover', desc: '滑鼠懸停時底線恢復 100% 亮起' },
     ],
     teacherHtml: `<div class="container py-3 text-center">
-  <a href="#" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover fw-bold fs-5">
+  <a href="javascript:;" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover fw-bold fs-5">
     ✨ 具有呼吸感底線的現代超連結（移過來試試）
   </a>
 </div>`,
@@ -421,10 +421,10 @@ export const LESSONS_UTILITIES: Lesson[] = [
         '步驟 2：設定底線透明度為 25% 半透明 (link-underline-opacity-25)，避免死板厚重底線干擾文字視線。',
       ],
       starterHtml: `<div class="container py-3 text-center">
-  <a href="#">點此查看校慶時程表</a>
+  <a href="javascript:;">點此查看校慶時程表</a>
 </div>`,
       solutionHtml: `<div class="container py-3 text-center">
-  <a href="#" class="link-primary link-offset-2 link-underline-opacity-25">
+  <a href="javascript:;" class="link-primary link-offset-2 link-underline-opacity-25">
     點此查看校慶時程表
   </a>
 </div>`,
