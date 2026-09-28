@@ -1377,7 +1377,7 @@ $('[data-bs-toggle="popover"]').each(function () {
       { name: 'data-bs-title="標題"', desc: 'HTML 屬性：泡泡頂部標題' },
       { name: 'data-bs-content="內容"', desc: 'HTML 屬性：泡泡詳細內文' },
       { name: 'data-bs-placement="top/right"', desc: 'HTML 屬性：彈出方向控制' },
-      { name: 'jQuery 初始化代碼', desc: '$(\'[data-bs-toggle="popover"]\').each(function () { new bootstrap.Popover(this); });' },
+      { name: 'jQuery 初始化程式碼', desc: '$(\'[data-bs-toggle="popover"]\').each(function () { new bootstrap.Popover(this); });' },
     ],
     teacherHtml: `<div class="container py-3 text-center">
   <button type="button" class="btn btn-danger" 
@@ -1386,7 +1386,14 @@ $('[data-bs-toggle="popover"]').each(function () {
           data-bs-content="由清華大學主辦的高中數理化生能力測驗，是大學申請入學時極具公信力的加分證明！">
     點我查看檢定簡介 (Popover)
   </button>
-</div>`,
+</div>
+
+<!-- jQuery 初始化程式碼 -->
+<script>
+  $('[data-bs-toggle="popover"]').each(function () {
+    new bootstrap.Popover(this);
+  });
+</script>`,
     studentTask: {
       title: '挑戰：為課綱核心素養名詞加入 Popover 提示',
       scenario: '請在按鈕加入 `data-bs-toggle="popover"` 與 `data-bs-title`、`data-bs-content`！（💡 注意：在外部獨立網頁中，Popover 必須搭配 jQuery/JS 初始化才會啟動喔！）',
@@ -1401,7 +1408,14 @@ $('[data-bs-toggle="popover"]').each(function () {
   <button class="btn btn-info">
     自主學習計畫說明
   </button>
-</div>`,
+</div>
+
+<!-- ⚡ 必備：jQuery 初始化程式碼（實務上必須寫在頁尾 </body> 前） -->
+<script>
+  $('[data-bs-toggle="popover"]').each(function () {
+    new bootstrap.Popover(this);
+  });
+</script>`,
       solutionHtml: `<div class="container py-3 text-center">
   <button type="button" class="btn btn-info" 
           data-bs-toggle="popover" 
@@ -1409,7 +1423,14 @@ $('[data-bs-toggle="popover"]').each(function () {
           data-bs-content="每週 2 節自主時間，同學可自行探索程式設計、外語或專題研究！">
     自主學習計畫說明
   </button>
-</div>`,
+</div>
+
+<!-- ⚡ 必備：jQuery 初始化程式碼（實務上必須寫在頁尾 </body> 前） -->
+<script>
+  $('[data-bs-toggle="popover"]').each(function () {
+    new bootstrap.Popover(this);
+  });
+</script>`,
       hints: [
         '為按鈕加上 data-bs-toggle="popover" data-bs-title="..." data-bs-content="..."！',
         '【實務必備】在自建獨立網頁中，頁尾務必加入 jQuery 初始化：$("[data-bs-toggle=\'popover\']").each(function () { new bootstrap.Popover(this); });',
@@ -1691,7 +1712,7 @@ $('[data-bs-toggle="tooltip"]').each(function () {
       { name: 'data-bs-toggle="tooltip"', desc: 'HTML 屬性：宣告使用 Tooltip 工具提示' },
       { name: 'data-bs-title="提示文字"', desc: 'HTML 屬性：懸停顯示的提示文字' },
       { name: 'data-bs-placement="top/bottom"', desc: 'HTML 屬性：提示浮現方向 (top/bottom/left/right)' },
-      { name: 'jQuery 初始化代碼', desc: '$(\'[data-bs-toggle="tooltip"]\').each(function () { new bootstrap.Tooltip(this); });' },
+      { name: 'jQuery 初始化程式碼', desc: '$(\'[data-bs-toggle="tooltip"]\').each(function () { new bootstrap.Tooltip(this); });' },
     ],
     teacherHtml: `<div class="container py-3 text-center">
   <button type="button" class="btn btn-secondary" 
@@ -1699,10 +1720,17 @@ $('[data-bs-toggle="tooltip"]').each(function () {
           data-bs-title="點擊下載完整 114 學年度行事曆 PDF">
     📅 2026 校曆下載 (滑鼠移過來看看)
   </button>
-</div>`,
+</div>
+
+<!-- jQuery 初始化程式碼 -->
+<script>
+  $('[data-bs-toggle="tooltip"]').each(function () {
+    new bootstrap.Tooltip(this);
+  });
+</script>`,
     studentTask: {
       title: '挑戰：為社團官網的讚賞愛心按鈕加上 Tooltip',
-      scenario: '請在按鈕加上 `data-bs-toggle="tooltip"` 與 `data-bs-title="為熱音社點贊！"`！（💡 注意：在外部獨立網頁中，Tooltip 必須搭配 jQuery/JS 初始化才會啟動喔！）',
+      scenario: '請在按鈕加入 `data-bs-toggle="tooltip"` 與 `data-bs-title="為熱音社點贊！"`！（💡 注意：在外部獨立網頁中，Tooltip 必須搭配 jQuery/JS 初始化才會啟動喔！）',
       instructions: [
         '步驟 1：在愛心讚賞按鈕宣告工具提示觸發屬性 (data-bs-toggle="tooltip")。',
         '步驟 2：透過資料屬性設定滑鼠懸停時顯示的提示文字 (data-bs-title="為熱音社點贊！")。',
@@ -1712,14 +1740,28 @@ $('[data-bs-toggle="tooltip"]').each(function () {
   <button class="btn btn-outline-danger">
     ❤️ 愛心
   </button>
-</div>`,
+</div>
+
+<!-- ⚡ 必備：jQuery 初始化程式碼（實務上必須寫在頁尾 </body> 前） -->
+<script>
+  $('[data-bs-toggle="tooltip"]').each(function () {
+    new bootstrap.Tooltip(this);
+  });
+</script>`,
       solutionHtml: `<div class="container py-3 text-center">
   <button type="button" class="btn btn-outline-danger" 
           data-bs-toggle="tooltip" 
           data-bs-title="為熱音社點贊！">
     ❤️ 愛心
   </button>
-</div>`,
+</div>
+
+<!-- ⚡ 必備：jQuery 初始化程式碼（實務上必須寫在頁尾 </body> 前） -->
+<script>
+  $('[data-bs-toggle="tooltip"]').each(function () {
+    new bootstrap.Tooltip(this);
+  });
+</script>`,
       hints: [
         '為按鈕加上 data-bs-toggle="tooltip" data-bs-title="為熱音社點贊！"！',
         '【實務必備】在自建獨立網頁中，頁尾務必加入 jQuery 初始化：$("[data-bs-toggle=\'tooltip\']").each(function () { new bootstrap.Tooltip(this); });',

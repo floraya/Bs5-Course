@@ -29,6 +29,19 @@ export function highlightCss(code: string): string {
   }
 }
 
+/**
+ * Highlights JavaScript with Prism.js.
+ */
+export function highlightJs(code: string): string {
+  if (!code) return '';
+  try {
+    return Prism.highlight(code, Prism.languages.javascript, 'javascript');
+  } catch (err) {
+    console.error('Prism JS highlight error:', err);
+    return escapeHtml(code);
+  }
+}
+
 function escapeHtml(str: string): string {
   return str
     .replace(/&/g, '&amp;')

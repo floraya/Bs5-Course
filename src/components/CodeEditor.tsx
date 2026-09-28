@@ -258,7 +258,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
               fontFamily: '"Fira Code", Menlo, Monaco, Consolas, "Courier New", monospace',
               tabSize: 2,
             }}
-            placeholder="請在此輸入你的 Bootstrap 5 HTML 代碼..."
+            placeholder="請在此輸入你的 Bootstrap 5 HTML 程式碼..."
           />
         </div>
       </div>

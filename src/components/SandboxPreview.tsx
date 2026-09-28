@@ -67,6 +67,9 @@ export const SandboxPreview: React.FC<SandboxPreviewProps> = ({
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- jQuery & Bootstrap 5.3.3 JS Bundle -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <style>
     body {
       background-color: #ffffff;
@@ -79,18 +82,17 @@ export const SandboxPreview: React.FC<SandboxPreviewProps> = ({
 </head>
 <body>
   ${html}
-  <!-- Bootstrap 5.3.3 JS Bundle & jQuery -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // jQuery Auto initialize tooltips and popovers
+    // jQuery Auto initialize tooltips and popovers fallback
     try {
-      $('[data-bs-toggle="tooltip"]').each(function () {
-        new bootstrap.Tooltip(this);
-      });
-      $('[data-bs-toggle="popover"]').each(function () {
-        new bootstrap.Popover(this);
-      });
+      if (window.$ && window.bootstrap) {
+        $('[data-bs-toggle="tooltip"]').each(function () {
+          new bootstrap.Tooltip(this);
+        });
+        $('[data-bs-toggle="popover"]').each(function () {
+          new bootstrap.Popover(this);
+        });
+      }
     } catch(e) {}
   </script>
 </body>

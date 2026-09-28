@@ -281,7 +281,7 @@ export default function App() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
                 </span>
                 <span className="text-purple-300 font-bold">已進入超寬大畫面教學模式</span>
-                <span className="text-slate-400">（目錄已收合，提供最寬敞的代碼編寫與即時預覽空間）</span>
+                <span className="text-slate-400">（目錄已收合，提供最寬敞的程式碼編寫與即時預覽空間）</span>
               </div>
               <button
                 onClick={handleToggleSidebar}

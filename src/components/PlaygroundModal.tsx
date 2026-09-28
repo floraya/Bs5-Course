@@ -141,7 +141,19 @@ export const PlaygroundModal: React.FC<PlaygroundModalProps> = ({
 </head>
 <body>
 ${code}
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // 初始化 Tooltip
+    $('[data-bs-toggle="tooltip"]').each(function () {
+      new bootstrap.Tooltip(this);
+    });
+
+    // 初始化 Popover
+    $('[data-bs-toggle="popover"]').each(function () {
+      new bootstrap.Popover(this);
+    });
+  </script>
 </body>
 </html>`;
 

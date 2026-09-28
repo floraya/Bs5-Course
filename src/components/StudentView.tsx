@@ -571,7 +571,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   </span>
                 </div>
                 <div className="text-[11px] text-slate-400">
-                  可任意在「🖥️ 網頁預覽」、「&lt;/&gt; 學生 HTML 代碼」與「🎨 CSS 樣式」之間流暢切換檢視
+                  可任意在「🖥️ 網頁預覽」、「&lt;/&gt; 學生 HTML 程式碼」與「🎨 CSS 樣式」之間流暢切換檢視
                 </div>
               </div>
             </div>
@@ -605,7 +605,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                 }`}
               >
                 <Code2 className="w-3.5 h-3.5" />
-                <span>HTML 代碼</span>
+                <span>HTML 程式碼</span>
               </button>
 
               <button
@@ -654,7 +654,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   ) : (
                     <>
                       <Copy className="w-3.5 h-3.5" />
-                      <span>複製當前代碼</span>
+                      <span>複製當前程式碼</span>
                     </>
                   )}
                 </button>
@@ -735,7 +735,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                             : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                         }`}
                       >
-                        HTML 代碼
+                        HTML 程式碼
                       </button>
                       <button
                         onClick={() => {

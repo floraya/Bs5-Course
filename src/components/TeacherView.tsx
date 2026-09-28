@@ -30,8 +30,8 @@ interface TeacherViewProps {
   nextLessonId?: string | null;
 }
 
-type TabType = 'visual' | 'metaphor' | 'js-reminder' | 'keypoints' | 'syntax' | 'lab';
-type CodeTab = 'css' | 'html';
+type TabType = 'visual' | 'metaphor' | 'keypoints' | 'syntax' | 'lab';
+type CodeTab = 'html' | 'css' | 'jquery';
 
 export const TeacherView: React.FC<TeacherViewProps> = ({
   lesson,
@@ -41,21 +41,41 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
   prevLessonId,
   nextLessonId,
 }) => {
-  // Active feature tab (defaults to js-reminder for tooltips/popovers, lab for others)
-  const [activeTab, setActiveTab] = useState<TabType>(() => {
-    return lesson.id === 'comp-tooltips' || lesson.id === 'comp-popovers'
-      ? 'js-reminder'
-      : 'lab';
-  });
+  // Active feature tab (defaults to lab)
+  const [activeTab, setActiveTab] = useState<TabType>('lab');
 
-  // Automatically switch tab when lesson changes
+  // Interactive Lab state
+  const labConfig = getLessonLabConfig(lesson);
+  const [activeStepId, setActiveStepId] = useState<string>(
+    labConfig.steps[0]?.id || ''
+  );
+  const [selectedOptionId, setSelectedOptionId] = useState<string>(
+    labConfig.options[0]?.id || ''
+  );
+
+  // Automatically switch tab and reset lab options when lesson changes
   React.useEffect(() => {
-    if (lesson.id === 'comp-tooltips' || lesson.id === 'comp-popovers') {
-      setActiveTab('js-reminder');
-    } else {
-      setActiveTab('lab');
-    }
+    setActiveTab('lab');
+    setActiveStepId(labConfig.steps[0]?.id || '');
+    setSelectedOptionId(labConfig.options[0]?.id || '');
   }, [lesson.id]);
+
+  // Check if lesson uses jQuery initialization
+  const hasJQueryCode =
+    lesson.id === 'comp-tooltips' ||
+    lesson.id === 'comp-popovers' ||
+    lesson.keyClasses.some((k) => k.name.includes('jQuery'));
+
+  const getJQueryCode = () => {
+    if (lesson.id === 'comp-tooltips') {
+      return `// 初始化 Tooltip（建議置於 </body> 結束標籤前）\n$('[data-bs-toggle="tooltip"]').each(function () {\n  new bootstrap.Tooltip(this);\n});`;
+    }
+    if (lesson.id === 'comp-popovers') {
+      return `// 初始化 Popover（建議置於 </body> 結束標籤前）\n$('[data-bs-toggle="popover"]').each(function () {\n  new bootstrap.Popover(this);\n});`;
+    }
+    const jqItem = lesson.keyClasses.find((k) => k.name.includes('jQuery'));
+    return jqItem ? jqItem.desc : '';
+  };
 
   // Active code inspector tab on bottom right
   const [codeTab, setCodeTab] = useState<CodeTab>('html');
@@ -63,16 +83,9 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
 
   // Expanded full screen modal for right preview
   const [showFullPreview, setShowFullPreview] = useState(false);
-  const [modalCodeTab, setModalCodeTab] = useState<'preview' | 'html' | 'css' | 'split'>('preview');
-  const [modalSubCodeTab, setModalSubCodeTab] = useState<'html' | 'css'>('html');
+  const [modalCodeTab, setModalCodeTab] = useState<'preview' | 'html' | 'css' | 'jquery' | 'split'>('preview');
+  const [modalSubCodeTab, setModalSubCodeTab] = useState<'html' | 'css' | 'jquery'>('html');
   const [copiedModalCode, setCopiedModalCode] = useState(false);
-
-  // Interactive Lab state
-  const labConfig = getLessonLabConfig(lesson);
-  const [activeStepId, setActiveStepId] = useState<string>('1');
-  const [selectedOptionId, setSelectedOptionId] = useState<string>(
-    labConfig.options[0]?.id || ''
-  );
 
   // Selected option data
   const currentOption =
@@ -87,10 +100,15 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
   const mnemonic = getLessonMnemonic(lesson);
 
   const handleCopyCode = () => {
-    const textToCopy =
-      codeTab === 'html'
-        ? lesson.teacherHtml
-        : lesson.keyClasses.map((k) => `/* ${k.desc} */\n.${k.name} { /* Bootstrap 5 核心類別 */ }`).join('\n\n');
+    let textToCopy = lesson.teacherHtml;
+    if (codeTab === 'css') {
+      textToCopy = lesson.keyClasses
+        .filter((k) => !k.name.includes('jQuery') && !k.name.includes('data-bs'))
+        .map((k) => `/* ${k.desc} */\n.${k.name} { /* Bootstrap 5 核心類別 */ }`)
+        .join('\n\n');
+    } else if (codeTab === 'jquery') {
+      textToCopy = getJQueryCode();
+    }
 
     navigator.clipboard.writeText(textToCopy);
     soundManager.playClick();
@@ -98,17 +116,21 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
     setTimeout(() => setCopiedCode(false), 2000);
   };
 
-  const handleCopyModalCode = (target: 'html' | 'css') => {
-    const textToCopy =
-      target === 'html'
-        ? lesson.teacherHtml
-        : `/* Bootstrap 5 核心樣式規則速查表 */\n/* 課程：${lesson.officialName} · ${lesson.title} */\n\n` +
-          lesson.keyClasses
-            .map(
-              (k) =>
-                `/* ${k.desc} */\n.${k.name} {\n  box-sizing: border-box;\n  /* 自動響應與邊界計算規則 */\n}`
-            )
-            .join('\n\n');
+  const handleCopyModalCode = (target: 'html' | 'css' | 'jquery') => {
+    let textToCopy = lesson.teacherHtml;
+    if (target === 'css') {
+      textToCopy =
+        `/* Bootstrap 5 核心樣式規則速查表 */\n/* 課程：${lesson.officialName} · ${lesson.title} */\n\n` +
+        lesson.keyClasses
+          .filter((k) => !k.name.includes('jQuery') && !k.name.includes('data-bs'))
+          .map(
+            (k) =>
+              `/* ${k.desc} */\n.${k.name} {\n  box-sizing: border-box;\n  /* 自動響應與邊界計算規則 */\n}`
+          )
+          .join('\n\n');
+    } else if (target === 'jquery') {
+      textToCopy = getJQueryCode();
+    }
 
     navigator.clipboard.writeText(textToCopy);
     soundManager.playClick();
@@ -240,28 +262,6 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                 <span>🎭 生動比喻</span>
               </button>
 
-              {/* Special JS Opt-in Reminder Tab on the 本課重點趣味解析 tabs row */}
-              {(lesson.id === 'comp-tooltips' || lesson.id === 'comp-popovers') && (
-                <button
-                  onClick={() => {
-                    soundManager.playClick();
-                    setActiveTab('js-reminder');
-                  }}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1 border shadow-sm ${
-                    activeTab === 'js-reminder'
-                      ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-500/30 border-amber-300 font-extrabold'
-                      : 'bg-amber-950/60 text-amber-300 hover:text-white hover:bg-amber-900/80 border-amber-600/40'
-                  }`}
-                  title={
-                    lesson.id === 'comp-tooltips'
-                      ? '【重點提醒】Tooltips 屬於 Opt-in 元件，必須撰寫 JavaScript 初始化才會生效！'
-                      : '【重點提醒】Popovers 屬於 Opt-in 元件，必須撰寫 JavaScript 初始化才會生效！'
-                  }
-                >
-                  <span>⚡ JavaScript</span>
-                </button>
-              )}
-
               <button
                 onClick={() => {
                   soundManager.playClick();
@@ -334,18 +334,19 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                   </div>
                 </div>
 
-                {/* 6 Micro-step Buttons Grid (Matching the 6 cards in screenshot) */}
+                {/* Micro-step Buttons Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {labConfig.steps.map((step, idx) => {
-                    const isStepActive = activeStepId === step.id;
+                    const isStepActive = activeStepId === step.id || (!activeStepId && idx === 0);
                     return (
                       <button
                         key={step.id}
                         onClick={() => {
                           soundManager.playClick();
                           setActiveStepId(step.id);
-                          if (labConfig.options[idx]) {
-                            setSelectedOptionId(labConfig.options[idx].id);
+                          const matchingOption = labConfig.options.find(opt => opt.id === step.id) || labConfig.options[idx];
+                          if (matchingOption) {
+                            setSelectedOptionId(matchingOption.id);
                           }
                         }}
                         className={`p-2.5 rounded-xl border text-left transition-all ${
@@ -369,47 +370,18 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                   })}
                 </div>
 
-                {/* Sub-options selector pills (like [ display: block ] in screenshot) */}
-                <div className="pt-2 border-t border-slate-800/80 space-y-3">
-                  <div className="text-xs text-slate-300 flex items-center gap-1.5 font-semibold">
-                    <span>💡 核心狀態即時切換比對：</span>
+                {/* Visual Simulation Display Box */}
+                <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
+                  <div className="text-xs text-sky-300 leading-relaxed font-sans">
+                    {currentOption?.explanation}
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2">
-                    {labConfig.options.map((opt) => {
-                      const isOptionActive = selectedOptionId === opt.id;
-                      return (
-                        <button
-                          key={opt.id}
-                          onClick={() => {
-                            soundManager.playClick();
-                            setSelectedOptionId(opt.id);
-                          }}
-                          className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all ${
-                            isOptionActive
-                              ? 'bg-sky-400 text-slate-950 shadow-md shadow-sky-400/20'
-                              : 'bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-800'
-                          }`}
-                        >
-                          {opt.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* Visual Simulation Display Box */}
-                  <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
-                    <div className="text-xs text-sky-300 leading-relaxed font-sans">
-                      {currentOption?.explanation}
-                    </div>
-
-                    <VSCodeBlock
-                      code={currentOption?.codeSnippet || ''}
-                      language="html"
-                      filename="lab-preview.html"
-                      maxHeight="160px"
-                    />
-                  </div>
+                  <VSCodeBlock
+                    code={currentOption?.codeSnippet || ''}
+                    language="html"
+                    filename="lab-preview.html"
+                    maxHeight="240px"
+                  />
                 </div>
               </div>
             )}
@@ -462,55 +434,6 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
               </div>
             )}
 
-            {/* Tab: ⚡ 【重點提醒】JS Opt-in 初始化 */}
-            {activeTab === 'js-reminder' && (
-              <div className="bg-slate-950/90 border border-amber-500/50 rounded-xl p-4 sm:p-5 space-y-4 shadow-xl">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center justify-center text-xl shrink-0">
-                    ⚡
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-amber-300">
-                      {lesson.id === 'comp-tooltips'
-                        ? '【重點提醒】Tooltips 屬於 Opt-in 元件，必須撰寫 JavaScript 初始化才會生效！'
-                        : '【重點提醒】Popovers 屬於 Opt-in 元件，必須撰寫 JavaScript 初始化才會生效！'}
-                    </h4>
-                    <p className="text-xs text-slate-400 mt-0.5">
-                      Bootstrap 5 效能核心機制 · 避開自建網站完全無效的經典痛點
-                    </p>
-                  </div>
-                </div>
-
-                <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-3">
-                  <div className="text-xs sm:text-sm text-slate-200 leading-relaxed space-y-2">
-                    <p>
-                      在自建獨立網頁中，單純在 HTML 撰寫 <code className="text-amber-300 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-700 font-mono">data-bs-toggle="{lesson.id === 'comp-tooltips' ? 'tooltip' : 'popover'}"</code> 是<strong>完全沒有任何反應</strong>的！
-                    </p>
-                    <p className="text-slate-300">
-                      💡 <strong>為什麼官方這樣設計？</strong><br />
-                      因為 Tooltips 與 Popovers 監聽動態計算與位置座標會消耗大量 DOM 計算資源，為避免全站載入速度變慢，Bootstrap 5 採用 <strong>Opt-in（主動加入）</strong> 設計模式。在網頁開發與課堂教學中最簡潔直觀的方式就是搭配 <strong>jQuery</strong> 的 <code className="text-sky-300 font-mono">.each()</code> 來逐一初始化：
-                    </p>
-                  </div>
-
-                  <VSCodeBlock
-                    code={
-                      lesson.id === 'comp-tooltips'
-                        ? `<!-- 1. HTML 宣告觸發屬性 -->\n<button type="button" class="btn btn-secondary"\n        data-bs-toggle="tooltip"\n        data-bs-placement="top"\n        data-bs-title="提示文字內容">\n  滑鼠移過來看看\n</button>\n\n<!-- 2. 引入 Bootstrap 5 JS 與 jQuery CDN -->\n<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>\n<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>\n\n<!-- 3. jQuery 初始化寫法（推薦高中教學） -->\n<script>\n  // 初始化 Tooltip\n  $('[data-bs-toggle="tooltip"]').each(function () {\n    new bootstrap.Tooltip(this);\n  });\n</script>`
-                        : `<!-- 1. HTML 宣告觸發屬性 -->\n<button type="button" class="btn btn-danger"\n        data-bs-toggle="popover"\n        data-bs-title="彈窗標題"\n        data-bs-content="彈窗詳細內容說明...">\n  點我查看 (Popover)\n</button>\n\n<!-- 2. 引入 Bootstrap 5 JS 與 jQuery CDN -->\n<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>\n<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>\n\n<!-- 3. jQuery 初始化寫法（推薦高中教學） -->\n<script>\n  // 初始化 Popover\n  $('[data-bs-toggle="popover"]').each(function () {\n    new bootstrap.Popover(this);\n  });\n</script>`
-                    }
-                    language="html"
-                    filename={lesson.id === 'comp-tooltips' ? 'jquery-tooltip-init.html' : 'jquery-popover-init.html'}
-                    maxHeight="300px"
-                  />
-
-                  <div className="p-3 bg-emerald-950/40 border border-emerald-800/40 rounded-lg text-xs text-emerald-300 flex items-center gap-2">
-                    <span className="font-bold">✓ 學院貼心提示：</span>
-                    <span>本平台的線上沙盒已為同學預先配置了 jQuery 與自動初始化，因此在示範預覽與學生編輯器中可直接操作檢視動態效果！</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* Tab: 📌 核心要點 */}
             {activeTab === 'keypoints' && (
               <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-3">
@@ -523,8 +446,22 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                       key={idx}
                       className="p-3 bg-slate-900 border border-slate-800 rounded-xl hover:border-sky-500/40 transition-colors"
                     >
-                      <div className="font-mono text-xs font-bold text-sky-300 mb-1">
-                        .{item.name}
+                      <div className="font-mono text-xs font-bold text-sky-300 mb-1 flex items-center gap-2">
+                        <span>
+                          {item.name.startsWith('data-') || item.name.includes('jQuery')
+                            ? item.name
+                            : `.${item.name}`}
+                        </span>
+                        {item.name.includes('jQuery') && (
+                          <span className="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-sans">
+                            JavaScript / jQuery
+                          </span>
+                        )}
+                        {item.name.startsWith('data-') && (
+                          <span className="text-[10px] bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded font-sans">
+                            HTML 屬性
+                          </span>
+                        )}
                       </div>
                       <div className="text-xs text-slate-400 leading-relaxed">
                         {item.desc}
@@ -540,7 +477,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
               <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-3">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                    標準完整代碼模板
+                    標準完整程式碼模板
                   </h4>
                 </div>
                 <VSCodeBlock
@@ -591,22 +528,9 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
 
           {/* Code Inspector Card: Exactly matching bottom of screenshot */}
           <div className="bg-[#090d16] border border-slate-800 rounded-2xl p-4 space-y-3 shadow-xl">
-            {/* Tabs Header Row: [ CSS 樣式 ] [ HTML 骨架 ]   [ 📋 複製代碼 ] */}
+            {/* Tabs Header Row: [ HTML 骨架 ] [ CSS 樣式 ] [ ⚡ jQuery 初始化程式碼 ]   [ 📋 複製程式碼 ] */}
             <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => {
-                    soundManager.playClick();
-                    setCodeTab('css');
-                  }}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                    codeTab === 'css'
-                      ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-                  }`}
-                >
-                  CSS 樣式 / 類別
-                </button>
+              <div className="flex items-center gap-1.5 overflow-x-auto">
                 <button
                   onClick={() => {
                     soundManager.playClick();
@@ -620,13 +544,41 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                 >
                   HTML 骨架
                 </button>
+                <button
+                  onClick={() => {
+                    soundManager.playClick();
+                    setCodeTab('css');
+                  }}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                    codeTab === 'css'
+                      ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                  }`}
+                >
+                  CSS 樣式 / 類別
+                </button>
+                {hasJQueryCode && (
+                  <button
+                    onClick={() => {
+                      soundManager.playClick();
+                      setCodeTab('jquery');
+                    }}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                      codeTab === 'jquery'
+                        ? 'bg-amber-400 text-slate-950 font-extrabold shadow-md shadow-amber-400/20'
+                        : 'text-amber-400 hover:text-amber-300 hover:bg-amber-950/40 border border-amber-500/30'
+                    }`}
+                  >
+                    <span>⚡ jQuery 初始化程式碼</span>
+                  </button>
+                )}
               </div>
 
               {/* Copy Button */}
               <button
                 onClick={handleCopyCode}
-                className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
-                title="複製代碼"
+                className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors shrink-0"
+                title="複製程式碼"
               >
                 {copiedCode ? (
                   <>
@@ -636,7 +588,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                 ) : (
                   <>
                     <Copy className="w-3.5 h-3.5" />
-                    <span>複製代碼</span>
+                    <span>複製程式碼</span>
                   </>
                 )}
               </button>
@@ -652,11 +604,12 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                   maxHeight="220px"
                   showLineNumbers={true}
                 />
-              ) : (
+              ) : codeTab === 'css' ? (
                 <VSCodeBlock
                   code={
                     `/* Bootstrap 5 核心樣式規則速查 */\n\n` +
                     lesson.keyClasses
+                      .filter((k) => !k.name.includes('jQuery') && !k.name.includes('data-bs'))
                       .map(
                         (k) =>
                           `/* ${k.desc} */\n.${k.name} {\n  box-sizing: border-box;\n  /* 自動響應與邊界計算 */\n}`
@@ -665,6 +618,14 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                   }
                   language="css"
                   filename="bootstrap.css"
+                  maxHeight="220px"
+                  showLineNumbers={true}
+                />
+              ) : (
+                <VSCodeBlock
+                  code={getJQueryCode()}
+                  language="javascript"
+                  filename="init-jquery.js"
                   maxHeight="220px"
                   showLineNumbers={true}
                 />
@@ -745,6 +706,23 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                 <span>CSS 樣式</span>
               </button>
 
+              {hasJQueryCode && (
+                <button
+                  onClick={() => {
+                    soundManager.playClick();
+                    setModalCodeTab('jquery');
+                  }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    modalCodeTab === 'jquery'
+                      ? 'bg-amber-400 text-slate-950 font-extrabold shadow-md'
+                      : 'text-amber-400 hover:text-white hover:bg-slate-800'
+                  }`}
+                >
+                  <Code2 className="w-3.5 h-3.5" />
+                  <span>jQuery 初始化</span>
+                </button>
+              )}
+
               <button
                 onClick={() => {
                   soundManager.playClick();
@@ -763,7 +741,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
 
             {/* Right: Copy & Close */}
             <div className="flex items-center gap-2">
-              {(modalCodeTab === 'html' || modalCodeTab === 'css') && (
+              {(modalCodeTab === 'html' || modalCodeTab === 'css' || modalCodeTab === 'jquery') && (
                 <button
                   onClick={() => handleCopyModalCode(modalCodeTab)}
                   className="flex items-center gap-1.5 text-xs text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700 transition-all"
@@ -776,7 +754,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                   ) : (
                     <>
                       <Copy className="w-3.5 h-3.5" />
-                      <span>複製當前代碼</span>
+                      <span>複製當前程式碼</span>
                     </>
                   )}
                 </button>
@@ -826,6 +804,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                     `/* 課程：${lesson.officialName} · ${lesson.title}                */\n` +
                     `/* ============================================================ */\n\n` +
                     lesson.keyClasses
+                      .filter((k) => !k.name.includes('jQuery') && !k.name.includes('data-bs'))
                       .map(
                         (k) =>
                           `/* ${k.desc} */\n.${k.name} {\n  box-sizing: border-box;\n  /* 自動響應與邊界計算規則 */\n}`
@@ -840,9 +819,21 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
               </div>
             )}
 
+            {modalCodeTab === 'jquery' && (
+              <div className="flex-1 h-full overflow-hidden p-3 bg-[#090d16]">
+                <VSCodeBlock
+                  code={getJQueryCode()}
+                  language="javascript"
+                  filename="init-jquery.js"
+                  maxHeight="calc(100vh - 150px)"
+                  showLineNumbers={true}
+                />
+              </div>
+            )}
+
             {modalCodeTab === 'split' && (
               <div className="flex-1 h-full grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-slate-800 overflow-hidden">
-                {/* Left: Code with HTML/CSS Toggle */}
+                {/* Left: Code with HTML/CSS/jQuery Toggle */}
                 <div className="flex flex-col h-full bg-[#090d16] p-3 space-y-2 overflow-hidden">
                   <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                     <div className="flex items-center gap-1.5">
@@ -872,6 +863,21 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                       >
                         CSS 樣式
                       </button>
+                      {hasJQueryCode && (
+                        <button
+                          onClick={() => {
+                            soundManager.playClick();
+                            setModalSubCodeTab('jquery');
+                          }}
+                          className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                            modalSubCodeTab === 'jquery'
+                              ? 'bg-amber-400 text-slate-950 font-bold shadow'
+                              : 'text-amber-400 hover:text-amber-300 hover:bg-slate-900'
+                          }`}
+                        >
+                          jQuery 初始化
+                        </button>
+                      )}
                     </div>
 
                     <button
@@ -898,11 +904,12 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                         maxHeight="calc(100vh - 200px)"
                         showLineNumbers={true}
                       />
-                    ) : (
+                    ) : modalSubCodeTab === 'css' ? (
                       <VSCodeBlock
                         code={
                           `/* Bootstrap 5 核心樣式規則 */\n\n` +
                           lesson.keyClasses
+                            .filter((k) => !k.name.includes('jQuery') && !k.name.includes('data-bs'))
                             .map(
                               (k) =>
                                 `/* ${k.desc} */\n.${k.name} {\n  box-sizing: border-box;\n}`
@@ -911,6 +918,14 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                         }
                         language="css"
                         filename="bootstrap.css"
+                        maxHeight="calc(100vh - 200px)"
+                        showLineNumbers={true}
+                      />
+                    ) : (
+                      <VSCodeBlock
+                        code={getJQueryCode()}
+                        language="javascript"
+                        filename="init-jquery.js"
                         maxHeight="calc(100vh - 200px)"
                         showLineNumbers={true}
                       />

@@ -76,7 +76,7 @@ export function getLessonMnemonic(lesson: Lesson): string {
     case 'components':
       return '元件模組化組裝，UI 質感秒升級，開箱即用快速交付！';
     case 'helpers':
-      return '小幫手解頑疾，層次結構清楚，排版代碼簡約優雅！';
+      return '小幫手解頑疾，層次結構清楚，排版程式碼簡約優雅！';
     case 'utilities':
       return '原子化 class 靈活調，免寫冗長 CSS，微調間距顏色效率飆！';
     default:
@@ -96,12 +96,12 @@ export function getLessonLabConfig(lesson: Lesson): LabConfig {
       subtitle: '直觀體驗 Bootstrap 12 等份網格在不同欄位比例下的動態伸展！',
       categoryIcon: '📐',
       steps: [
-        { id: '1', title: '1. col-12 滿版', subtitle: '手機單欄鋪滿' },
-        { id: '2', title: '2. col-6 半版', subtitle: '左右雙欄並列' },
-        { id: '3', title: '3. col-4 三等分', subtitle: '三欄卡片矩陣' },
-        { id: '4', title: '4. col-3 四等分', subtitle: '密集數據展示' },
-        { id: '5', title: '5. col-8 + col-4', subtitle: '主內容與側邊欄' },
-        { id: '6', title: '6. col-auto 自適應', subtitle: '內容多長佔多長' },
+        { id: 'col-12', title: '1. col-12 滿版', subtitle: '手機單欄鋪滿' },
+        { id: 'col-6', title: '2. col-6 半版', subtitle: '左右雙欄並列' },
+        { id: 'col-md-4', title: '3. col-4 三等分', subtitle: '三欄卡片矩陣' },
+        { id: 'col-3', title: '4. col-3 四等分', subtitle: '密集數據展示' },
+        { id: 'col-8-4', title: '5. col-8 + col-4', subtitle: '主內容與側邊欄' },
+        { id: 'col-auto', title: '6. col-auto 自適應', subtitle: '內容多長佔多長' },
       ],
       options: [
         {
@@ -123,10 +123,22 @@ export function getLessonLabConfig(lesson: Lesson): LabConfig {
           explanation: '三欄並列（4+4+4=12），校園三大特色社團、推薦活動排版黃金比例！',
         },
         {
+          id: 'col-3',
+          label: 'col-3 (25% 四等分)',
+          codeSnippet: '<div class="row g-2"><div class="col-3 bg-primary text-white p-2 rounded text-center">1/4</div><div class="col-3 bg-secondary text-white p-2 rounded text-center">2/4</div><div class="col-3 bg-success text-white p-2 rounded text-center">3/4</div><div class="col-3 bg-danger text-white p-2 rounded text-center">4/4</div></div>',
+          explanation: '四等分均勻分配（3×4=12），非常適合指標數據卡片（KPI）、相片畫廊縮圖。',
+        },
+        {
           id: 'col-8-4',
           label: 'col-8 + col-4 (二比一黃金比)',
           codeSnippet: '<div class="row g-2"><div class="col-8 bg-purple-600 text-white p-3 rounded">主文章內容 (8/12)</div><div class="col-4 bg-secondary text-white p-3 rounded">側邊公告欄 (4/12)</div></div>',
           explanation: '經典主文（8 等份）配側邊選單（4 等份），部落格與新聞頁面必備結構。',
+        },
+        {
+          id: 'col-auto',
+          label: 'col-auto (內容寬度自適應)',
+          codeSnippet: '<div class="row g-2 align-items-center"><div class="col-auto bg-dark text-white p-2 rounded">自動依內容定寬</div><div class="col bg-light text-dark p-2 rounded border">自動平分填滿其餘空間</div></div>',
+          explanation: '依據子元件內容長度自適應寬度，配合不帶數字的 col 自動吸附填滿剩餘空間！',
         },
       ],
     };
@@ -138,12 +150,12 @@ export function getLessonLabConfig(lesson: Lesson): LabConfig {
       subtitle: '觀察固定寬度與全螢幕流式容器在螢幕上的邊界變化！',
       categoryIcon: '📦',
       steps: [
-        { id: '1', title: '1. .container', subtitle: '響應式梯形階梯' },
-        { id: '2', title: '2. .container-fluid', subtitle: '無邊際 100% 流式' },
-        { id: '3', title: '3. .container-sm', subtitle: 'SM 以上才定寬' },
-        { id: '4', title: '4. .container-md', subtitle: 'MD 以上才定寬' },
-        { id: '5', title: '5. .container-lg', subtitle: 'LG 以上才定寬' },
-        { id: '6', title: '6. .container-xl', subtitle: '大螢幕專屬收攏' },
+        { id: 'container', title: '1. .container', subtitle: '響應式梯形階梯' },
+        { id: 'container-fluid', title: '2. .container-fluid', subtitle: '無邊際 100% 流式' },
+        { id: 'container-sm', title: '3. .container-sm', subtitle: 'SM 以上才定寬 (576px)' },
+        { id: 'container-md', title: '4. .container-md', subtitle: 'MD 以上才定寬 (768px)' },
+        { id: 'container-lg', title: '5. .container-lg', subtitle: 'LG 以上才定寬 (992px)' },
+        { id: 'container-xl', title: '6. .container-xl', subtitle: 'XL 以上才定寬 (1200px)' },
       ],
       options: [
         {
@@ -158,27 +170,234 @@ export function getLessonLabConfig(lesson: Lesson): LabConfig {
           codeSnippet: '<div class="container-fluid bg-indigo text-white p-3 rounded text-center">.container-fluid 永遠 100% 貼合視窗兩側</div>',
           explanation: '不論螢幕多大多小，寬度恆為 100%，最適合全版背景輪播圖、滿版頂部導航列。',
         },
+        {
+          id: 'container-sm',
+          label: '.container-sm (≥576px 定寬)',
+          codeSnippet: '<div class="container-sm bg-success text-white p-3 rounded text-center">.container-sm (手機 100%，平板以上階梯定寬)</div>',
+          explanation: '在小螢幕（<576px）呈現 100% 滿版，到了 576px（SM 斷點）以上才開始水平居中收攏。',
+        },
+        {
+          id: 'container-md',
+          label: '.container-md (≥768px 定寬)',
+          codeSnippet: '<div class="container-md bg-warning text-dark p-3 rounded text-center">.container-md (平板直向以下 100%)</div>',
+          explanation: '在直向平板以下皆為滿版，在 768px（MD 斷點）以上才居中鎖定寬度。',
+        },
+        {
+          id: 'container-lg',
+          label: '.container-lg (≥992px 定寬)',
+          codeSnippet: '<div class="container-lg bg-danger text-white p-3 rounded text-center">.container-lg (筆電大螢幕以上才定寬)</div>',
+          explanation: '992px 筆電或桌機以上才限縮寬度，讓行動版能擁有最自由的滿版空間。',
+        },
+        {
+          id: 'container-xl',
+          label: '.container-xl (≥1200px 定寬)',
+          codeSnippet: '<div class="container-xl bg-dark text-white p-3 rounded text-center">.container-xl (寬螢幕超大視窗專屬)</div>',
+          explanation: '針對 1200px 寬螢幕設計，大螢幕維持 1140px 定寬避免橫向過長影響閱讀。',
+        },
       ],
     };
   }
 
-  // Default dynamic lab for any lesson
-  const dynamicSteps = [
-    { id: '1', title: `1. ${keyClasses[0]?.name || '基礎型態'}`, subtitle: '核心基本語法' },
-    { id: '2', title: `2. ${keyClasses[1]?.name || '排版變體'}`, subtitle: '進階衍生樣式' },
-    { id: '3', title: `3. ${keyClasses[2]?.name || '響應斷點'}`, subtitle: '自適應各裝置' },
-    { id: '4', title: '4. 盒模型與間距', subtitle: '外距內距配置' },
-    { id: '5', title: '5. 避坑防爆原則', subtitle: '防止破版秘訣' },
-    { id: '6', title: '6. 校園實戰整合', subtitle: '高質感成品' },
-  ];
+  if (lesson.id === 'comp-tooltips') {
+    return {
+      title: 'Tooltips 滑鼠懸停提示實驗室',
+      subtitle: '直觀體驗 Bootstrap 5 Tooltip 屬性宣告與 jQuery 初始化的搭配！',
+      categoryIcon: '💬',
+      steps: [
+        { id: 'tooltip-top', title: '1. 上方提示 (top)', subtitle: '預設往上浮現提示' },
+        { id: 'tooltip-bottom', title: '2. 下方提示 (bottom)', subtitle: '按鈕上方空間不足時往下' },
+        { id: 'tooltip-right', title: '3. 左右側提示 (right/left)', subtitle: '配合側欄或圖示定位' },
+        { id: 'tooltip-jquery', title: '4. jQuery 初始化程式碼', subtitle: '實務必備！手動啟用核心' },
+      ],
+      options: [
+        {
+          id: 'tooltip-top',
+          label: 'data-bs-placement="top"',
+          codeSnippet: `<button type="button" class="btn btn-primary"
+        data-bs-toggle="tooltip" 
+        data-bs-placement="top" 
+        data-bs-title="這是上方浮現的提示文字！">
+  滑鼠移過來 (Top)
+</button>
 
-  const dynamicOptions: LabOption[] = keyClasses.length > 0
+<!-- ⚡ 必備：jQuery 初始化程式碼（寫在 </body> 前） -->
+<script>
+  $('[data-bs-toggle="tooltip"]').each(function () {
+    new bootstrap.Tooltip(this);
+  });
+</script>`,
+          explanation: '【上方提示】設定 data-bs-placement="top"，滑鼠移上按鈕時在正上方浮現黑色小提示。必須搭配下方 jQuery 初始化腳本！',
+        },
+        {
+          id: 'tooltip-bottom',
+          label: 'data-bs-placement="bottom"',
+          codeSnippet: `<button type="button" class="btn btn-success"
+        data-bs-toggle="tooltip" 
+        data-bs-placement="bottom" 
+        data-bs-title="這是下方浮現的提示文字！">
+  滑鼠移過來 (Bottom)
+</button>
+
+<!-- ⚡ 必備：jQuery 初始化程式碼（寫在 </body> 前） -->
+<script>
+  $('[data-bs-toggle="tooltip"]').each(function () {
+    new bootstrap.Tooltip(this);
+  });
+</script>`,
+          explanation: '【下方提示】設定 data-bs-placement="bottom"，適用於頂部導航列或上方貼齊視窗邊界的按鈕。',
+        },
+        {
+          id: 'tooltip-right',
+          label: 'data-bs-placement="right/left"',
+          codeSnippet: `<div class="d-flex gap-3 justify-content-center">
+  <button type="button" class="btn btn-info text-white"
+          data-bs-toggle="tooltip" data-bs-placement="left"
+          data-bs-title="靠左提示">
+    ← 靠左 (Left)
+  </button>
+  <button type="button" class="btn btn-warning text-dark"
+          data-bs-toggle="tooltip" data-bs-placement="right"
+          data-bs-title="靠右提示">
+    靠右 (Right) →
+  </button>
+</div>
+
+<!-- ⚡ 必備：jQuery 初始化程式碼（寫在 </body> 前） -->
+<script>
+  $('[data-bs-toggle="tooltip"]').each(function () {
+    new bootstrap.Tooltip(this);
+  });
+</script>`,
+          explanation: '【左右提示】透過 data-bs-placement="left" 或 "right" 讓提示從左右兩側滑出。',
+        },
+        {
+          id: 'tooltip-jquery',
+          label: 'jQuery 初始化程式碼',
+          codeSnippet: `<script>
+  // ⚡ 實務必備：jQuery 初始化 Tooltips（寫在 </body> 標籤前）
+  $('[data-bs-toggle="tooltip"]').each(function () {
+    new bootstrap.Tooltip(this);
+  });
+</script>`,
+          explanation: '【實務必備】Bootstrap 5 採 Opt-in 機制，只寫 HTML 屬性不會動！必須在 </body> 標籤前加入這段 jQuery 初始化程式碼，遍歷所有 data-bs-toggle="tooltip" 並實例化 new bootstrap.Tooltip(this)。',
+        },
+      ],
+    };
+  }
+
+  if (lesson.id === 'comp-popovers') {
+    return {
+      title: 'Popovers 彈出資訊泡泡實驗室',
+      subtitle: '直觀體驗 Bootstrap 5 Popover 標題、內文與 jQuery 初始化的搭配！',
+      categoryIcon: '💡',
+      steps: [
+        { id: 'popover-basic', title: '1. 標題與內文', subtitle: 'data-bs-title & content' },
+        { id: 'popover-top', title: '2. 向上彈出 (top)', subtitle: '控制氣泡顯示方位' },
+        { id: 'popover-right', title: '3. 橫向彈出 (right)', subtitle: '在按鈕右側展開氣泡' },
+        { id: 'popover-jquery', title: '4. jQuery 初始化程式碼', subtitle: '實務必備！手動啟用核心' },
+      ],
+      options: [
+        {
+          id: 'popover-basic',
+          label: '基本 Popover (點擊觸發)',
+          codeSnippet: `<button type="button" class="btn btn-danger"
+        data-bs-toggle="popover" 
+        data-bs-title="💡 什麼是 APX 檢定？" 
+        data-bs-content="由清華大學主辦的高中數理能力測驗，是大學申請入學時極具公信力的加分證明！">
+  點我查看簡介 (Popover)
+</button>
+
+<!-- ⚡ 必備：jQuery 初始化程式碼（寫在 </body> 前） -->
+<script>
+  $('[data-bs-toggle="popover"]').each(function () {
+    new bootstrap.Popover(this);
+  });
+</script>`,
+          explanation: '【基本 Popover】包含 data-bs-title（氣泡標題）與 data-bs-content（氣泡內文），點選按鈕時跳出。必須搭配下方 jQuery 初始化腳本！',
+        },
+        {
+          id: 'popover-top',
+          label: 'data-bs-placement="top"',
+          codeSnippet: `<button type="button" class="btn btn-warning text-dark"
+        data-bs-toggle="popover" 
+        data-bs-placement="top"
+        data-bs-title="📌 報名提醒" 
+        data-bs-content="報名截止日期為下週五中午 12:00，逾期不予受理。">
+  向上展開泡泡 (Top)
+</button>
+
+<!-- ⚡ 必備：jQuery 初始化程式碼（寫在 </body> 前） -->
+<script>
+  $('[data-bs-toggle="popover"]').each(function () {
+    new bootstrap.Popover(this);
+  });
+</script>`,
+          explanation: '【上方彈出】設定 data-bs-placement="top"，氣泡會在按鈕正上方彈出。',
+        },
+        {
+          id: 'popover-right',
+          label: 'data-bs-placement="right"',
+          codeSnippet: `<button type="button" class="btn btn-info text-dark"
+        data-bs-toggle="popover" 
+        data-bs-placement="right"
+        data-bs-title="📊 成績級分規則" 
+        data-bs-content="前標為全體到考考生成績計算之第 75 百分位數。">
+  向右展開泡泡 (Right)
+</button>
+
+<!-- ⚡ 必備：jQuery 初始化程式碼（寫在 </body> 前） -->
+<script>
+  $('[data-bs-toggle="popover"]').each(function () {
+    new bootstrap.Popover(this);
+  });
+</script>`,
+          explanation: '【右側彈出】設定 data-bs-placement="right"，非常適合表格或側邊欄的操作說明。',
+        },
+        {
+          id: 'popover-jquery',
+          label: 'jQuery 初始化程式碼',
+          codeSnippet: `<script>
+  // ⚡ 實務必備：jQuery 初始化 Popovers（寫在 </body> 標籤前）
+  $('[data-bs-toggle="popover"]').each(function () {
+    new bootstrap.Popover(this);
+  });
+</script>`,
+          explanation: '【實務必備】Bootstrap 5 採 Opt-in 機制，只寫 HTML 屬性不會動！必須在 </body> 標籤前加入這段 jQuery 初始化程式碼，遍歷所有 data-bs-toggle="popover" 並實例化 new bootstrap.Popover(this)。',
+        },
+      ],
+    };
+  }
+
+  // Default dynamic lab for any lesson: strictly generate steps that match actual options so every button is 100% functional
+  const dynamicSteps = keyClasses.length > 0
     ? keyClasses.map((kc, idx) => ({
         id: `opt-${idx}`,
-        label: kc.name,
-        codeSnippet: `<!-- 使用 ${kc.name} -->\n<div class="${kc.name} p-3 rounded border text-center">\n  示範：${kc.name}\n</div>`,
-        explanation: kc.desc,
+        title: `${idx + 1}. ${kc.name.split(' ')[0]}`,
+        subtitle: kc.desc.length > 16 ? kc.desc.slice(0, 16) + '...' : kc.desc,
       }))
+    : [
+        { id: 'opt-default', title: `1. ${primaryClass}`, subtitle: '核心基本語法' },
+      ];
+
+  const dynamicOptions: LabOption[] = keyClasses.length > 0
+    ? keyClasses.map((kc, idx) => {
+        const isDataAttr = kc.name.startsWith('data-');
+        const isJQuery = kc.name.includes('jQuery');
+        let snippet = '';
+        if (isJQuery) {
+          snippet = `<!-- jQuery 初始化程式碼 -->\n<script>\n  ${kc.desc}\n</script>`;
+        } else if (isDataAttr) {
+          snippet = `<button type="button" class="btn btn-primary" ${kc.name}>\n  示範按鈕\n</button>`;
+        } else {
+          snippet = `<!-- 範例：${kc.name} -->\n<div class="${kc.name.replace(/["'=]/g, '').trim()} p-3 rounded border text-center">\n  示範：${kc.name}\n</div>`;
+        }
+        return {
+          id: `opt-${idx}`,
+          label: kc.name,
+          codeSnippet: snippet,
+          explanation: kc.desc,
+        };
+      })
     : [
         {
           id: 'opt-default',
@@ -218,9 +437,9 @@ export function getLessonPitfallVsMaster(lesson: Lesson): {
       pitfallTitle: `❌ 新手翻車：以為只寫 data-bs-toggle="${toggleAttr}" 就會動，漏寫 JS`,
       pitfallCode: `<!-- ⚠️ 只有 HTML，在外部真實網頁中完全不會彈出！ -->\n<button type="button" class="btn btn-primary"\n        data-bs-toggle="${toggleAttr}"\n        data-bs-title="這是提示內容">\n  滑鼠移過來 / 點我\n</button>`,
       pitfallDesc: `【核心致命傷】Bootstrap 5 官方基於載入效能考量，${compName} 採 Opt-in 機制。沒有在 <script> 寫 JavaScript 初始化，瀏覽器根本不會去監聽它！`,
-      masterTitle: `✅ 大師寫法：HTML 宣告屬性 + 頁尾 JS 初始化（兩者缺一不可）`,
-      masterCode: `<!-- 1. HTML 元件結構 -->\n<button type="button" class="btn btn-primary"\n        data-bs-toggle="${toggleAttr}"\n        data-bs-title="這是提示內容">\n  滑鼠移過來 / 點我\n</button>\n\n<!-- 2. </body> 前必須手動初始化！ -->\n<script>\n  const ${toggleAttr}TriggerList = document.querySelectorAll('[data-bs-toggle="${toggleAttr}"]');\n  const ${toggleAttr}List = [...${toggleAttr}TriggerList].map(el => new bootstrap.${constructorName}(el));\n</script>`,
-      masterDesc: `先透過 document.querySelectorAll 找到所有帶有 data-bs-toggle 的元素，再以 new bootstrap.${constructorName}(el) 完成啟用！`,
+      masterTitle: `✅ 大師寫法：HTML 宣告屬性 + 頁尾 jQuery 初始化（兩者缺一不可）`,
+      masterCode: `<!-- 1. HTML 元件結構 -->\n<button type="button" class="btn btn-primary"\n        data-bs-toggle="${toggleAttr}"\n        data-bs-title="這是提示內容">\n  滑鼠移過來 / 點我\n</button>\n\n<!-- 2. </body> 前必須加入 jQuery 初始化程式碼！ -->\n<script>\n  $('[data-bs-toggle="${toggleAttr}"]').each(function () {\n    new bootstrap.${constructorName}(this);\n  });\n</script>`,
+      masterDesc: `使用 jQuery 選擇器 $('[data-bs-toggle="${toggleAttr}"]').each(...) 遍歷所有元素，再以 new bootstrap.${constructorName}(this) 完成啟用！`,
     };
   }
   if (cat === 'layout') {

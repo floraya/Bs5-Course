@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Copy, Check, Terminal } from 'lucide-react';
-import { highlightHtml, highlightCss } from '../utils/codeHighlighter';
+import { highlightHtml, highlightCss, highlightJs } from '../utils/codeHighlighter';
 import { soundManager } from '../utils/sound';
 
 interface VSCodeBlockProps {
   code: string;
-  language?: 'html' | 'css' | 'markup';
+  language?: 'html' | 'css' | 'markup' | 'javascript' | 'js';
   filename?: string;
   maxHeight?: string;
   showLineNumbers?: boolean;
@@ -22,7 +22,11 @@ export const VSCodeBlock: React.FC<VSCodeBlockProps> = ({
 
   const lines = code.trimEnd().split('\n');
   const highlighted =
-    language === 'css' ? highlightCss(code.trimEnd()) : highlightHtml(code.trimEnd());
+    language === 'css'
+      ? highlightCss(code.trimEnd())
+      : language === 'javascript' || language === 'js'
+      ? highlightJs(code.trimEnd())
+      : highlightHtml(code.trimEnd());
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
@@ -31,7 +35,12 @@ export const VSCodeBlock: React.FC<VSCodeBlockProps> = ({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const defaultFileName = language === 'css' ? 'styles.css' : 'index.html';
+  const defaultFileName =
+    language === 'css'
+      ? 'styles.css'
+      : language === 'javascript' || language === 'js'
+      ? 'script.js'
+      : 'index.html';
   const displayFileName = filename || defaultFileName;
 
   return (
