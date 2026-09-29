@@ -805,6 +805,28 @@ export function getLessonVisualDiagram(lesson: Lesson): VisualDiagramConfig {
   }
 
   // 12. Forms & Validation
+  if (id === 'forms-validation') {
+    return {
+      title: 'Form Validation 表單驗證回饋架構',
+      subtitle: '輸入欄位 -> 點擊「確認送出報名表」觸發 jQuery 檢核 -> 顯示紅/綠狀態反饋',
+      badge: '📝 表單驗證',
+      explanation: '表單驗證架構由輸入控制項（.form-control）、驗證狀態類別（.is-invalid 紅色錯誤驚嘆號、.is-valid 綠色正確打勾），以及下方的狀態提示訊息（.invalid-feedback 與 .valid-feedback）組成。點擊確認送出時，透過 jQuery 判斷欄位內容，空白立即呈現紅色錯誤提醒！',
+      layers: [
+        {
+          label: 'form#signupForm (報名表單容器)',
+          borderColor: 'border-amber-500/50',
+          bgColor: 'bg-amber-950/20',
+          textColor: 'text-amber-300',
+          children: [
+            { label: '未填寫欄位: .form-control.is-invalid (紅色邊框)', sublabel: '.invalid-feedback: ❌ 欄位不可為空白，請填寫！', span: 12, bgColor: 'bg-rose-700/80', textColor: 'text-white' },
+            { label: '已填寫欄位: .form-control.is-valid (綠色邊框)', sublabel: '.valid-feedback: ✅ 格式正確無誤！', span: 12, bgColor: 'bg-emerald-700/80', textColor: 'text-white' },
+            { label: '操作按鈕: .btn.btn-primary.btn-send', sublabel: '點擊觸發 jQuery 驗證邏輯，判斷欄位有效性', span: 12, bgColor: 'bg-sky-600', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
   if (id.startsWith('forms-')) {
     return {
       title: 'Form 表單元件與驗證反饋架構',
@@ -844,6 +866,104 @@ export function getLessonVisualDiagram(lesson: Lesson): VisualDiagramConfig {
             { label: '項目 1', span: 3, bgColor: 'bg-teal-600', textColor: 'text-white' },
             { label: '項目 2', span: 3, bgColor: 'bg-teal-600', textColor: 'text-white' },
             { label: '項目 3 (.ms-auto 自動推至右側)', span: 6, bgColor: 'bg-indigo-600', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 14. Colored Links
+  if (id === 'helpers-colored-links') {
+    return {
+      title: 'Colored links 彩色超連結與 link-offset 間距架構',
+      subtitle: '色彩主題連結 + link-offset-* 微調下劃線垂直下移',
+      badge: '🔗 超連結美學',
+      explanation: 'Colored links 提供 link-primary, link-success, link-danger 等主題彩色超連結；透過 link-offset-1 ~ link-offset-3 可以精確控制底線與文字下邊緣的距離，使字母不會被底線生硬切斷。',
+      layers: [
+        {
+          label: '.link-primary.link-offset-2 (藍色超連結 + 垂直下移 2px)',
+          borderColor: 'border-blue-500/50',
+          bgColor: 'bg-blue-950/20',
+          textColor: 'text-blue-300',
+          children: [
+            { label: '文字內容 (Hover 自動明暗微調)', span: 6, bgColor: 'bg-blue-600', textColor: 'text-white' },
+            { label: '下劃線 (link-offset-2 微調留白)', span: 6, bgColor: 'bg-sky-500', textColor: 'text-slate-950' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 15. Link 連結進階
+  if (id === 'util-link') {
+    return {
+      title: 'Link 連結進階樣式與底線控制架構',
+      subtitle: 'link-underline-* 自訂底線色彩與 link-underline-opacity-* 透明度控制',
+      badge: '🎨 底線大師',
+      explanation: 'Bootstrap 5.3 全新 Link 工具能將文字色彩與底線色彩完全脫鉤！例如使用 link-dark 黑色文字搭配 link-underline-danger 紅色底線，並透過 link-underline-opacity-0 預設隱藏底線、hover 時才平滑浮現。',
+      layers: [
+        {
+          label: 'a.link-dark.link-offset-2.link-underline-danger (黑字紅線結構)',
+          borderColor: 'border-rose-500/50',
+          bgColor: 'bg-rose-950/20',
+          textColor: 'text-rose-300',
+          children: [
+            { label: '黑色文字本體 (link-dark)', span: 6, bgColor: 'bg-slate-800', textColor: 'text-white' },
+            { label: '紅色底線 (link-underline-danger)', span: 6, bgColor: 'bg-rose-600', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 16. Position 工具
+  if (id === 'util-position') {
+    return {
+      title: 'Position 快速定位與貼附吸附架構',
+      subtitle: '父層 relative + 子層 absolute 釘選徽章，搭配 sticky-bottom 貼底操作列',
+      badge: '📍 定位系統',
+      explanation: '定位工具包含兩個重要場景：第一是以 position-relative 為父層基準，搭配 position-absolute top-0 end-0 translate-middle 精準釘選右上角徽章；第二是 sticky-bottom / sticky-top，在網頁滾動時自動黏著吸附於視窗邊緣！',
+      layers: [
+        {
+          label: '.position-relative (相對定位基準容器)',
+          borderColor: 'border-purple-500/50',
+          bgColor: 'bg-purple-950/20',
+          textColor: 'text-purple-300',
+          children: [
+            { label: '主內容區塊', span: 8, bgColor: 'bg-slate-800', textColor: 'text-white' },
+            { label: '.position-absolute.top-0.start-100.translate-middle (右上角徽章)', span: 4, bgColor: 'bg-rose-600', textColor: 'text-white' },
+          ],
+        },
+        {
+          label: '.sticky-bottom (隨滾動吸附黏於視窗底部之操作列)',
+          borderColor: 'border-amber-500/50',
+          bgColor: 'bg-amber-950/20',
+          textColor: 'text-amber-300',
+          children: [
+            { label: '固定貼底操作功能列 (sticky-bottom)', span: 12, bgColor: 'bg-amber-600', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 17. Utilities: Text
+  if (id === 'util-text') {
+    return {
+      title: 'Text 文字對齊與響應式斷點架構',
+      subtitle: 'text-{sm,md,lg,xl,xxl}-{start,center,end} 跨尺寸對齊調適',
+      badge: '✍️ 文字排版',
+      explanation: '文字對齊工具支援完整的響應式斷點語法，例如 text-start text-md-center text-lg-end，能讓標題或口號在手機直向靠左、平板置中、在寬螢幕桌機優雅靠右！',
+      layers: [
+        {
+          label: '.text-start.text-md-center.text-lg-end (響應式自適應文字)',
+          borderColor: 'border-indigo-500/50',
+          bgColor: 'bg-indigo-950/20',
+          textColor: 'text-indigo-300',
+          children: [
+            { label: '手機 (<768px): 靠左對齊 (text-start)', span: 4, bgColor: 'bg-sky-600', textColor: 'text-white' },
+            { label: '平板 (≥768px): 水平置中 (text-md-center)', span: 4, bgColor: 'bg-purple-600', textColor: 'text-white' },
+            { label: '桌機 (≥992px): 靠右對齊 (text-lg-end)', span: 4, bgColor: 'bg-emerald-600', textColor: 'text-white' },
           ],
         },
       ],

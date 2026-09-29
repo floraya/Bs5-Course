@@ -641,21 +641,45 @@ export const LESSONS_UTILITIES: Lesson[] = [
     title: 'Position 快速定位工具',
     officialName: 'Position',
     level: '中階',
-    summary: 'position-relative, position-absolute, top-0, start-0, translate-middle 快速釘選角落小徽章。',
-    teacherDialogue: '要在卡片右上角釘一顆小紅點或「推薦」小緞帶，以往要算 top: -10px, right: -10px 算很久。在 Bootstrap 裡，只要 position-relative 搭配 position-absolute top-0 end-0 translate-middle，一秒精準釘在右上角！',
+    summary: 'position-relative, position-absolute, top-0, start-0, translate-middle，以及 sticky-top, sticky-bottom 貼附定位。',
+    teacherDialogue: '要在卡片右上角釘一顆小紅點，只要 position-relative 搭配 position-absolute top-0 end-0 translate-middle；如果要做捲動時自動黏在視窗底部或頂部的工具列，Bootstrap 提供了 sticky-bottom 與 sticky-top！當使用者滾動頁面時，元素會自動黏著在視窗下緣，是手機網頁「立即報名列」或「快捷操作列」的最佳利器！',
     keyClasses: [
-      { name: 'position-relative', desc: '定位基準參考父層' },
-      { name: 'position-absolute', desc: '絕對定位子元素' },
-      { name: 'top-0 / bottom-0', desc: '貼頂或貼底' },
-      { name: 'start-0 / end-0', desc: '貼左或貼右' },
+      { name: 'sticky-bottom', desc: '黏性貼底定位（position: sticky; bottom: 0，隨視窗滾動吸附於底部）' },
+      { name: 'sticky-top', desc: '黏性置頂定位（position: sticky; top: 0，隨視窗滾動吸附於頂部）' },
+      { name: 'position-relative', desc: '定位基準參考父層（建立座標錨點）' },
+      { name: 'position-absolute', desc: '絕對定位子元素（脫離文件流依父層座標精準定位）' },
+      { name: 'top-0 / bottom-0', desc: '貼頂 (top: 0) 或貼底 (bottom: 0)' },
+      { name: 'start-0 / end-0', desc: '貼左 (left: 0) 或貼右 (right: 0)' },
       { name: 'translate-middle', desc: '向左上偏移 50% 達到精準中心點釘選' },
     ],
-    teacherHtml: `<div class="container py-3 text-center">
-  <div class="position-relative d-inline-block p-4 bg-light border rounded">
-    <span>吉他社入社名額</span>
-    <span class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-pill">
-      最後 2 席
-    </span>
+    teacherHtml: `<div class="container py-3">
+  <!-- 示範 1：絕對定位釘選角標 (position-absolute + translate-middle) -->
+  <h6 class="text-muted fw-bold mb-2">1. 角落懸浮徽章釘選</h6>
+  <div class="text-center mb-4">
+    <div class="position-relative d-inline-block p-4 bg-light border rounded shadow-sm">
+      <span class="fw-bold">🎸 吉他社成發 VIP 入場席位</span>
+      <span class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-pill shadow">
+        最後 2 席
+      </span>
+    </div>
+  </div>
+
+  <!-- 示範 2：黏性貼底工具列 (sticky-bottom) -->
+  <h6 class="text-muted fw-bold mb-2">2. 黏性貼底工具列 (sticky-bottom)</h6>
+  <div class="border rounded p-3 bg-light" style="max-height: 140px; overflow-y: auto;">
+    <p class="small text-muted mb-2">請在此區塊內上下滾動：下方「立即報名列」會隨滾動完美吸附黏在視窗底部！</p>
+    <div style="height: 160px;" class="text-secondary small">
+      📜 滾動內容範例：大明高中社團成發活動規範...<br>
+      1. 請憑學生證換取入場手環<br>
+      2. 演藝廳內禁止飲食熱食<br>
+      3. 活動期間請關閉手機響鈴<br>
+      （繼續往下滾動即可觀察 sticky-bottom 吸附效果）
+    </div>
+    <!-- sticky-bottom 貼底操作列 -->
+    <div class="sticky-bottom bg-dark text-white p-2.5 rounded shadow d-flex justify-content-between align-items-center">
+      <span class="small fw-bold">🎟️ 成發限定優惠票</span>
+      <button class="btn btn-warning btn-sm fw-bold">立即搶票 (sticky-bottom)</button>
+    </div>
   </div>
 </div>`,
     studentTask: {

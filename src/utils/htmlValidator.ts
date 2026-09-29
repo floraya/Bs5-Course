@@ -59,10 +59,12 @@ export function validateHtmlSyntax(html: string): SyntaxCheckResult {
   }
 
   // 3. Detect unclosed attribute quotes (e.g., class="container ...)
+  // Mask script tag contents so JavaScript quotes/strings do not cause false attribute errors
+  const htmlWithoutScripts = clean.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '<script></script>');
   let inDoubleQuote = false;
   let inSingleQuote = false;
-  for (let i = 0; i < clean.length; i++) {
-    const char = clean[i];
+  for (let i = 0; i < htmlWithoutScripts.length; i++) {
+    const char = htmlWithoutScripts[i];
     if (char === '"' && !inSingleQuote) {
       inDoubleQuote = !inDoubleQuote;
     } else if (char === "'" && !inDoubleQuote) {
@@ -78,7 +80,7 @@ export function validateHtmlSyntax(html: string): SyntaxCheckResult {
     'div', 'button', 'span', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
     'form', 'label', 'a', 'ul', 'ol', 'li', 'table', 'thead', 'tbody',
     'tr', 'td', 'th', 'figure', 'figcaption', 'blockquote', 'nav',
-    'textarea', 'select'
+    'textarea', 'select', 'script'
   ];
 
   for (const tag of nonVoidTags) {
@@ -139,6 +141,15 @@ export function extractClassesFromHtml(html: string): Set<string> {
   while ((match = classAttrRegex.exec(html)) !== null) {
     const classStr = match[1] || match[2] || match[3] || '';
     const tokens = classStr.trim().split(/\s+/);
+    for (const t of tokens) {
+      if (t) classes.add(t);
+    }
+  }
+
+  // Also collect classes referenced in jQuery addClass/removeClass/toggleClass
+  const jqClassRegex = /(?:addClass|removeClass|toggleClass)\s*\(\s*['"`]([^'"`]+)['"`]\s*\)/g;
+  while ((match = jqClassRegex.exec(html)) !== null) {
+    const tokens = match[1].trim().split(/\s+/);
     for (const t of tokens) {
       if (t) classes.add(t);
     }

@@ -75,53 +75,50 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
       return `// ⚡ 初始化 Popover（建議置於 </body> 結束標籤前）\n$('[data-bs-toggle="popover"]').each(function () {\n  new bootstrap.Popover(this);\n});`;
     }
     if (lesson.id === 'forms-validation') {
-      return `// ⚡ jQuery 表單點擊驗證與留言建立
+      return `// ⚡ jQuery 表單點擊驗證（點選「確認送出報名表」）
 $(".btn-send").on("click", function () {
   // 1. 取得輸入內容
-  const name = $name.val().trim();
-  const content = $content.val().trim();
+  const name = $("#userName").val().trim();
+  const phone = $("#userPhone").val().trim();
+  const camp = $("#campSelect").val();
 
   // 2. 表單驗證狀態變數
   let valid = true;
 
-  // 暱稱欄位驗證
+  // 姓名欄位驗證
   if (!name) {
-    $name.addClass("is-invalid").removeClass("is-valid");
+    $("#userName").addClass("is-invalid").removeClass("is-valid");
     valid = false;
   } else {
-    $name.removeClass("is-invalid").addClass("is-valid");
+    $("#userName").removeClass("is-invalid").addClass("is-valid");
   }
 
-  // 留言內容欄位驗證
-  if (!content) {
-    $content.addClass("is-invalid").removeClass("is-valid");
+  // 聯絡電話驗證
+  if (!phone) {
+    $("#userPhone").addClass("is-invalid").removeClass("is-valid");
     valid = false;
   } else {
-    $content.removeClass("is-invalid").addClass("is-valid");
+    $("#userPhone").removeClass("is-invalid").addClass("is-valid");
+  }
+
+  // 營隊項目驗證
+  if (!camp) {
+    $("#campSelect").addClass("is-invalid").removeClass("is-valid");
+    valid = false;
+  } else {
+    $("#campSelect").removeClass("is-invalid").addClass("is-valid");
   }
 
   // 驗證失敗：終止執行，畫面保留紅色錯誤提示
-  if (!valid) return;
+  if (!valid) {
+    $("#successNotice").addClass("d-none");
+    return;
+  }
 
   // =========================
-  // 驗證成功：建立並顯示新留言
+  // 驗證成功：顯示成功反饋通知
   // =========================
-  const newMessage = {
-    name: name,
-    text: content,
-    time: "剛剛"
-  };
-
-  msgData.push(newMessage);
-  createMessage(newMessage);
-  updateCount();
-
-  // 清空輸入框並還原狀態
-  $name.val("");
-  $content.val("");
-  $name.removeClass("is-invalid is-valid");
-  $content.removeClass("is-invalid is-valid");
-  $name.focus();
+  $("#successNotice").removeClass("d-none");
 });`;
     }
     const jqItem = lesson.keyClasses.find((k) => k.name.toLowerCase().includes('jquery'));
