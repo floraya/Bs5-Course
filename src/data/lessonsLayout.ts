@@ -322,24 +322,47 @@ export const LESSONS_LAYOUT: Lesson[] = [
     title: 'Columns 欄位對齊與排序',
     officialName: 'Columns',
     level: '中階',
-    summary: '深入學習欄位垂直對齊 (align-items)、水平對齊 (justify-content) 與順序調換 (order-*)。',
-    teacherDialogue: '常常有同學問老師：「老師！我左邊的文字很少，右邊的照片很高，文字怎麼垂直置中在中間？」這時候只要在 row 加上 align-items-center 就解決了！另外還能用 order-1、order-2 來讓手機版跟電腦版的閱讀順序自動互換喔！',
+    summary: '深入學習欄位垂直對齊 (align-items)、水平對齊 (justify-content)、順序調換 (order-*) 與欄位推移 (offset-*)。',
+    teacherDialogue: '常常有同學問：「想要讓一塊 8 欄的內容在桌機居中，但不想兩邊放空的 col，該怎麼做？」答案就是 offset-*（向右推移欄位）！例如 `col-md-8 offset-md-2`，左邊自動空出 2 欄，8 欄內容就完美在正中央！而且還能根據 sm, md, lg, xl, xxl 不同尺寸設定不同的推移量喔！',
     keyClasses: [
+      { name: 'offset-* / offset-{sm,md,lg,xl}-*', desc: '向右推移欄位（例如 col-md-6 offset-md-3 在中型螢幕水平居中）' },
       { name: 'align-items-center', desc: '讓同一行中的欄位垂直居中對齊' },
-      { name: 'align-items-end', desc: '讓同一行中的欄位底部對齊' },
       { name: 'justify-content-center', desc: '欄位在水平方向置中' },
       { name: 'order-first / order-last', desc: '強制改變欄位顯示前後順序' },
     ],
     teacherHtml: `<div class="container py-3">
-  <div class="row align-items-center bg-light border p-3 rounded" style="min-height: 140px;">
+  <!-- 示範 1：垂直置中 (align-items-center) -->
+  <h6 class="text-muted fw-bold mb-2">1. 垂直置中 (align-items-center)</h6>
+  <div class="row align-items-center bg-light border p-2 rounded mb-3">
     <div class="col-6 bg-primary text-white p-3 rounded">
-      <h5>垂直居中內容</h5>
-      <p class="mb-0 small">藉由父層 align-items-center，矮的這塊也能在正中間！</p>
+      <strong>矮區塊</strong>：父層垂直居中！
     </div>
     <div class="col-6 bg-secondary text-white p-4 rounded">
-      <h5>較高的內容區</h5>
-      <p class="small">我有兩行文字<br>撐開了整個容器高度！</p>
+      <strong>高區塊</strong>：撐開列高！
     </div>
+  </div>
+
+  <!-- 示範 2：offset-* 響應式推移居中 (sm, md, lg, xl, xxl) -->
+  <h6 class="text-muted fw-bold mb-2">2. 響應式欄位推移 offset-* (不同斷點自動調適)</h6>
+  <div class="row g-2 mb-2">
+    <!-- 手機滿版(12)，平板(md)佔8欄推2欄居中，桌機(lg)佔6欄推3欄居中 -->
+    <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+      <div class="bg-success text-white p-3 rounded text-center shadow-sm">
+        <div class="fw-bold">🎯 精準置中公告框</div>
+        <div class="small">手機 col-12 · md offset-2 (8欄) · lg offset-3 (6欄) · xl offset-4 (4欄)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 示範 3：多斷點排列對比 (sm, md, lg, xl, xxl) -->
+  <h6 class="text-muted fw-bold mb-2">3. 跨尺寸自動延伸 (sm / md / lg / xl / xxl)</h6>
+  <div class="row g-2 text-center text-white text-xs">
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2"><div class="p-2 bg-info text-dark rounded">sm:6 md:4 lg:3 xl:2</div></div>
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2"><div class="p-2 bg-info text-dark rounded">sm:6 md:4 lg:3 xl:2</div></div>
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2"><div class="p-2 bg-info text-dark rounded">sm:6 md:4 lg:3 xl:2</div></div>
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2"><div class="p-2 bg-info text-dark rounded">sm:6 md:4 lg:3 xl:2</div></div>
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2"><div class="p-2 bg-info text-dark rounded">sm:6 md:4 lg:3 xl:2</div></div>
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2"><div class="p-2 bg-info text-dark rounded">sm:6 md:4 lg:3 xl:2</div></div>
   </div>
 </div>`,
     studentTask: {

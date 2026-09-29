@@ -7,25 +7,55 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     title: 'Accordion 手風琴折疊',
     officialName: 'Accordion',
     level: '中階',
-    summary: 'FAQ 常見問答首選！點擊標題即可優雅展開或收合對應內容，節省寶貴的頁面空間。',
-    teacherDialogue: '大明高中網站常見問題（比如「如何請假」、「校服購買地點」），如果全部攤開會超長超難滑！Accordion 手風琴元件可以讓同學點擊標題時，內容像手風琴一樣平滑滑出展開！',
+    summary: 'FAQ 常見問答首選！多項目互斥切換 (data-bs-parent) 或多項目各自獨立展開 (Always-open)。',
+    teacherDialogue: '手風琴切換多個項目的關鍵有兩點：第一，每一個項目的內容容器必須有專屬獨立的 ID（如 #faqOne, #faqTwo, #faqThree），對應按鈕的 data-bs-target 也必須指向各自 ID；第二，父層指定 data-bs-parent="#faqAccordion" 就能達成「開一個關一個」的互斥切換！若移除 data-bs-parent，則會變成可同時展開多個項目的 Always-open 模式！',
     keyClasses: [
-      { name: 'accordion', desc: '手風琴外層主容器' },
-      { name: 'accordion-item', desc: '單一問答項目' },
-      { name: 'accordion-button', desc: '可點選的折疊按鈕' },
-      { name: 'accordion-collapse collapse', desc: '折疊收納的內文主體' },
+      { name: 'data-bs-parent="#id"', desc: '關聯父容器 ID：達成多項目互斥切換（開啟一項時自動關閉其他項）' },
+      { name: 'data-bs-target="#id"', desc: '指定要展開/收合的目標容器專屬識別碼 ID（多項目時每個 target 必須各自獨立）' },
+      { name: 'accordion-button collapsed', desc: '可點選的折疊按鈕（未展開狀態自帶 collapsed 樣式與旋轉箭頭）' },
+      { name: 'accordion-collapse collapse show', desc: '折疊收納的內文主體（show 代表預設展開）' },
     ],
-    teacherHtml: `<div class="container py-3" style="max-width: 500px;">
+    teacherHtml: `<div class="container py-3" style="max-width: 520px;">
+  <!-- 手風琴外層主容器 (指定 id="faqAccordion") -->
   <div class="accordion shadow-sm" id="faqAccordion">
+    <!-- 項目 1 (預設展開 show) -->
     <div class="accordion-item">
       <h2 class="accordion-header">
         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne">
-          ❓ 社團成發需要購票嗎？
+          ❓ 社團成發需要購票入場嗎？
         </button>
       </h2>
       <div id="faqOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
         <div class="accordion-body">
           全校師生免費入場！請於當天下午 18:00 前至活動中心排隊憑學生證換取入場手環。
+        </div>
+      </div>
+    </div>
+
+    <!-- 項目 2 (互斥切換：點擊自動收合項目 1) -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo">
+          🥤 現場可以攜帶外食與飲料嗎？
+        </button>
+      </h2>
+      <div id="faqTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          大禮堂內禁止攜帶含糖飲料與熱食，僅開放攜帶裝有開水之環保隨行水壺。
+        </div>
+      </div>
+    </div>
+
+    <!-- 項目 3 (互斥切換：點擊自動收合其他項目) -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqThree">
+          📸 可以攜帶專業單眼相機進場拍照嗎？
+        </button>
+      </h2>
+      <div id="faqThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          歡迎拍照記錄青春！但請關閉閃光燈，且請勿站立於走道中央影響後方觀眾視線。
         </div>
       </div>
     </div>
@@ -577,30 +607,42 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     title: 'Carousel 輪播投影片',
     officialName: 'Carousel',
     level: '中階',
-    summary: '大明高中首頁必備！多張精選照片自動左右滑動切換，支援下方小圓點指示器與左右切換箭頭。',
-    teacherDialogue: '在大明高中的首頁最上方，一定都有一塊大輪播圖（Carousel），放校慶宣傳、得獎捷報和美麗校園風景！Bootstrap 內建了完整的輪播 JavaScript，只要加上 data-bs-ride="carousel"，照片就會像幻燈片一樣自動流暢翻頁！',
+    summary: '多張照片自動輪播！支援 carousel-indicators 指示圓點、carousel-fade 淡入淡出與 data-bs-interval 自訂秒數。',
+    teacherDialogue: '輪播不只有左右平移！加上 `carousel-fade` 就能換成優雅高級的淡入淡出轉場；加上 `carousel-indicators` 可以在下方提供小橫條分頁指示器供使用者點選跳頁；而在各投影片加上 `data-bs-interval="3000"` 還能自由指定每張幻燈片停留的毫秒時間（例如 3000 代表 3 秒）！',
     keyClasses: [
-      { name: 'carousel slide', desc: '輪播容器與滑動平移動畫' },
-      { name: 'carousel-inner', desc: '所有幻燈片的包裹容器' },
-      { name: 'carousel-item active', desc: '單一投影片（active 代表當前第一張顯示）' },
-      { name: 'carousel-control-prev / next', desc: '左右切換箭頭' },
+      { name: 'carousel-indicators', desc: '輪播下方指示器導覽按鈕群（可點選跳轉至特定投影片，需設定 data-bs-slide-to）' },
+      { name: 'carousel-fade', desc: '淡入淡出切換特效（取代預設的左右滑動動畫，呈現優雅沉穩效果）' },
+      { name: 'data-bs-interval="*"', desc: '自訂個別幻燈片停留切換時間（單位毫秒，例如 3000 代表 3 秒；設為 false 則暫停輪播）' },
+      { name: 'carousel slide', desc: '輪播容器與滑動平移動畫主體' },
     ],
     teacherHtml: `<div class="container py-3" style="max-width: 600px;">
-  <div id="schoolCarousel" class="carousel slide rounded overflow-hidden shadow" data-bs-ride="carousel">
+  <!-- carousel slide + carousel-fade 淡入淡出轉場 -->
+  <div id="schoolCarousel" class="carousel slide carousel-fade rounded overflow-hidden shadow" data-bs-ride="carousel">
+    <!-- 下方輪播指示器 carousel-indicators -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#schoolCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+      <button type="button" data-bs-target="#schoolCarousel" data-bs-slide-to="1"></button>
+    </div>
+
+    <!-- 輪播內容區塊，個別設定 data-bs-interval 切換間隔 -->
     <div class="carousel-inner">
-      <div class="carousel-item active">
+      <!-- 第 1 張：停留 3000ms (3秒) -->
+      <div class="carousel-item active" data-bs-interval="3000">
         <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600" class="d-block w-100" style="height: 220px; object-fit: cover;" alt="畢業典禮">
         <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-1">
-          <h6>🎓 2026 大明高中 畢典盛會</h6>
+          <h6>🎓 2026 大明高中 畢典盛會 (停留 3 秒)</h6>
         </div>
       </div>
-      <div class="carousel-item">
+      <!-- 第 2 張：停留 5000ms (5秒) -->
+      <div class="carousel-item" data-bs-interval="5000">
         <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600" class="d-block w-100" style="height: 220px; object-fit: cover;" alt="校園綠地">
         <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-1">
-          <h6>🌳 春季綠色校園漫步</h6>
+          <h6>🌳 春季綠色校園漫步 (停留 5 秒)</h6>
         </div>
       </div>
     </div>
+
+    <!-- 左右切換控制鈕 -->
     <button class="carousel-control-prev" type="button" data-bs-target="#schoolCarousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon"></span>
     </button>
@@ -913,32 +955,37 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     title: 'Modal 彈跳對話框',
     officialName: 'Modal',
     level: '高階',
-    summary: '點擊彈出遮罩對話視窗！包含 modal-header 標題列、modal-body 內文與 modal-footer 按鈕群。',
-    teacherDialogue: '需要同學確認「確定要送出退社申請嗎？」或「點擊查看志工招募簡章」時，Modal 彈窗是最具沉浸感的設計！背後會自動遮上一層半透明黑幕（backdrop），並帶有平滑淡入滑落的動畫！',
+    summary: '點擊彈出遮罩對話視窗！支援 modal-{sm,lg,xl} 寬度與 modal-fullscreen-{sm,md,lg,xl,xxl}-down 響應全螢幕。',
+    teacherDialogue: '不同裝置需要不同的彈窗體驗！在手機上我們希望彈窗能像原生 App 一樣滿版鋪滿全螢幕以方便閱讀，但在平板與桌機上則希望它是優雅的置中對話框。這時候只要加上 `modal-fullscreen-md-down`（md 以下全螢幕，md 以上為浮動對話框），再搭配 `modal-lg` 或 `modal-xl`，就能根據螢幕尺寸產生完全不同的彈窗效果！',
     keyClasses: [
-      { name: 'modal fade', desc: '彈窗外層與淡入淡出動畫' },
+      { name: 'modal-fullscreen-{sm,md,lg,xl,xxl}-down', desc: '響應式全螢幕：指定螢幕尺寸以下自動鋪滿全螢幕，大尺寸還原為置中浮動視窗' },
+      { name: 'modal-{sm|lg|xl}', desc: '彈窗尺寸寬度設定（例如 modal-lg 或 modal-xl 擴充寬度）' },
       { name: 'modal-dialog modal-dialog-centered', desc: '對話框主體與垂直置中' },
-      { name: 'modal-content', desc: '包含 header, body, footer 的白色卡片' },
-      { name: 'data-bs-toggle="modal"', desc: '按鈕觸發開啟彈窗' },
+      { name: 'modal fade', desc: '彈窗外層遮罩與淡入淡出動畫' },
     ],
     teacherHtml: `<div class="container py-3 text-center">
-  <!-- 觸發按鈕 -->
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#examModal">
-    🚀 點我開啟模考確認彈窗 (Modal)
-  </button>
+  <!-- 觸發按鈕群 -->
+  <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#examModal">
+      🚀 開啟響應式全螢幕彈窗 (modal-fullscreen-md-down)
+    </button>
+  </div>
 
-  <!-- Modal 本體 -->
+  <!-- Modal 本體：包含 modal-lg 與 modal-fullscreen-md-down -->
   <div class="modal fade" id="examModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-md-down">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-light">
           <h5 class="modal-title fw-bold">🎓 學測倒數破百誓師確認</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body text-start">
-          距離 115 年學科能力測驗僅剩 120 天！你準備好今日的複習進度了嗎？保持節奏，頂尖志願就在眼前！
+          <div class="alert alert-info py-2">
+            💡 <strong>響應式效果：</strong>在手機/直向小平板 (md 以下) 它是貼齊全螢幕的滿版介面；拉寬到平板與電腦 (≥768px) 會自動變為優雅的置中大視窗 (modal-lg)！
+          </div>
+          <p>距離 115 年學科能力測驗僅剩 120 天！你準備好今日的複習進度了嗎？保持節奏，頂尖志願就在眼前！</p>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer bg-light">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">再想想</button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">立刻全力衝刺！</button>
         </div>
@@ -1085,16 +1132,16 @@ export const LESSONS_COMPONENTS: Lesson[] = [
     title: 'Navs & tabs 分頁切換籤',
     officialName: 'Navs & tabs',
     level: '中階',
-    summary: '在同一個卡片內無刷新切換多個主題！nav-tabs 分頁標籤與 tab-pane 內容面板。',
-    teacherDialogue: '想像在個人檔案頁面，想看「個人簡介」、「歷年幹部經歷」和「榮譽得獎紀錄」，如果都寫在一起很雜亂。使用 nav-tabs，點到哪個分頁籤，底下內容就秒速切換到對應資訊，乾淨又俐落！',
+    summary: 'nav-tabs 分頁標籤與 tab-pane 內容面板；搭配 align-items-start 實現垂直標籤頂部對齊。',
+    teacherDialogue: '想像在個人檔案頁面，想看「個人簡介」和「社團幹部」，使用 nav-tabs 可以點哪頁切哪頁！而如果要做側邊垂直分頁籤（Vertical Tabs），最關鍵的技巧是在最外層加上 `align-items-start`！因為 Flexbox 預設會把兩側子項目強制拉伸變形（stretch），加上 `align-items-start` 才能確保分頁按鈕群與右側內容面板皆向上頂部對齊！',
     keyClasses: [
-      { name: 'nav nav-tabs', desc: '分頁標籤外觀風格' },
-      { name: 'nav-pills', desc: '膠囊按鈕風格的分頁切換' },
-      { name: 'data-bs-toggle="tab"', desc: '啟用分頁切換互動邏輯' },
-      { name: 'tab-content tab-pane', desc: '切換時對應顯示的內容區塊' },
+      { name: 'align-items-start', desc: '垂直分頁籤關鍵：防止側邊分頁標籤與內容面板被 Flex 強制拉伸變形，頂部對齊' },
+      { name: 'nav nav-tabs / nav-pills', desc: '分頁標籤外觀風格 / 膠囊按鈕風格的分頁切換' },
+      { name: 'data-bs-toggle="tab" / "pill"', desc: '宣告啟用分頁切換互動邏輯' },
+      { name: 'tab-content tab-pane', desc: '分頁切換時對應顯示的內容區塊' },
     ],
-    teacherHtml: `<div class="container py-3" style="max-width: 500px;">
-  <!-- 分頁導航列 -->
+    teacherHtml: `<div class="container py-3">
+  <!-- 示範 1：標準水平分頁籤 -->
   <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
     <li class="nav-item">
       <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-about">🙋 自我介紹</button>
@@ -1103,13 +1150,29 @@ export const LESSONS_COMPONENTS: Lesson[] = [
       <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-club">🎸 社團幹部</button>
     </li>
   </ul>
-  <!-- 分頁內容 -->
-  <div class="tab-content p-3 bg-light rounded border">
+  <div class="tab-content p-3 bg-light rounded border mb-4">
     <div class="tab-pane fade show active" id="tab-about">
       我是高二 2 班的陳同學，興趣是吉他自彈自唱與網頁程式設計！
     </div>
     <div class="tab-pane fade" id="tab-club">
       現任吉他社副社長、校慶總召組活動部幹事。
+    </div>
+  </div>
+
+  <!-- 示範 2：垂直側邊分頁籤（搭配 align-items-start 防止被 stretch 拉伸） -->
+  <h6 class="text-muted fw-bold mb-2">💡 垂直分頁籤技巧：align-items-start 頂部貼齊</h6>
+  <div class="d-flex align-items-start bg-light p-3 rounded border gap-3">
+    <div class="nav flex-column nav-pills me-2" id="v-pills-tab" role="tablist">
+      <button class="nav-link active text-nowrap" data-bs-toggle="pill" data-bs-target="#v-pills-home">主修課程</button>
+      <button class="nav-link text-nowrap" data-bs-toggle="pill" data-bs-target="#v-pills-profile">選修清單</button>
+    </div>
+    <div class="tab-content flex-grow-1 bg-white p-3 rounded border" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-home">
+        <strong>💻 資訊科技主修：</strong>學習 Bootstrap 5 響應式網頁排版設計。
+      </div>
+      <div class="tab-pane fade" id="v-pills-profile">
+        <strong>🎨 數位藝術選修：</strong>UI/UX 設計準則與色彩心理學。
+      </div>
     </div>
   </div>
 </div>`,

@@ -128,18 +128,26 @@ export const LESSONS_HELPERS: Lesson[] = [
     title: 'Colored links 彩色超連結',
     officialName: 'Colored links',
     level: '初階',
-    summary: 'link-primary, link-success, link-danger 讓超連結擁有與品牌一致的色彩與滑鼠懸停回饋。',
-    teacherDialogue: '預設的藍色底線超連結是不是很老氣？使用 link-* 類別（例如 link-success、link-danger），超連結就會換上相應色彩，而且滑鼠移過去時還會自動微調深淺，質感超棒！',
+    summary: 'link-primary, link-success, link-danger 色彩連結，搭配 link-offset-* 微調下劃線間距。',
+    teacherDialogue: '預設的藍色底線超連結是不是很老氣？使用 link-* 類別（例如 link-success、link-danger），超連結就會換上相應色彩！更厲害的是搭配 link-offset-1、link-offset-2、link-offset-3，可以微調底線與文字下緣的間距，讓英文字母（如 g、y、p）不再被底線生硬切斷！',
     keyClasses: [
-      { name: 'link-primary', desc: '主色系藍色連結' },
-      { name: 'link-danger', desc: '紅色警示連結' },
-      { name: 'link-secondary', desc: '低調次要灰色連結' },
+      { name: 'link-primary / success / danger', desc: '品牌色彩主題超連結，具備自動滑鼠 hover 明暗反饋' },
+      { name: 'link-offset-1 / 2 / 3', desc: '下劃線垂直下移間距（1~3px），避免底線緊貼文字干擾英文字母下緣' },
+      { name: 'link-secondary / info / dark', desc: '低調次要色、淺藍資訊色與暗黑系文字超連結' },
     ],
     teacherHtml: `<div class="container py-3">
-  <p>請造訪我們的校慶專題報導：</p>
-  <p><a href="javascript:;" class="link-primary">🔗 閱讀校慶園遊會特別專欄 (link-primary)</a></p>
-  <p><a href="javascript:;" class="link-success">🔗 下載園遊會優惠券 (link-success)</a></p>
-  <p><a href="javascript:;" class="link-danger">⚠️ 遺失物招領登記處 (link-danger)</a></p>
+  <div class="bg-light p-3 rounded border space-y-2">
+    <p class="mb-2 fw-bold text-dark">請造訪我們的校慶專題報導：</p>
+    <p class="mb-2">
+      <a href="javascript:;" class="link-primary link-offset-2">🔗 閱讀校慶園遊會特別專欄 (link-primary + link-offset-2)</a>
+    </p>
+    <p class="mb-2">
+      <a href="javascript:;" class="link-success link-offset-3">🌿 下載園遊會環保優惠券 (link-success + link-offset-3)</a>
+    </p>
+    <p class="mb-0">
+      <a href="javascript:;" class="link-danger link-offset-1">⚠️ 遺失物招領緊急登記處 (link-danger + link-offset-1)</a>
+    </p>
+  </div>
 </div>`,
     studentTask: {
       title: '挑戰：將社團邀請連結升級為彩色連結與加粗強調',
@@ -290,21 +298,30 @@ export const LESSONS_HELPERS: Lesson[] = [
     title: 'Position 定位輔助',
     officialName: 'Position',
     level: '中階',
-    summary: '固定置頂 fixed-top、固定置底 fixed-bottom 與滾動吸頂 sticky-top。',
-    teacherDialogue: '常常看到網站上方那條選單在頁面往下滑時「吸在最上面」，或者即時公告貼在畫面最底部。用 fixed-top 可以讓導覽列固定在螢幕頂端；用 sticky-top 則會在滾動到它時優雅黏在頂端！',
+    summary: '固定置頂 fixed-top、固定置底 fixed-bottom、滾動吸頂 sticky-top 與滾動吸底 sticky-bottom。',
+    teacherDialogue: '常常看到網站導覽列在往下滑時「吸在最上方」（sticky-top），或者電商結帳列在往下滑到底時「自動吸在最下方」（sticky-bottom）！Bootstrap 5 完整支援 sticky-top 與 sticky-bottom，不需自己監聽 scroll 事件即可達成流暢的吸頂與吸底釘選！',
     keyClasses: [
-      { name: 'fixed-top', desc: '固定鎖死在視窗頂端 (position: fixed; top: 0)' },
-      { name: 'fixed-bottom', desc: '固定鎖死在視窗最底端' },
-      { name: 'sticky-top', desc: '隨捲軸滾動，到達頂端時自動吸附固定' },
+      { name: 'sticky-top', desc: '隨捲軸向下滾動，碰觸到視窗頂端時自動吸附釘選' },
+      { name: 'sticky-bottom', desc: '隨捲軸向上滾動，碰觸到視窗或容器底端時自動吸附釘選在最底部' },
+      { name: 'fixed-top / fixed-bottom', desc: '絕對固定鎖死在視窗最頂端 / 最底端（不隨捲軸滾動）' },
     ],
     teacherHtml: `<div class="container py-3">
-  <div class="sticky-top bg-warning p-2 rounded shadow-sm text-center fw-bold mb-3">
-    📌 sticky-top：滾動到頂端時我會吸附在最上方！
+  <!-- 1. sticky-top 吸頂示範 -->
+  <div class="sticky-top bg-warning p-2 rounded shadow-sm text-center fw-bold mb-2">
+    📌 sticky-top：滾動到頂端時我會牢牢吸附在最上方！
   </div>
-  <div class="bg-light p-4 rounded" style="height: 140px; overflow-y: scroll;">
-    <p>試著在此處上下滾動...</p>
-    <p>第二段文字內容...</p>
-    <p>第三段文字內容...</p>
+
+  <!-- 可滾動容器以展示吸附效果 -->
+  <div class="bg-light p-3 rounded border mb-2" style="height: 120px; overflow-y: scroll;">
+    <p class="text-muted small">📜 請在此區塊內上下滾動以體驗 sticky 吸附定位...</p>
+    <p class="small">第 1 項：大明高中 115 週年校慶典禮日程</p>
+    <p class="small">第 2 項：社團聯合靜態展與音樂祭演出陣容</p>
+    <p class="small">第 3 項：各班攤位平面圖與美食評比規則</p>
+  </div>
+
+  <!-- 2. sticky-bottom 吸底示範 -->
+  <div class="sticky-bottom bg-primary text-white p-2 rounded shadow-sm text-center fw-bold">
+    🎯 sticky-bottom：在容器底部吸附固定（常置放結帳、確認提交列）！
   </div>
 </div>`,
     studentTask: {
@@ -406,18 +423,23 @@ export const LESSONS_HELPERS: Lesson[] = [
     title: 'Stacks 水平與垂直堆疊',
     officialName: 'Stacks',
     level: '初階',
-    summary: '比寫 Flexbox 更快十倍！vstack (垂直垂直排) 與 hstack (水平橫向排)，搭配 gap-* 輕鬆調間距。',
-    teacherDialogue: '常常要讓三個按鈕水平排開，以前要寫 d-flex align-items-center gap-3，字超多！在 Bootstrap 5 裡，只要寫一個 hstack gap-3 就搞定了！想直向排就寫 vstack gap-2，簡單明瞭又超神速！',
+    summary: '比寫 Flexbox 更快十倍！vstack (垂直排)、hstack (水平排) 搭配 gap-* 與 ms-auto 自動分推。',
+    teacherDialogue: 'Stacks 的終極隱藏技：只要在某個按鈕或文字加上 `ms-auto`（margin-start: auto），它就會把左側所有剩餘空間吃光，瞬間把該元素推到最右側！例如左邊放校名與社團按鈕，右邊加一個 `ms-auto` 的「登出按鈕」，一行搞定完美的兩端分推排版！',
     keyClasses: [
+      { name: 'ms-auto', desc: '自動將該元素推擠至最右側（水平堆疊中實現兩端分推貼齊的黃金搭檔）' },
+      { name: 'hstack gap-*', desc: '水平堆疊，子元素由左往右並排且自帶間隙' },
       { name: 'vstack gap-*', desc: '垂直堆疊，子元素由上往下整齊排列' },
-      { name: 'hstack gap-*', desc: '水平堆疊，子元素由左往右並排' },
+      { name: 'vr', desc: '垂直分隔線 (Vertical Rule)，在堆疊元素間加入精緻隔線' },
     ],
     teacherHtml: `<div class="container py-3">
-  <div class="hstack gap-3 bg-light p-3 rounded mb-3">
-    <span class="fw-bold">🏫 快捷通道：</span>
-    <button class="btn btn-primary btn-sm">學務處</button>
-    <button class="btn btn-secondary btn-sm">教務處</button>
-    <button class="btn btn-outline-dark btn-sm ms-auto">登出</button>
+  <!-- hstack 水平堆疊 + ms-auto 自動分推右側 -->
+  <div class="hstack gap-3 bg-light p-3 rounded border mb-3">
+    <span class="fw-bold">🏫 大明高中管理系統</span>
+    <div class="vr"></div>
+    <button class="btn btn-outline-primary btn-sm">學務處</button>
+    <button class="btn btn-outline-secondary btn-sm">教務處</button>
+    <!-- ms-auto 將登出按鈕自動推擠至最右端 -->
+    <button class="btn btn-danger btn-sm ms-auto">🚪 登出 (ms-auto)</button>
   </div>
 </div>`,
     studentTask: {

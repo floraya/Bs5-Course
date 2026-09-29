@@ -571,12 +571,12 @@ export const StudentView: React.FC<StudentViewProps> = ({
                   </span>
                 </div>
                 <div className="text-[11px] text-slate-400">
-                  可任意在「🖥️ 網頁預覽」、「&lt;/&gt; 學生 HTML 程式碼」與「🎨 CSS 樣式」之間流暢切換檢視
+                  可任意在「🖥️ 網頁預覽」、「&lt;/&gt; HTML」與「🎨 CSS」之間流暢切換檢視
                 </div>
               </div>
             </div>
 
-            {/* Central Switcher: [ 🖥️ 即時預覽 ] [ </> HTML 骨架 ] [ 🎨 CSS 樣式 ] [ ⚡ 雙欄對照 ] */}
+            {/* Central Switcher: [ 🖥️ 即時預覽 ] [ </> HTML ] [ 🎨 CSS ] [ ⚡ 雙欄對照 ] */}
             <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 shadow-inner">
               <button
                 onClick={() => {
@@ -605,7 +605,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                 }`}
               >
                 <Code2 className="w-3.5 h-3.5" />
-                <span>HTML 程式碼</span>
+                <span>HTML</span>
               </button>
 
               <button
@@ -620,7 +620,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                 }`}
               >
                 <Layers className="w-3.5 h-3.5" />
-                <span>CSS 樣式</span>
+                <span>CSS</span>
               </button>
 
               <button
@@ -735,7 +735,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                             : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                         }`}
                       >
-                        HTML 程式碼
+                        HTML
                       </button>
                       <button
                         onClick={() => {
@@ -748,7 +748,7 @@ export const StudentView: React.FC<StudentViewProps> = ({
                             : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                         }`}
                       >
-                        CSS 樣式
+                        CSS
                       </button>
                     </div>
 

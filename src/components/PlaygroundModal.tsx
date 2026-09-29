@@ -138,6 +138,22 @@ export const PlaygroundModal: React.FC<PlaygroundModalProps> = ({
   <title>我的校園專案 · Bootstrap 5</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    /* Bootstrap 5 CSS Grid Native Support */
+    .grid { display: grid !important; grid-template-columns: repeat(var(--bs-columns, 12), 1fr) !important; gap: var(--bs-gap, 1rem) !important; }
+    .g-col-1 { grid-column: auto / span 1 !important; }
+    .g-col-2 { grid-column: auto / span 2 !important; }
+    .g-col-3 { grid-column: auto / span 3 !important; }
+    .g-col-4 { grid-column: auto / span 4 !important; }
+    .g-col-5 { grid-column: auto / span 5 !important; }
+    .g-col-6 { grid-column: auto / span 6 !important; }
+    .g-col-7 { grid-column: auto / span 7 !important; }
+    .g-col-8 { grid-column: auto / span 8 !important; }
+    .g-col-9 { grid-column: auto / span 9 !important; }
+    .g-col-10 { grid-column: auto / span 10 !important; }
+    .g-col-11 { grid-column: auto / span 11 !important; }
+    .g-col-12 { grid-column: auto / span 12 !important; }
+  </style>
 </head>
 <body>
 ${code}

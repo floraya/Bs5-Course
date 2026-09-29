@@ -683,29 +683,178 @@ export const LESSONS_FORMS: Lesson[] = [
     title: 'Form Validation 表單驗證回饋',
     officialName: 'Validation',
     level: '高階',
-    summary: '最專業的互動細節！is-valid 綠色勾勾、is-invalid 紅色驚嘆號與 invalid-feedback 錯誤提示。',
-    teacherDialogue: '當同學填表單漏填了必填項目，如果只是跳出醜陋的瀏覽器 alert，使用者體驗很差！Bootstrap 提供了超好看的驗證提示：輸入正確時邊框變綠色並帶勾勾圖示（is-valid）；輸入錯誤或未填時邊框變紅色（is-invalid），下方還能用 invalid-feedback 顯示貼心的錯誤說明文字！',
+    summary: 'is-valid 綠勾、is-invalid 紅驚嘆號，搭配 jQuery 表單送出與即時輸入判斷 (was-validated)。',
+    teacherDialogue: '在真實前端開發中，表單驗證一定要搭配 jQuery / JS 動態判斷！當使用者點擊「提交」時，透過 jQuery 攔截 submit 事件：如果表單格式未通過 (`!this.checkValidity()`)，就立即呼叫 `event.preventDefault()` 阻止跳頁，並為 form 加上 `was-validated` 類別！另外也可以在 input 事件中用 jQuery 檢查字數長度，即時為輸入框切換 `is-valid` 與 `is-invalid`！',
     keyClasses: [
-      { name: 'is-valid', desc: '驗證成功狀態（綠色邊框與綠勾標記）' },
-      { name: 'is-invalid', desc: '驗證失敗狀態（紅色邊框與驚嘆號標記）' },
-      { name: 'valid-feedback', desc: '輸入正確時顯示的綠色鼓勵文字' },
-      { name: 'invalid-feedback', desc: '輸入有誤時顯示的紅色提示文字' },
+      { name: 'is-invalid', desc: '驗證失敗狀態：輸入框邊框變紅並帶驚嘆號標記，觸發下方 invalid-feedback 顯示' },
+      { name: 'is-valid', desc: '驗證成功狀態：輸入框邊框變綠並帶打勾標記，觸發下方 valid-feedback 顯示' },
+      { name: 'invalid-feedback', desc: '輸入有誤或空白時顯示的紅色提示文字' },
+      { name: 'valid-feedback', desc: '輸入正確時顯示的綠色鼓勵提示文字' },
+      { name: 'jQuery 表單送出驗證', desc: '$(".btn-send").on("click", function () { if (!name) { $name.addClass("is-invalid"); valid = false; } });' },
     ],
-    teacherHtml: `<div class="container py-3" style="max-width: 480px;">
-  <!-- 成功範例 -->
-  <div class="mb-3">
-    <label class="form-label fw-bold">學生帳號</label>
-    <input type="text" class="form-control is-valid" value="alex_guitar_hero">
-    <div class="valid-feedback">太棒了！這個社群帳號可以使用！</div>
+    teacherHtml: `<div class="container py-3" style="max-width: 520px;">
+  <!-- 表單卡片 -->
+  <div class="card shadow-sm border-0 mb-3">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <span class="fw-bold">💬 大明高中校園留言板 (驗證示範)</span>
+      <span class="badge bg-light text-primary" id="msgCount">留言：1 則</span>
+    </div>
+    <div class="card-body bg-light">
+      <form id="msgForm" novalidate onsubmit="return false;">
+        <!-- 暱稱欄位 -->
+        <div class="mb-3">
+          <label class="form-label fw-bold" for="userName">
+            學生暱稱 <span class="text-danger">*</span>
+          </label>
+          <input type="text" class="form-control" id="userName" placeholder="請輸入暱稱 (例如：吉他手阿明)">
+          <div class="invalid-feedback">❌ 暱稱不可為空白，請輸入暱稱！</div>
+          <div class="valid-feedback">✅ 暱稱格式正確！</div>
+        </div>
+
+        <!-- 留言內容欄位 -->
+        <div class="mb-3">
+          <label class="form-label fw-bold" for="userContent">
+            留言內容 <span class="text-danger">*</span>
+          </label>
+          <textarea class="form-control" id="userContent" rows="2" placeholder="請在此留下想說的話..."></textarea>
+          <div class="invalid-feedback">❌ 留言不可為空白，請填寫內容！</div>
+          <div class="valid-feedback">✅ 內容填寫完成！</div>
+        </div>
+
+        <!-- 送出按鈕 -->
+        <button type="button" class="btn btn-primary w-100 btn-send fw-bold">
+          🚀 確認送出報名 / 留言 (點擊測試驗證)
+        </button>
+      </form>
+    </div>
   </div>
-  
-  <!-- 失敗範例 -->
-  <div class="mb-3">
-    <label class="form-label fw-bold">緊急聯絡人電話</label>
-    <input type="text" class="form-control is-invalid" value="0912">
-    <div class="invalid-feedback">電話號碼長度不足，請輸入完整的 10 碼手機號碼！</div>
+
+  <!-- 即時留言展示清單 -->
+  <div>
+    <h6 class="text-muted fw-bold mb-2">📋 即時留言動態：</h6>
+    <div id="messageList">
+      <div class="p-2.5 bg-white border rounded shadow-sm mb-2">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <strong class="text-primary small">🎸 小艾老師</strong>
+          <span class="text-muted small" style="font-size: 11px;">剛剛</span>
+        </div>
+        <p class="mb-0 small text-dark">歡迎體驗 jQuery 表單驗證！空白直接點選送出會立刻亮起紅色錯誤提示喔！</p>
+      </div>
+    </div>
   </div>
-</div>`,
+</div>
+
+<!-- ⚡ 實務必備：jQuery 點擊驗證與動態提示腳本 -->
+<script>
+  $(function () {
+    const $name = $('#userName');
+    const $content = $('#userContent');
+    const $list = $('#messageList');
+    const $count = $('#msgCount');
+
+    // 留言資料庫
+    const msgData = [
+      { name: '小艾老師', text: '歡迎體驗 jQuery 表單驗證！空白直接點選送出會立刻亮起紅色錯誤提示喔！', time: '剛剛' }
+    ];
+
+    function updateCount() {
+      $count.text('留言：' + msgData.length + ' 則');
+    }
+
+    function createMessage(msg) {
+      const safeName = $('<div>').text(msg.name).html();
+      const safeText = $('<div>').text(msg.text).html();
+      const html = 
+        '<div class="p-2.5 bg-white border rounded shadow-sm mb-2">' +
+          '<div class="d-flex justify-content-between align-items-center mb-1">' +
+            '<strong class="text-primary small">👤 ' + safeName + '</strong>' +
+            '<span class="text-muted small" style="font-size: 11px;">' + msg.time + '</span>' +
+          '</div>' +
+          '<p class="mb-0 small text-dark">' + safeText + '</p>' +
+        '</div>';
+      $list.prepend(html);
+    }
+
+    // 點選確認送出按鈕執行表單驗證
+    $('.btn-send').on('click', function (e) {
+      e.preventDefault();
+
+      // 取得輸入內容
+      const name = $name.val().trim();
+      const content = $content.val().trim();
+
+      // 表單驗證旗標
+      let valid = true;
+
+      // 暱稱驗證
+      if (!name) {
+        $name.addClass('is-invalid').removeClass('is-valid');
+        valid = false;
+      } else {
+        $name.removeClass('is-invalid').addClass('is-valid');
+      }
+
+      // 留言內容驗證
+      if (!content) {
+        $content.addClass('is-invalid').removeClass('is-valid');
+        valid = false;
+      } else {
+        $content.removeClass('is-invalid').addClass('is-valid');
+      }
+
+      // 驗證失敗：終止執行，畫面保留紅色錯誤訊息
+      if (!valid) {
+        return;
+      }
+
+      // =========================
+      // 驗證通過：建立新留言資料
+      // =========================
+      const newMessage = {
+        name: name,
+        text: content,
+        time: '剛剛'
+      };
+
+      // 加入留言資料
+      msgData.push(newMessage);
+
+      // 顯示新留言
+      createMessage(newMessage);
+
+      // 更新留言數量
+      updateCount();
+
+      // 清空輸入框
+      $name.val('');
+      $content.val('');
+
+      // 移除錯誤與驗證狀態
+      $name.removeClass('is-invalid is-valid');
+      $content.removeClass('is-invalid is-valid');
+
+      // 游標回到暱稱
+      $name.focus();
+    });
+
+    // 鍵盤即時輸入時，自動更新檢核狀態
+    $name.on('input', function () {
+      if ($(this).val().trim()) {
+        $(this).removeClass('is-invalid').addClass('is-valid');
+      } else {
+        $(this).removeClass('is-valid');
+      }
+    });
+
+    $content.on('input', function () {
+      if ($(this).val().trim()) {
+        $(this).removeClass('is-invalid').addClass('is-valid');
+      } else {
+        $(this).removeClass('is-valid');
+      }
+    });
+  });
+</script>`,
     studentTask: {
       title: '挑戰：打造雙重即時表單驗證狀態 (is-valid 與 is-invalid)',
       scenario: '請製作兩個輸入欄位：第一個帳號欄位呈現驗證成功狀態 (`is-valid` + `valid-feedback`)；第二個學號欄位呈現驗證失敗狀態 (`is-invalid` + `invalid-feedback`)！',

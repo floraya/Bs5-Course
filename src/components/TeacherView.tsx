@@ -4,7 +4,7 @@ import { SandboxPreview } from './SandboxPreview';
 import { VSCodeBlock } from './VSCodeBlock';
 import { CATEGORIES } from '../data/categories';
 import { ALL_LESSONS } from '../data/allLessons';
-import { getLessonMnemonic, getLessonLabConfig } from '../utils/teachingData';
+import { getLessonMnemonic, getLessonLabConfig, getLessonVisualDiagram } from '../utils/teachingData';
 import { soundManager } from '../utils/sound';
 import {
   ArrowRight,
@@ -41,8 +41,8 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
   prevLessonId,
   nextLessonId,
 }) => {
-  // Active feature tab (defaults to lab)
-  const [activeTab, setActiveTab] = useState<TabType>('lab');
+  // Active feature tab (defaults to visual diagram)
+  const [activeTab, setActiveTab] = useState<TabType>('visual');
 
   // Interactive Lab state
   const labConfig = getLessonLabConfig(lesson);
@@ -53,9 +53,9 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
     labConfig.options[0]?.id || ''
   );
 
-  // Automatically switch tab and reset lab options when lesson changes
+  // Automatically switch tab to visual diagram and reset lab options when lesson changes
   React.useEffect(() => {
-    setActiveTab('lab');
+    setActiveTab('visual');
     setActiveStepId(labConfig.steps[0]?.id || '');
     setSelectedOptionId(labConfig.options[0]?.id || '');
   }, [lesson.id]);
@@ -64,16 +64,67 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
   const hasJQueryCode =
     lesson.id === 'comp-tooltips' ||
     lesson.id === 'comp-popovers' ||
-    lesson.keyClasses.some((k) => k.name.includes('jQuery'));
+    lesson.id === 'forms-validation' ||
+    lesson.keyClasses.some((k) => k.name.toLowerCase().includes('jquery'));
 
   const getJQueryCode = () => {
     if (lesson.id === 'comp-tooltips') {
-      return `// 初始化 Tooltip（建議置於 </body> 結束標籤前）\n$('[data-bs-toggle="tooltip"]').each(function () {\n  new bootstrap.Tooltip(this);\n});`;
+      return `// ⚡ 初始化 Tooltip（建議置於 </body> 結束標籤前）\n$('[data-bs-toggle="tooltip"]').each(function () {\n  new bootstrap.Tooltip(this);\n});`;
     }
     if (lesson.id === 'comp-popovers') {
-      return `// 初始化 Popover（建議置於 </body> 結束標籤前）\n$('[data-bs-toggle="popover"]').each(function () {\n  new bootstrap.Popover(this);\n});`;
+      return `// ⚡ 初始化 Popover（建議置於 </body> 結束標籤前）\n$('[data-bs-toggle="popover"]').each(function () {\n  new bootstrap.Popover(this);\n});`;
     }
-    const jqItem = lesson.keyClasses.find((k) => k.name.includes('jQuery'));
+    if (lesson.id === 'forms-validation') {
+      return `// ⚡ jQuery 表單點擊驗證與留言建立
+$(".btn-send").on("click", function () {
+  // 1. 取得輸入內容
+  const name = $name.val().trim();
+  const content = $content.val().trim();
+
+  // 2. 表單驗證狀態變數
+  let valid = true;
+
+  // 暱稱欄位驗證
+  if (!name) {
+    $name.addClass("is-invalid").removeClass("is-valid");
+    valid = false;
+  } else {
+    $name.removeClass("is-invalid").addClass("is-valid");
+  }
+
+  // 留言內容欄位驗證
+  if (!content) {
+    $content.addClass("is-invalid").removeClass("is-valid");
+    valid = false;
+  } else {
+    $content.removeClass("is-invalid").addClass("is-valid");
+  }
+
+  // 驗證失敗：終止執行，畫面保留紅色錯誤提示
+  if (!valid) return;
+
+  // =========================
+  // 驗證成功：建立並顯示新留言
+  // =========================
+  const newMessage = {
+    name: name,
+    text: content,
+    time: "剛剛"
+  };
+
+  msgData.push(newMessage);
+  createMessage(newMessage);
+  updateCount();
+
+  // 清空輸入框並還原狀態
+  $name.val("");
+  $content.val("");
+  $name.removeClass("is-invalid is-valid");
+  $content.removeClass("is-invalid is-valid");
+  $name.focus();
+});`;
+    }
+    const jqItem = lesson.keyClasses.find((k) => k.name.toLowerCase().includes('jquery'));
     return jqItem ? jqItem.desc : '';
   };
 
@@ -98,6 +149,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
   const totalUnits = ALL_LESSONS.length;
   const category = CATEGORIES.find((c) => c.id === lesson.categoryId) || CATEGORIES[0];
   const mnemonic = getLessonMnemonic(lesson);
+  const visualDiagram = getLessonVisualDiagram(lesson);
 
   const handleCopyCode = () => {
     let textToCopy = lesson.teacherHtml;
@@ -389,29 +441,77 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
             {/* Tab: 🎨 視覺圖解 */}
             {activeTab === 'visual' && (
               <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-4">
-                <h4 className="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  視覺骨架架構示意
-                </h4>
-                <div className="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
-                  <div className="border-2 border-dashed border-sky-500/40 rounded-lg p-3 text-center">
-                    <span className="text-xs font-mono text-sky-300 font-bold block mb-1">
-                      .container (最外層邊界容器)
-                    </span>
-                    <div className="border-2 border-dashed border-purple-500/40 rounded p-2 text-center my-2">
-                      <span className="text-xs font-mono text-purple-300 font-bold block mb-1">
-                        .row (水平列排版軌道)
-                      </span>
-                      <div className="grid grid-cols-12 gap-1 mt-2 text-[10px] text-white">
-                        <div className="col-span-4 bg-purple-600/70 p-1.5 rounded">.col-4</div>
-                        <div className="col-span-4 bg-blue-600/70 p-1.5 rounded">.col-4</div>
-                        <div className="col-span-4 bg-emerald-600/70 p-1.5 rounded">.col-4</div>
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <h4 className="text-xs font-bold text-sky-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{visualDiagram.title}</span>
+                  </h4>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-300 border border-sky-500/20 font-semibold">
+                    {visualDiagram.badge}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 -mt-1">
+                  {visualDiagram.subtitle}
+                </p>
+
+                {/* Dynamic Diagram Visual Container */}
+                <div className="p-4 bg-slate-900/90 rounded-xl border border-slate-800 space-y-3">
+                  {visualDiagram.layers.map((layer, idx) => (
+                    <div
+                      key={idx}
+                      className={`border-2 border-dashed ${layer.borderColor || 'border-sky-500/40'} ${layer.bgColor || 'bg-slate-950/40'} rounded-lg p-3 text-center transition-all`}
+                    >
+                      <div className="flex items-center justify-between gap-1 mb-1">
+                        <span className={`text-xs font-mono font-bold block ${layer.textColor || 'text-sky-300'}`}>
+                          {layer.label}
+                        </span>
+                        {layer.badge && (
+                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-300 border border-slate-700">
+                            {layer.badge}
+                          </span>
+                        )}
                       </div>
+                      {layer.sublabel && (
+                        <div className="text-[11px] text-slate-400 text-left mb-2">
+                          {layer.sublabel}
+                        </div>
+                      )}
+
+                      {/* Children / inner columns */}
+                      {layer.children && layer.children.length > 0 && (
+                        <div className="grid grid-cols-12 gap-1.5 mt-2 text-xs font-mono">
+                          {layer.children.map((child, cIdx) => {
+                            const spanClass = child.span === 12
+                              ? 'col-span-12'
+                              : child.span === 8
+                              ? 'col-span-8'
+                              : child.span === 6
+                              ? 'col-span-6'
+                              : child.span === 4
+                              ? 'col-span-4'
+                              : child.span === 3
+                              ? 'col-span-3'
+                              : 'col-span-12';
+                            return (
+                              <div
+                                key={cIdx}
+                                className={`${spanClass} ${child.bgColor || 'bg-sky-600/70'} ${child.textColor || 'text-white'} p-2 rounded flex flex-col justify-center items-center text-center shadow-sm`}
+                              >
+                                <span className="font-bold text-[11px] leading-tight">{child.label}</span>
+                                {child.sublabel && (
+                                  <span className="text-[9px] opacity-80 mt-0.5 leading-tight">{child.sublabel}</span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
+                  ))}
+
+                  <div className="pt-2 border-t border-slate-800 text-xs text-slate-300 leading-relaxed">
+                    💡 <strong>架構解析：</strong>{visualDiagram.explanation}
                   </div>
-                  <p className="text-xs text-slate-300 leading-relaxed">
-                    如同建築工程的鋼筋結構：由外而內固定比例，任何裝置螢幕都能精準等比自動調適。
-                  </p>
                 </div>
               </div>
             )}
@@ -528,7 +628,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
 
           {/* Code Inspector Card: Exactly matching bottom of screenshot */}
           <div className="bg-[#090d16] border border-slate-800 rounded-2xl p-4 space-y-3 shadow-xl">
-            {/* Tabs Header Row: [ HTML 骨架 ] [ CSS 樣式 ] [ ⚡ jQuery 初始化程式碼 ]   [ 📋 複製程式碼 ] */}
+            {/* Tabs Header Row: [ HTML ] [ CSS ] [ jQuery ]   [ 📋 複製程式碼 ] */}
             <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
               <div className="flex items-center gap-1.5 overflow-x-auto">
                 <button
@@ -542,7 +642,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                   }`}
                 >
-                  HTML 骨架
+                  HTML
                 </button>
                 <button
                   onClick={() => {
@@ -555,7 +655,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                   }`}
                 >
-                  CSS 樣式 / 類別
+                  CSS
                 </button>
                 {hasJQueryCode && (
                   <button
@@ -569,7 +669,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                         : 'text-amber-400 hover:text-amber-300 hover:bg-amber-950/40 border border-amber-500/30'
                     }`}
                   >
-                    <span>⚡ jQuery 初始化程式碼</span>
+                    <span>jQuery</span>
                   </button>
                 )}
               </div>
@@ -654,12 +754,12 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                   </span>
                 </div>
                 <div className="text-[11px] text-slate-400">
-                  可任意在「🖥️ 網頁預覽」、「&lt;/&gt; HTML 骨架」與「🎨 CSS 樣式」之間流暢切換檢視
+                  可任意在「🖥️ 網頁預覽」、「&lt;/&gt; HTML」與「🎨 CSS」之間流暢切換檢視
                 </div>
               </div>
             </div>
 
-            {/* Central Switcher: [ 🖥️ 即時預覽 ] [ </> HTML 骨架 ] [ 🎨 CSS 樣式 ] [ ⚡ 雙欄對照 ] */}
+            {/* Central Switcher: [ 🖥️ 即時預覽 ] [ </> HTML ] [ 🎨 CSS ] [ ⚡ 雙欄對照 ] */}
             <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 shadow-inner">
               <button
                 onClick={() => {
@@ -688,7 +788,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                 }`}
               >
                 <Code2 className="w-3.5 h-3.5" />
-                <span>HTML 骨架</span>
+                <span>HTML</span>
               </button>
 
               <button
@@ -703,7 +803,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                 }`}
               >
                 <Layers className="w-3.5 h-3.5" />
-                <span>CSS 樣式</span>
+                <span>CSS</span>
               </button>
 
               {hasJQueryCode && (
@@ -719,7 +819,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                   }`}
                 >
                   <Code2 className="w-3.5 h-3.5" />
-                  <span>jQuery 初始化</span>
+                  <span>jQuery</span>
                 </button>
               )}
 
@@ -848,7 +948,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                             : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                         }`}
                       >
-                        HTML 骨架
+                        HTML
                       </button>
                       <button
                         onClick={() => {
@@ -861,7 +961,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                             : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
                         }`}
                       >
-                        CSS 樣式
+                        CSS
                       </button>
                       {hasJQueryCode && (
                         <button
@@ -875,7 +975,7 @@ export const TeacherView: React.FC<TeacherViewProps> = ({
                               : 'text-amber-400 hover:text-amber-300 hover:bg-slate-900'
                           }`}
                         >
-                          jQuery 初始化
+                          jQuery
                         </button>
                       )}
                     </div>

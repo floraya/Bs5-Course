@@ -196,15 +196,34 @@ export const LESSONS_UTILITIES: Lesson[] = [
     title: 'Display 顯示模式控制',
     officialName: 'Display',
     level: '初階',
-    summary: 'd-inline, d-block, d-inline-block, d-none，掌握元素在畫面上的排列流向。',
-    teacherDialogue: '為什麼普通的 `<span>` 沒辦法給予上下的 margin？因為它是 inline 行內元素！只要加上 d-inline-block 或 d-block，立刻就能自由設定寬高與內外距！',
+    summary: 'd-inline, d-block, d-inline-block, d-none，以及響應式 d-{sm,md,lg,xl,xxl}-{none,block,flex}。',
+    teacherDialogue: 'Display 不僅能控制行內與區塊，更是響應式設計的靈魂！加上斷點後綴如 `d-none d-md-block`（手機隱藏、平板 md 以上顯示）或 `d-block d-lg-none`（桌機隱藏、行動端顯示），在不同尺寸螢幕能立即呈現完全不同效果！',
     keyClasses: [
-      { name: 'd-inline', desc: '行內元素（並排不換行）' },
-      { name: 'd-block', desc: '區塊元素（獨占整行換行）' },
-      { name: 'd-inline-block', desc: '行內區塊（並排但可設定寬高與 padding）' },
-      { name: 'd-none', desc: '完全隱藏不佔任何空間' },
+      { name: 'd-none d-{sm,md,lg,xl,xxl}-block', desc: '響應式斷點顯現：小尺寸隱藏，指定尺寸以上才以 block 顯示' },
+      { name: 'd-block d-{sm,md,lg,xl,xxl}-none', desc: '響應式斷點隱藏：小尺寸正常顯示，指定大尺寸以上完全隱藏' },
+      { name: 'd-block / d-inline-block', desc: '區塊元素獨占整行 / 行內區塊可自訂寬高' },
+      { name: 'd-none / d-inline', desc: '完全隱藏不留痕跡 / 行內元素並排不換行' },
     ],
     teacherHtml: `<div class="container py-3">
+  <!-- 響應式斷點即時對照卡片 -->
+  <div class="p-3 bg-light border rounded mb-3 text-center">
+    <div class="alert alert-primary mb-2 d-block d-sm-none">
+      📱 <strong>極小手機直向 (XS < 576px)</strong>：目前只在手機直向顯示 (d-block d-sm-none)
+    </div>
+    <div class="alert alert-success mb-2 d-none d-sm-block d-md-none">
+      📱 <strong>小型手機橫向 (SM ≥ 576px)</strong>：目前在 SM 螢幕顯示 (d-none d-sm-block d-md-none)
+    </div>
+    <div class="alert alert-warning mb-2 d-none d-md-block d-lg-none">
+      📟 <strong>平板裝置 (MD ≥ 768px)</strong>：目前在 MD 平板顯示 (d-none d-md-block d-lg-none)
+    </div>
+    <div class="alert alert-info mb-2 d-none d-lg-block d-xl-none">
+      💻 <strong>筆記型電腦 (LG ≥ 992px)</strong>：目前在 LG 筆電顯示 (d-none d-lg-block d-xl-none)
+    </div>
+    <div class="alert alert-dark mb-0 d-none d-xl-block">
+      🖥️ <strong>大型桌上型螢幕 (XL/XXL ≥ 1200px)</strong>：寬螢幕尊爵模式 (d-none d-xl-block)
+    </div>
+  </div>
+
   <span class="d-block bg-primary text-white p-2 rounded mb-2 text-center">
     原本是 span，加上 d-block 後獨占整行！
   </span>
@@ -246,18 +265,30 @@ export const LESSONS_UTILITIES: Lesson[] = [
     title: 'Flex 彈性盒模型神器',
     officialName: 'Flex',
     level: '中階',
-    summary: '前端排版最神核心！d-flex, justify-content-between (左右分散), align-items-center (垂直居中)。',
-    teacherDialogue: '以前要讓左邊放 Logo、右邊放登入按鈕，要算浮動清浮動算半天。在 Bootstrap 只要寫 d-flex justify-content-between align-items-center，一行類別瞬間完成垂直水平完美分佈，堪稱現代排版靈魂！',
+    summary: '前端排版最神核心！d-flex 與響應式 flex-{sm,md,lg,xl,xxl}-{row,column}、justify-content-{sm,md,lg}-*。',
+    teacherDialogue: '現代前端最震撼的技巧就是「手機直向單欄 (flex-column)，平板以上自動轉橫排雙欄 (flex-md-row)」！再搭配 justify-content-{sm,md,lg,xl,xxl}-*，不同螢幕尺寸下按鈕與內容的排版方向和對齊瞬間自適應，一行 CSS 都不用寫！',
     keyClasses: [
-      { name: 'd-flex', desc: '啟動 Flexbox 佈局' },
-      { name: 'justify-content-between', desc: '左右兩端貼齊分散對齊' },
-      { name: 'justify-content-center', desc: '水平居中' },
-      { name: 'align-items-center', desc: '垂直居中' },
+      { name: 'flex-{sm,md,lg,xl,xxl}-{row|column}', desc: '響應式方向切換：例如 flex-column flex-md-row（手機垂直堆疊、平板以上橫向並排）' },
+      { name: 'justify-content-{sm,md,lg,xl,xxl}-*', desc: '響應式主軸對齊：不同斷點下自適應分散 (between) 或置中 (center)' },
+      { name: 'd-flex / d-inline-flex', desc: '啟動 Flexbox 彈性盒模型佈局' },
+      { name: 'align-items-center', desc: '交叉軸垂直置中對齊' },
     ],
     teacherHtml: `<div class="container py-3">
-  <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded border">
-    <div class="fw-bold text-primary">🎸 熱音社 成果發表會</div>
-    <button class="btn btn-primary btn-sm">立即索票</button>
+  <!-- 示範 1：響應式排列方向切換 (手機垂直堆疊 flex-column，平板以上橫向並列 flex-md-row) -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-center bg-light p-3 rounded border mb-3 gap-2">
+    <div>
+      <div class="fw-bold text-primary">🎸 熱音社 成果發表會</div>
+      <div class="text-muted small">手機上按鈕在下方，平板 (≥768px) 以上自動並排兩側！</div>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-secondary btn-sm">活動簡章</button>
+      <button class="btn btn-primary btn-sm">立即索票</button>
+    </div>
+  </div>
+
+  <!-- 示範 2：響應式對齊切換 (手機置中，電腦靠右) -->
+  <div class="d-flex justify-content-center justify-content-lg-end bg-dark text-white p-2 rounded">
+    <span class="small">📱 手機水平置中 · 💻 桌機 (≥992px) 自動貼齊右側 (justify-content-lg-end)</span>
   </div>
 </div>`,
     studentTask: {
@@ -401,17 +432,35 @@ export const LESSONS_UTILITIES: Lesson[] = [
     title: 'Link 連結進階樣式',
     officialName: 'Link',
     level: '初階',
-    summary: 'link-underline-opacity-* 控制下劃線透明度、link-offset-* 控制底線與文字間隙。',
-    teacherDialogue: '現代網頁設計討厭死板粗黑的下劃線！Bootstrap 5.3 提供了全新 Link 工具：用 link-offset-2 把底線稍微往下移一點點，或者用 link-underline-opacity-25 讓底線呈現若隱若現的半透明高級感！',
+    summary: 'link-underline-* 自訂底線色彩、link-underline-opacity-* 控制透明度、link-offset-* 微調下距。',
+    teacherDialogue: '現代網頁設計討厭死板粗黑的下劃線！Bootstrap 5.3 提供了全新 Link 工具：用 link-offset-2 把底線稍微往下移一點點，用 link-underline-*（如 link-underline-danger）把底線換成專屬顏色，或者用 link-underline-opacity-0 預設隱藏底線、滑鼠懸停 (hover) 才優雅浮現！',
     keyClasses: [
-      { name: 'link-offset-2', desc: '底線與文字基線保持 2px 優雅距離' },
-      { name: 'link-underline-opacity-25', desc: '底線平時維持 25% 半透明' },
-      { name: 'link-underline-opacity-100-hover', desc: '滑鼠懸停時底線恢復 100% 亮起' },
+      { name: 'link-underline-*', desc: '自訂底線色彩（如 link-underline-danger, link-underline-primary, link-underline-warning）' },
+      { name: 'link-underline-opacity-0', desc: '隱藏預設底線（常搭配 link-underline-opacity-100-hover 懸停才顯現）' },
+      { name: 'link-offset-1 / 2 / 3', desc: '底線與文字基線保持 1~3px 優雅間距' },
+      { name: 'link-underline-opacity-25 / 50 / 100', desc: '設定底線色彩透明度（25%~100%）' },
     ],
-    teacherHtml: `<div class="container py-3 text-center">
-  <a href="javascript:;" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover fw-bold fs-5">
-    ✨ 具有呼吸感底線的現代超連結（移過來試試）
-  </a>
+    teacherHtml: `<div class="container py-3">
+  <div class="p-3 bg-light rounded border space-y-3">
+    <!-- 1. 自訂底線色彩 link-underline-* -->
+    <div class="mb-2">
+      <a href="javascript:;" class="link-dark link-offset-2 link-underline-danger link-underline-opacity-100 fw-bold">
+        🔴 黑色文字搭配紅色底線 (link-dark link-underline-danger)
+      </a>
+    </div>
+    <!-- 2. 半透明底線 link-underline-opacity-* -->
+    <div class="mb-2">
+      <a href="javascript:;" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover fw-bold">
+        ✨ 25% 半透明底線，懸停 100% 亮起 (移過來試試)
+      </a>
+    </div>
+    <!-- 3. 無底線懸停才出現 link-underline-opacity-0 -->
+    <div>
+      <a href="javascript:;" class="link-success link-underline-opacity-0 link-underline-opacity-100-hover fw-bold">
+        🌿 平時無底線、滑鼠懸停才滑出底線
+      </a>
+    </div>
+  </div>
 </div>`,
     studentTask: {
       title: '挑戰：為校慶官方連結套用 link-offset-2 與 link-underline-opacity-25',
@@ -699,19 +748,43 @@ export const LESSONS_UTILITIES: Lesson[] = [
     title: 'Sizing 尺寸寬高控制',
     officialName: 'Sizing',
     level: '初階',
-    summary: 'w-25, w-50, w-75, w-100 控制寬度；h-25, h-50, h-75, h-100 控制高度；mw-100, mh-100 最大尺寸。',
-    teacherDialogue: '想要讓「送出報名」按鈕橫向 100% 填滿整個手機寬度？只要在按鈕加上 w-100！想要讓圖片佔父層的一半寬？寫 w-50！數字對應 25%, 50%, 75%, 100%，直覺又好記！',
+    summary: 'w-*, h-* 百分比控制；vw-100, vh-100 視窗滿版；min-vw-100, min-vh-100 最小視窗寬高。',
+    teacherDialogue: '想要做滿版首頁主視覺（Hero Section）？在 Bootstrap 只要加上 min-vh-100，容器就會至少擁有 100% 螢幕視窗高度，內容再多也能向下伸展！還有 vw-100 (視窗寬度 100%)、vh-100 (視窗高度 100%)，配合百分比高度 h-25, h-50, h-75, h-100，任何版型尺寸都能精準掌控！',
     keyClasses: [
-      { name: 'w-100', desc: '寬度 100% (滿版)' },
-      { name: 'w-50', desc: '寬度 50% (半幅)' },
-      { name: 'h-100', desc: '高度 100%' },
-      { name: 'mw-100', desc: 'max-width: 100%' },
+      { name: 'min-vh-100 / vh-100', desc: '視窗高度控制（min-height: 100vh 最小滿屏高 / height: 100vh 固定滿屏高）' },
+      { name: 'min-vw-100 / vw-100', desc: '視窗寬度控制（min-width: 100vw 最小滿屏寬 / width: 100vw 固定滿屏寬）' },
+      { name: 'h-25 / h-50 / h-75 / h-100', desc: '相對父容器百分比高度（25%、50%、75%、100%）' },
+      { name: 'w-25 / w-50 / w-75 / w-100', desc: '相對父容器百分比寬度（25%、50%、75%、100%）' },
     ],
     teacherHtml: `<div class="container py-3">
-  <div class="bg-primary text-white p-2 rounded mb-2 w-25">w-25</div>
-  <div class="bg-primary text-white p-2 rounded mb-2 w-50">w-50</div>
-  <div class="bg-primary text-white p-2 rounded mb-2 w-75">w-75</div>
-  <div class="bg-primary text-white p-2 rounded w-100">w-100 (滿版)</div>
+  <!-- 1. 百分比寬度 w-* -->
+  <h6 class="text-muted fw-bold mb-2">1. 寬度比例 (w-25, w-50, w-75, w-100)</h6>
+  <div class="bg-primary text-white p-2 rounded mb-1 w-25 small text-center">w-25 (25%)</div>
+  <div class="bg-primary text-white p-2 rounded mb-1 w-50 small text-center">w-50 (50%)</div>
+  <div class="bg-primary text-white p-2 rounded mb-1 w-75 small text-center">w-75 (75%)</div>
+  <div class="bg-primary text-white p-2 rounded mb-3 w-100 small text-center">w-100 (100% 滿幅寬度)</div>
+
+  <!-- 2. 百分比高度展示 (h-25, h-50, h-75, h-100) -->
+  <h6 class="text-muted fw-bold mb-2">2. 父容器百分比高度展示 (h-25, h-50, h-75, h-100)</h6>
+  <div class="bg-light border rounded p-2 d-flex gap-2 align-items-end mb-3" style="height: 160px;">
+    <div class="bg-success text-white p-2 rounded text-center small flex-fill h-25">h-25 (25%)</div>
+    <div class="bg-info text-dark p-2 rounded text-center small flex-fill h-50">h-50 (50%)</div>
+    <div class="bg-warning text-dark p-2 rounded text-center small flex-fill h-75">h-75 (75%)</div>
+    <div class="bg-danger text-white p-2 rounded text-center small flex-fill h-100">h-100 (100%)</div>
+  </div>
+
+  <!-- 3. 視窗高寬輔助 (vw-100, vh-100, min-vh-100, min-vw-100) -->
+  <h6 class="text-muted fw-bold mb-2">3. 視窗滿版高度 (min-vh-100 / vh-100 / min-vw-100)</h6>
+  <div class="bg-dark text-white p-3 rounded text-center shadow-sm">
+    <div class="fw-bold">📐 視窗高度神器</div>
+    <p class="small text-secondary mb-1">
+      套用 <code class="text-warning">min-vh-100</code> 可讓整個登入頁面或首頁 Hero 橫幅保證至少佔滿整個瀏覽器螢幕高度！
+    </p>
+    <span class="badge bg-secondary">vw-100 (100vw)</span>
+    <span class="badge bg-secondary ms-1">vh-100 (100vh)</span>
+    <span class="badge bg-primary ms-1">min-vh-100</span>
+    <span class="badge bg-primary ms-1">min-vw-100</span>
+  </div>
 </div>`,
     studentTask: {
       title: '挑戰：將提交按鈕設為滿版寬度 w-100',
@@ -801,18 +874,25 @@ export const LESSONS_UTILITIES: Lesson[] = [
     title: 'Text 文字對齊與樣式',
     officialName: 'Text',
     level: '初階',
-    summary: 'text-start, text-center, text-end, text-uppercase, fw-bold (粗體), fst-italic (斜體)。',
-    teacherDialogue: '想把校慶口號置中？寫 text-center！想讓標題字變粗？寫 fw-bold！想讓英文全部自動轉大寫？寫 text-uppercase！完全不用自己寫 font-weight: 700 或 text-align: center！',
+    summary: 'text-start, text-center, text-end，以及響應式 text-{sm,md,lg,xl,xxl}-{start,center,end}。',
+    teacherDialogue: '想把校慶口號在手機上靠左、在平板 (md) 居中、在桌機大螢幕 (lg) 靠右？Bootstrap 支援完整的響應式語法 `text-{sm,md,lg,xl,xxl}-{start|center|end}`！再搭配 fw-bold (粗體)、text-uppercase (英文字母強制轉大寫)，不同螢幕尺寸字體對齊自動變化！',
     keyClasses: [
-      { name: 'text-center', desc: '文字置中對齊' },
-      { name: 'fw-bold', desc: '粗體字 (font-weight: 700)' },
-      { name: 'text-uppercase', desc: '英文字母強制轉大寫' },
-      { name: 'fs-1 ~ fs-6', desc: '自定義字級大小 (1 最大，6 最小)' },
+      { name: 'text-{sm,md,lg,xl,xxl}-{start|center|end}', desc: '響應式文字對齊：例如 text-start text-md-center text-lg-end（手機靠左、平板居中、桌機靠右）' },
+      { name: 'text-center / text-start / text-end', desc: '水平文字置中 / 靠左 / 靠右對齊' },
+      { name: 'fw-bold / fw-normal / fst-italic', desc: '粗體字 (font-weight: 700) / 正常字重 / 斜體文字' },
+      { name: 'text-uppercase / text-lowercase / text-capitalize', desc: '文字英文字母全大寫 / 全小寫 / 首字大寫' },
     ],
-    teacherHtml: `<div class="container py-3 text-center">
-  <p class="text-uppercase fw-bold text-primary mb-1">Youth and Passion</p>
-  <h2 class="fw-bold">青春無悔，熱血向前</h2>
-  <p class="text-muted fst-italic">—— 大明高中校訓</p>
+    teacherHtml: `<div class="container py-3">
+  <!-- 響應式文字對齊示範 -->
+  <div class="p-3 bg-light rounded border mb-3">
+    <p class="text-uppercase fw-bold text-primary mb-1 text-center">Youth and Passion</p>
+    <h3 class="fw-bold text-start text-md-center text-lg-end text-dark">
+      🌟 青春無悔，熱血向前
+    </h3>
+    <p class="text-muted fst-italic text-start text-md-center text-lg-end mb-0">
+      📱 手機靠左 (start) · 📟 平板居中 (md-center) · 💻 桌機靠右 (lg-end)
+    </p>
+  </div>
 </div>`,
     studentTask: {
       title: '挑戰：將活動口號設為 text-center 與 fw-bold',

@@ -473,3 +473,515 @@ export function getLessonPitfallVsMaster(lesson: Lesson): {
     masterDesc: '內建流暢過渡動畫、鍵盤焦點無障礙無縫支援，且自動享有深淺色主題適配！',
   };
 }
+
+export interface VisualLayerChild {
+  label: string;
+  sublabel?: string;
+  span?: number;
+  bgColor?: string;
+  textColor?: string;
+  badge?: string;
+}
+
+export interface VisualLayer {
+  label: string;
+  sublabel?: string;
+  borderStyle?: string;
+  borderColor?: string;
+  bgColor?: string;
+  textColor?: string;
+  badge?: string;
+  children?: VisualLayerChild[];
+}
+
+export interface VisualDiagramConfig {
+  title: string;
+  subtitle: string;
+  badge: string;
+  explanation: string;
+  layers: VisualLayer[];
+}
+
+// Generate topic-specific architectural visual diagrams matching each lesson's theme
+export function getLessonVisualDiagram(lesson: Lesson): VisualDiagramConfig {
+  const id = lesson.id;
+  const cat = lesson.categoryId;
+
+  // 1. Grid & Breakpoints
+  if (id === 'layout-breakpoints' || id === 'layout-grid') {
+    return {
+      title: 'Grid 網格 12 等分軌道架構',
+      subtitle: '外層限制寬度，中層提供水平軌道，內層依 12 等分自由分配欄寬',
+      badge: '📐 網格鐵三角',
+      explanation: 'Bootstrap 網格系統由 container（限制兩側邊界）、row（水平軌道並提供負外距）與 col（依據 12 等分分割欄位寬度）三層鐵三角組成，手機直向為 col-12，平板為 col-md-6，筆電為 col-lg-4。',
+      layers: [
+        {
+          label: '.container / .container-fluid (最外層定寬或滿版容器)',
+          sublabel: '限制螢幕最大閱讀寬度，並於兩側提供自適應邊界 padding',
+          borderColor: 'border-sky-500/50',
+          bgColor: 'bg-sky-950/20',
+          textColor: 'text-sky-300',
+          badge: '外層',
+          children: [
+            {
+              label: '.row (水平網格軌道，消除外溢)',
+              sublabel: '內部具有負外距 (negative margins) 以抵消欄位左右內距',
+              span: 12,
+              bgColor: 'bg-purple-900/40',
+              textColor: 'text-purple-300',
+              badge: '中層軌道',
+            },
+          ],
+        },
+        {
+          label: '12 等分欄位分配範例 (總和等於 12)',
+          borderColor: 'border-emerald-500/40',
+          bgColor: 'bg-emerald-950/20',
+          textColor: 'text-emerald-300',
+          children: [
+            { label: '.col-4 (33.3%)', sublabel: '左側主要欄', span: 4, bgColor: 'bg-sky-600/80', textColor: 'text-white' },
+            { label: '.col-4 (33.3%)', sublabel: '中央推薦欄', span: 4, bgColor: 'bg-indigo-600/80', textColor: 'text-white' },
+            { label: '.col-4 (33.3%)', sublabel: '右側資訊欄', span: 4, bgColor: 'bg-emerald-600/80', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 2. Containers
+  if (id === 'layout-containers') {
+    return {
+      title: 'Container 容器邊界與滿版對比',
+      subtitle: '比較階梯定寬容器與 100% 全螢幕流式容器在視窗中的展現',
+      badge: '📦 容器模型',
+      explanation: '標準 .container 依據螢幕斷點（576px, 768px, 992px, 1200px, 1400px）階梯式鎖定最大閱讀寬度並自動水平居中；而 .container-fluid 則永遠貼齊螢幕兩側 100% 滿版無邊際。',
+      layers: [
+        {
+          label: '.container-fluid (100% 永遠貼齊兩側螢幕無邊界)',
+          sublabel: '寬螢幕與滿版輪播首頁最常使用，永遠維持 100% 視窗寬度',
+          borderColor: 'border-blue-500/50',
+          bgColor: 'bg-blue-950/20',
+          textColor: 'text-blue-300',
+          badge: '滿版流式',
+          children: [
+            {
+              label: '.container (階梯響應式居中定寬：例如 960px 或 1140px，兩側保留呼吸留白)',
+              sublabel: 'SM ≥ 540px · MD ≥ 720px · LG ≥ 960px · XL ≥ 1140px',
+              span: 12,
+              bgColor: 'bg-sky-600/70',
+              textColor: 'text-white',
+              badge: '置中閱讀',
+            },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 3. Columns
+  if (id === 'layout-columns') {
+    return {
+      title: 'Columns 垂直居中與 offset-* 推移架構',
+      subtitle: '利用 align-items-center 達成垂直居中，搭配 offset-* 達成水平推移',
+      badge: '📐 欄位對齊',
+      explanation: '父層 .row 宣告 align-items-center 可消除左右高度差異帶來的突兀感；內部子元素搭配 offset-md-2 或 offset-lg-3 即可向右推移指定格數，達成不需空欄位的優雅居中。',
+      layers: [
+        {
+          label: '.row.align-items-center (垂直對齊軸線)',
+          sublabel: '以同一水平中心線為基準，使高矮內容垂直居中',
+          borderColor: 'border-amber-500/50',
+          bgColor: 'bg-amber-950/20',
+          textColor: 'text-amber-300',
+          children: [
+            { label: '.col-md-8.offset-md-2 (佔8欄向右推2欄，達成居中)', span: 8, bgColor: 'bg-amber-600/80', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 4. Gutters
+  if (id === 'layout-gutters') {
+    return {
+      title: 'Gutters 網格間距排水溝機制',
+      subtitle: '負外距與內距完美相抵，消除邊界溢出',
+      badge: '🌊 間距機制',
+      explanation: 'Bootstrap 5 的網格間距透過 row 的負外距（-margin）與 col 的內距（padding）相抵消，g-0 到 g-5 精準控制欄位與欄位間隔，且外緣永不溢出破版。',
+      layers: [
+        {
+          label: '.row.g-3 (負邊距 -0.5rem)',
+          borderColor: 'border-cyan-500/50',
+          bgColor: 'bg-cyan-950/20',
+          textColor: 'text-cyan-300',
+          children: [
+            { label: 'col (p-2 內距)', span: 6, bgColor: 'bg-cyan-700/80', textColor: 'text-white' },
+            { label: 'col (p-2 內距)', span: 6, bgColor: 'bg-cyan-700/80', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 5. CSS Grid
+  if (id === 'layout-css-grid') {
+    return {
+      title: 'CSS Grid 原生二維現代網格架構',
+      subtitle: '原生 display: grid 與 .g-col-* 跨欄寬度',
+      badge: '⚡ 原生網格',
+      explanation: '原生 CSS Grid 容器直接提供 12 等分欄位與原生 gap 間距，子元素透過 .g-col-6 或 .g-col-4 指定跨越欄數，完全不依賴傳統 Flexbox float 或 row 負外距！',
+      layers: [
+        {
+          label: '.grid.gap-3 (display: grid; grid-template-columns: repeat(12, 1fr))',
+          borderColor: 'border-violet-500/50',
+          bgColor: 'bg-violet-950/20',
+          textColor: 'text-violet-300',
+          children: [
+            { label: '.g-col-6 (跨 6 欄)', span: 6, bgColor: 'bg-violet-600/80', textColor: 'text-white' },
+            { label: '.g-col-6 (跨 6 欄)', span: 6, bgColor: 'bg-violet-600/80', textColor: 'text-white' },
+            { label: '.g-col-4 (跨 4 欄)', span: 4, bgColor: 'bg-indigo-600/80', textColor: 'text-white' },
+            { label: '.g-col-4 (跨 4 欄)', span: 4, bgColor: 'bg-indigo-600/80', textColor: 'text-white' },
+            { label: '.g-col-4 (跨 4 欄)', span: 4, bgColor: 'bg-indigo-600/80', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 6. Accordion
+  if (id === 'comp-accordion') {
+    return {
+      title: 'Accordion 手風琴摺疊三層架構',
+      subtitle: '主容器 -> 項目單元 -> [標題按鈕] 與 [折疊內文]',
+      badge: '📑 手風琴',
+      explanation: '手風琴外層由 .accordion 統整，每個問答單元由 .accordion-item 包裹；點擊 .accordion-button 透過 data-bs-target 控制下方 .accordion-collapse 折疊面板的 show 狀態。',
+      layers: [
+        {
+          label: '.accordion#faqAccordion (主容器，提供 data-bs-parent 互斥作用域)',
+          borderColor: 'border-sky-500/50',
+          bgColor: 'bg-slate-900/60',
+          textColor: 'text-sky-300',
+          children: [
+            { label: '.accordion-header > .accordion-button (可點擊標題)', span: 12, bgColor: 'bg-sky-600/80', textColor: 'text-white' },
+            { label: '.accordion-collapse.show > .accordion-body (展開之說明內文)', span: 12, bgColor: 'bg-slate-800', textColor: 'text-slate-200' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 7. Modal
+  if (id === 'comp-modal') {
+    return {
+      title: 'Modal 彈跳對話框多層次遮罩架構',
+      subtitle: '半透明背景黑幕 -> 居中視窗主體 -> [Header / Body / Footer]',
+      badge: '🪟 彈跳視窗',
+      explanation: 'Modal 彈窗由全螢幕半透明遮罩 .modal、定位與寬度控制 .modal-dialog、白色內容卡片 .modal-content，以及內部的三段式結構（modal-header 標題列、modal-body 內文區、modal-footer 操作按鈕列）組成。',
+      layers: [
+        {
+          label: '.modal (全螢幕黑幕遮罩 backdrop)',
+          borderColor: 'border-purple-500/50',
+          bgColor: 'bg-black/60',
+          textColor: 'text-purple-300',
+          children: [
+            {
+              label: '.modal-dialog.modal-dialog-centered (置中對話框外框)',
+              span: 12,
+              bgColor: 'bg-slate-900/90',
+              textColor: 'text-purple-200',
+              badge: 'dialog',
+            },
+            {
+              label: '.modal-content (白色/深色卡片主體)',
+              span: 12,
+              bgColor: 'bg-slate-800',
+              textColor: 'text-white',
+              badge: 'header · body · footer',
+            },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 8. Carousel
+  if (id === 'comp-carousel') {
+    return {
+      title: 'Carousel 輪播投影片架構',
+      subtitle: '幻燈片包裹層 + 底部指示器 + 左右切換控制箭頭',
+      badge: '🎠 輪播圖',
+      explanation: '輪播外層包含 .carousel slide，內部由 .carousel-inner 容納多張 .carousel-item，並由 .carousel-indicators 提供底部指示條與 .carousel-control-prev/next 實現上一張/下一張操控。',
+      layers: [
+        {
+          label: '.carousel.slide (輪播總容器，宣告 data-bs-ride="carousel")',
+          borderColor: 'border-amber-500/50',
+          bgColor: 'bg-amber-950/20',
+          textColor: 'text-amber-300',
+          children: [
+            { label: '.carousel-indicators (底部指示點導覽列)', span: 12, bgColor: 'bg-amber-700/60', textColor: 'text-amber-100' },
+            { label: '.carousel-inner > .carousel-item.active (當前正在呈現的幻燈片畫面)', span: 12, bgColor: 'bg-blue-600/80', textColor: 'text-white' },
+            { label: '左右切換箭頭 (.carousel-control-prev / next)', span: 12, bgColor: 'bg-slate-800', textColor: 'text-slate-300' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 9. Navs & Tabs
+  if (id === 'comp-navs-tabs') {
+    return {
+      title: 'Navs & Tabs 分頁切換連動架構',
+      subtitle: '上方導航分頁列點選，下方 tab-pane 內容即時切換',
+      badge: '📑 分頁籤',
+      explanation: '分頁籤由導航籤列表（.nav.nav-tabs 內含各個 .nav-link）與內容容器（.tab-content 內含各個 .tab-pane）形成資料對應，點擊特定分頁標籤即會切換顯示對應的內容面板。',
+      layers: [
+        {
+          label: '.nav.nav-tabs (分頁標籤導航列)',
+          borderColor: 'border-sky-500/50',
+          bgColor: 'bg-sky-950/20',
+          textColor: 'text-sky-300',
+          children: [
+            { label: '.nav-link.active (已選中分頁)', span: 4, bgColor: 'bg-sky-500', textColor: 'text-slate-950' },
+            { label: '.nav-link (未選中分頁)', span: 4, bgColor: 'bg-slate-800', textColor: 'text-slate-400' },
+            { label: '.nav-link (未選中分頁)', span: 4, bgColor: 'bg-slate-800', textColor: 'text-slate-400' },
+          ],
+        },
+        {
+          label: '.tab-content (分頁面板主容器)',
+          borderColor: 'border-slate-700',
+          bgColor: 'bg-slate-900',
+          textColor: 'text-slate-300',
+          children: [
+            { label: '.tab-pane.fade.show.active (當前顯示之內容資訊區塊)', span: 12, bgColor: 'bg-slate-800/90', textColor: 'text-sky-200' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 10. Navbar
+  if (id === 'comp-navbar') {
+    return {
+      title: 'Navbar 響應式導覽列架構',
+      subtitle: '品牌標誌 + 手機漢堡切換按鈕 + 折疊選單連結',
+      badge: '🧭 導覽列',
+      explanation: 'Navbar 包含品牌 Logo (.navbar-brand)、手機端折疊開關 (.navbar-toggler) 以及在桌機水平展開、在手機端向下折疊的選單主體 (.collapse.navbar-collapse)。',
+      layers: [
+        {
+          label: '.navbar.navbar-expand-lg (導覽列最外層容器)',
+          borderColor: 'border-emerald-500/50',
+          bgColor: 'bg-emerald-950/20',
+          textColor: 'text-emerald-300',
+          children: [
+            { label: '.navbar-brand (校名/Logo)', span: 3, bgColor: 'bg-emerald-600', textColor: 'text-white' },
+            { label: '.navbar-toggler (手機漢堡按鈕)', span: 3, bgColor: 'bg-slate-800', textColor: 'text-emerald-300' },
+            { label: '.navbar-collapse (各項導航選單連結 .nav-link)', span: 6, bgColor: 'bg-slate-700', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 11. Cards
+  if (id === 'comp-card') {
+    return {
+      title: 'Card 萬能圖文包架構',
+      subtitle: '頂部圖片 + 內容卡身 + 底部操作區塊',
+      badge: '🃏 卡片',
+      explanation: 'Card 元件將資訊打包為一體，依序嵌套頂部圖片（.card-img-top）、核心內容主體（.card-body，包含 card-title 與 card-text）以及附帶按鈕的底部區域（.card-footer）。',
+      layers: [
+        {
+          label: '.card.shadow-sm (卡片外框主容器，附帶圓角與細緻外框)',
+          borderColor: 'border-slate-600',
+          bgColor: 'bg-slate-900/60',
+          textColor: 'text-slate-200',
+          children: [
+            { label: '.card-img-top (頂部圖片區塊)', span: 12, bgColor: 'bg-blue-700/80', textColor: 'text-white' },
+            { label: '.card-body (包含 .card-title 標題與 .card-text 說明)', span: 12, bgColor: 'bg-slate-800', textColor: 'text-slate-200' },
+            { label: '.card-footer (卡片底部操作按鈕或補充資訊)', span: 12, bgColor: 'bg-slate-950', textColor: 'text-slate-400' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 12. Forms & Validation
+  if (id.startsWith('forms-')) {
+    return {
+      title: 'Form 表單元件與驗證反饋架構',
+      subtitle: '表單標籤 + 輸入控制項 + 即時狀態提示 (is-valid / is-invalid)',
+      badge: '📝 表單模型',
+      explanation: 'Bootstrap 表單由表單標籤（.form-label）、控制輸入框（.form-control / .form-select）以及驗證反饋文字（.valid-feedback 與 .invalid-feedback）組成，結構層次清晰易懂。',
+      layers: [
+        {
+          label: 'form.needs-validation (外層表單容器，支援 was-validated 激活動態樣式)',
+          borderColor: 'border-amber-500/50',
+          bgColor: 'bg-amber-950/20',
+          textColor: 'text-amber-300',
+          children: [
+            { label: '.form-label (欄位中文標題說明)', span: 12, bgColor: 'bg-slate-800', textColor: 'text-slate-200' },
+            { label: '.form-control.is-valid / .is-invalid (輸入框本體，自動帶綠勾或紅驚嘆號)', span: 12, bgColor: 'bg-emerald-700/80', textColor: 'text-white' },
+            { label: '.valid-feedback / .invalid-feedback (狀態說明提示文字)', span: 12, bgColor: 'bg-slate-900', textColor: 'text-emerald-300' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 13. Stacks
+  if (id === 'helpers-stacks') {
+    return {
+      title: 'Stacks 水平與垂直堆疊架構',
+      subtitle: '比寫 Flexbox 更簡潔！hstack 水平堆疊 + ms-auto 自動分推',
+      badge: '📚 堆疊工具',
+      explanation: 'Stacks 提供 hstack（水平橫向排列）與 vstack（垂直直向排列），並利用 gap-* 控制項目間距；搭配 ms-auto 可以輕易將特定子元素自動推移至最右側。',
+      layers: [
+        {
+          label: '.hstack.gap-3 (水平堆疊容器)',
+          borderColor: 'border-teal-500/50',
+          bgColor: 'bg-teal-950/20',
+          textColor: 'text-teal-300',
+          children: [
+            { label: '項目 1', span: 3, bgColor: 'bg-teal-600', textColor: 'text-white' },
+            { label: '項目 2', span: 3, bgColor: 'bg-teal-600', textColor: 'text-white' },
+            { label: '項目 3 (.ms-auto 自動推至右側)', span: 6, bgColor: 'bg-indigo-600', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 14. Utilities: Flex
+  if (id === 'util-flex') {
+    return {
+      title: 'Flex 彈性盒模型主軸與交叉軸架構',
+      subtitle: '主軸 (justify-content) 控制水平分佈，交叉軸 (align-items) 控制垂直置中',
+      badge: '🤸 彈性盒',
+      explanation: 'd-flex 激活彈性盒佈局，主軸透過 justify-content（start, center, end, between, around）排布，交叉軸透過 align-items（start, center, end）對齊，並能透過 flex-column / flex-md-row 在不同螢幕切換排列方向。',
+      layers: [
+        {
+          label: '.d-flex.justify-content-between.align-items-center (Flexbox 彈性盒容器)',
+          borderColor: 'border-sky-500/50',
+          bgColor: 'bg-sky-950/20',
+          textColor: 'text-sky-300',
+          children: [
+            { label: '子元件 A (左側貼齊)', span: 4, bgColor: 'bg-sky-600', textColor: 'text-white' },
+            { label: '中心水平主軸空間 (自動分配)', span: 4, bgColor: 'bg-slate-800/60', textColor: 'text-slate-400' },
+            { label: '子元件 B (右側貼齊)', span: 4, bgColor: 'bg-indigo-600', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 15. Utilities: Display
+  if (id === 'util-display') {
+    return {
+      title: 'Display 顯示模式與流向架構',
+      subtitle: 'block (獨占換行) vs inline (行內流動) vs inline-block (自訂寬高並排)',
+      badge: '🖥️ 顯示流向',
+      explanation: 'd-block 使元素獨占一行並支援自訂寬高；d-inline-block 既能與相鄰元素並排，又能自由設定寬高與 padding；d-none 則完全隱藏且不佔用任何版面空間。',
+      layers: [
+        {
+          label: '.d-block (區塊模式：100% 獨占整行)',
+          borderColor: 'border-blue-500/50',
+          bgColor: 'bg-blue-950/20',
+          textColor: 'text-blue-300',
+          children: [
+            { label: '獨占整行區塊 (d-block)', span: 12, bgColor: 'bg-blue-600', textColor: 'text-white' },
+          ],
+        },
+        {
+          label: '.d-inline-block (行內區塊模式：並排同行且可設定寬度高度)',
+          borderColor: 'border-emerald-500/50',
+          bgColor: 'bg-emerald-950/20',
+          textColor: 'text-emerald-300',
+          children: [
+            { label: '方塊 1 (d-inline-block)', span: 6, bgColor: 'bg-emerald-600', textColor: 'text-white' },
+            { label: '方塊 2 (d-inline-block)', span: 6, bgColor: 'bg-emerald-600', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 16. Utilities: Spacing
+  if (id === 'util-spacing') {
+    return {
+      title: 'Spacing 盒模型外距與內距架構',
+      subtitle: 'Margin (推開鄰居外距) -> Border (邊框) -> Padding (呼吸內距) -> Content (內容)',
+      badge: '📦 盒模型',
+      explanation: 'CSS 盒模型由外而內包含：Margin（外距，負責推開隔壁鄰居元素）、Border（邊框邊界）、Padding（內距，盒子內容與邊框之間的呼吸留白空間），以及最核心的 Content（文字與內容實體）。',
+      layers: [
+        {
+          label: 'Margin (m-* 外距，推開周圍元素)',
+          borderColor: 'border-amber-500/60',
+          bgColor: 'bg-amber-950/30',
+          textColor: 'text-amber-300',
+          children: [
+            {
+              label: 'Border (邊框邊界) + Padding (p-* 內距呼吸空間)',
+              span: 12,
+              bgColor: 'bg-emerald-800/70',
+              textColor: 'text-emerald-100',
+              badge: '內距層',
+            },
+            {
+              label: 'Content (文字與圖片內容核心)',
+              span: 12,
+              bgColor: 'bg-sky-600',
+              textColor: 'text-white',
+              badge: '內容核心',
+            },
+          ],
+        },
+      ],
+    };
+  }
+
+  // 17. Utilities: Sizing
+  if (id === 'util-sizing') {
+    return {
+      title: 'Sizing 尺寸百分比與視窗高寬架構',
+      subtitle: 'w-* / h-* 百分比控制，搭配 vw-100 / vh-100 滿版視窗',
+      badge: '📏 尺寸規格',
+      explanation: 'Bootstrap 提供 25%、50%、75%、100% 的百分比寬度與高度類別（w-*, h-*）；同時支援 vw-100、vh-100 與 min-vh-100 等視窗可視區專用單位，輕鬆打造全螢幕沉浸式頁面。',
+      layers: [
+        {
+          label: '視窗滿版高度 (min-vh-100 / vh-100) 與寬度 (vw-100)',
+          borderColor: 'border-cyan-500/50',
+          bgColor: 'bg-cyan-950/20',
+          textColor: 'text-cyan-300',
+          children: [
+            { label: 'w-25 (25%)', span: 3, bgColor: 'bg-cyan-700', textColor: 'text-white' },
+            { label: 'w-50 (50%)', span: 6, bgColor: 'bg-blue-600', textColor: 'text-white' },
+            { label: 'w-100 (100% 滿幅寬度)', span: 12, bgColor: 'bg-indigo-600', textColor: 'text-white' },
+          ],
+        },
+      ],
+    };
+  }
+
+  // Default dynamic visual diagram
+  return {
+    title: `${lesson.officialName} 視覺架構示意`,
+    subtitle: `解構 ${lesson.officialName} 的 DOM 階層與視覺排版關聯`,
+    badge: '🎨 視覺結構',
+    explanation: `本元件遵循 Bootstrap 5 模組化規範，外層容器建立作用範圍與定位，內部子元素依照功能階層清晰拆分，具備絕佳的響應式自適應能力。`,
+    layers: [
+      {
+        label: `${lesson.officialName} 主架構容器`,
+        sublabel: lesson.summary,
+        borderColor: 'border-sky-500/50',
+        bgColor: 'bg-sky-950/20',
+        textColor: 'text-sky-300',
+        children: lesson.keyClasses.slice(0, 4).map((kc, idx) => ({
+          label: kc.name,
+          sublabel: kc.desc,
+          span: 12,
+          bgColor: idx % 2 === 0 ? 'bg-sky-700/70' : 'bg-indigo-700/70',
+          textColor: 'text-white',
+        })),
+      },
+    ],
+  };
+}

@@ -78,6 +78,52 @@ export const SandboxPreview: React.FC<SandboxPreviewProps> = ({
       color: #212529;
       font-family: system-ui, -apple-system, sans-serif;
     }
+
+    /* Bootstrap 5 CSS Grid Native Support (.grid, .g-col-*, .g-start-*) */
+    .grid {
+      display: grid !important;
+      grid-template-columns: repeat(var(--bs-columns, 12), 1fr) !important;
+      gap: var(--bs-gap, 1rem) !important;
+    }
+    .g-col-1 { grid-column: auto / span 1 !important; }
+    .g-col-2 { grid-column: auto / span 2 !important; }
+    .g-col-3 { grid-column: auto / span 3 !important; }
+    .g-col-4 { grid-column: auto / span 4 !important; }
+    .g-col-5 { grid-column: auto / span 5 !important; }
+    .g-col-6 { grid-column: auto / span 6 !important; }
+    .g-col-7 { grid-column: auto / span 7 !important; }
+    .g-col-8 { grid-column: auto / span 8 !important; }
+    .g-col-9 { grid-column: auto / span 9 !important; }
+    .g-col-10 { grid-column: auto / span 10 !important; }
+    .g-col-11 { grid-column: auto / span 11 !important; }
+    .g-col-12 { grid-column: auto / span 12 !important; }
+    .g-start-1 { grid-column-start: 1 !important; }
+    .g-start-2 { grid-column-start: 2 !important; }
+    .g-start-3 { grid-column-start: 3 !important; }
+    .g-start-4 { grid-column-start: 4 !important; }
+    .g-start-5 { grid-column-start: 5 !important; }
+    .g-start-6 { grid-column-start: 6 !important; }
+    @media (min-width: 576px) {
+      .g-col-sm-1 { grid-column: auto / span 1 !important; }
+      .g-col-sm-2 { grid-column: auto / span 2 !important; }
+      .g-col-sm-3 { grid-column: auto / span 3 !important; }
+      .g-col-sm-4 { grid-column: auto / span 4 !important; }
+      .g-col-sm-6 { grid-column: auto / span 6 !important; }
+      .g-col-sm-12 { grid-column: auto / span 12 !important; }
+    }
+    @media (min-width: 768px) {
+      .g-col-md-1 { grid-column: auto / span 1 !important; }
+      .g-col-md-2 { grid-column: auto / span 2 !important; }
+      .g-col-md-3 { grid-column: auto / span 3 !important; }
+      .g-col-md-4 { grid-column: auto / span 4 !important; }
+      .g-col-md-6 { grid-column: auto / span 6 !important; }
+      .g-col-md-12 { grid-column: auto / span 12 !important; }
+    }
+    @media (min-width: 992px) {
+      .g-col-lg-3 { grid-column: auto / span 3 !important; }
+      .g-col-lg-4 { grid-column: auto / span 4 !important; }
+      .g-col-lg-6 { grid-column: auto / span 6 !important; }
+    }
   </style>
 </head>
 <body>
